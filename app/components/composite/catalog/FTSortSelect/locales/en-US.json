@@ -1,0 +1,10 @@
+{
+  "sort": {
+    "relevance": "Relevance",
+    "priceAsc": "Lowest price",
+    "priceDesc": "Highest price",
+    "rating": "Best rating",
+    "distance": "Nearest",
+    "nameAsc": "Name A–Z"
+  }
+}

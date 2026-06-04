@@ -1,0 +1,7 @@
+{
+  "catalog": {
+    "noTrainersFound": "No se encontró ningún entrenador personal.",
+    "loadingTrainers": "Cargando entrenadores personales",
+    "clearFilters": "Limpiar filtros"
+  }
+}

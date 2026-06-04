@@ -1,0 +1,10 @@
+{
+  "seo": {
+    "errorTitle": "Error — Fatal Trainer"
+  },
+  "error": {
+    "code": "Error {code}",
+    "unexpected": "An unexpected error occurred.",
+    "backHome": "Back to home"
+  }
+}
