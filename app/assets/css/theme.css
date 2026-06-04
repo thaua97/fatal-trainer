@@ -1,0 +1,13 @@
+:root {
+  --ft-primary: #7c3aed;
+  --ft-primary-hover: #6d28d9;
+  --ft-primary-subtle: #cbc0ff;
+  --ft-primary-rgb: 124 58 237;
+  --ft-primary-foreground: #fff;
+  --ft-surface-search: rgb(241 245 249);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  background-color: #fff;
+}

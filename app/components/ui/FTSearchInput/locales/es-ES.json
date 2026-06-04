@@ -1,0 +1,7 @@
+{
+  "catalog": {
+    "searchPlaceholder": "Buscar por nombre o especialidad",
+    "searchAriaLabel": "Buscar entrenadores personales",
+    "clearSearch": "Limpiar búsqueda"
+  }
+}

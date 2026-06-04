@@ -1,0 +1,10 @@
+{
+  "seo": {
+    "profileFallbackTitle": "Profile — Fatal Trainer",
+    "profileFallbackDescription": "Personal trainer profile"
+  },
+  "profile": {
+    "notFound": "Personal trainer not found.",
+    "backToList": "Back to listing"
+  }
+}
