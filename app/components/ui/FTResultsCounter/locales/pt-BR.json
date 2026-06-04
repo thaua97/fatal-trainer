@@ -1,0 +1,8 @@
+{
+  "results": {
+    "loading": "Carregando...",
+    "trainer": "personal trainer",
+    "trainers": "personal trainers",
+    "filtered": "{count} de {total} {suffix}"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "modality": {
+    "presencial": "In-person",
+    "online": "Online",
+    "hibrido": "Hybrid"
+  }
+}
