@@ -378,7 +378,7 @@ Testes end-to-end com **Cypress** cobrindo jornadas principais mapeadas nos caso
 | **Categoria** | Documentação / UI |
 
 **Descrição:**  
-**Storybook** para desenvolvimento isolado e documentação visual dos componentes de domínio e UI.
+**Storybook** para desenvolvimento isolado e documentação visual dos componentes de domínio e UI. Convenções da biblioteca FT: [especificacao-componentes-ft.md](./arquitetura/especificacao-componentes-ft.md).
 
 **Stories mínimas (Should):**
 

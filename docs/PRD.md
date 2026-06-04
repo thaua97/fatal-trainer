@@ -10,6 +10,8 @@
 - [Requisitos funcionais](./requisitos-funcionais.md)
 - [Casos de uso](./casos-de-uso.md)
 - [Requisitos não funcionais](./requisitos-nao-funcionais.md)
+- [PRD de Design](./prd-design.md)
+- [Especificação de componentes FT](./arquitetura/especificacao-componentes-ft.md)
 ---
 
 ## 1. Resumo executivo

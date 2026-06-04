@@ -1,7 +1,7 @@
 # Requisitos Funcionais — Fatal Trainer
 
 **Produto:** Catálogo de personal trainers autônomos  
-**Documento base:** [PRD.md](./PRD.md)  
+**Documento base:** [PRD.md](./PRD.md) · [PRD de Design](./prd-design.md)  
 **Versão:** 1.0  
 **Segmento:** Personal trainers (musculação, funcional, emagrecimento, etc.)
 
