@@ -12,6 +12,7 @@ const i18n = createI18n({
 
 const defaultStubs = {
   NuxtLink: {
+    name: 'NuxtLink',
     template: '<a :href="typeof to === \'string\' ? to : \'#\'"><slot /></a>',
     props: ['to'],
   },
@@ -22,6 +23,11 @@ const defaultStubs = {
   UFormField: { template: '<div><slot /></div>' },
   UDrawer: { template: '<div><slot name="body" /><slot name="footer" /></div>' },
   UBadge: { template: '<span class="u-badge-stub"><slot /></span>' },
+  UCheckbox: {
+    props: ['modelValue', 'label'],
+    emits: ['update:modelValue'],
+    template: '<label><input type="checkbox" :checked="modelValue" @change="$emit(\'update:modelValue\', $event.target.checked)" /><span>{{ label }}</span></label>',
+  },
   USkeleton: { template: '<span class="u-skeleton-stub" />' },
   UDropdownMenu: { template: '<div><slot /></div>' },
   UCarousel: {
@@ -41,6 +47,10 @@ export function mountFT<T extends Component>(
       stubs: {
         ...defaultStubs,
         ...options?.global?.stubs,
+      },
+      components: {
+        NuxtLink: defaultStubs.NuxtLink,
+        ...(options?.global?.components ?? {}),
       },
       ...options?.global,
     },
