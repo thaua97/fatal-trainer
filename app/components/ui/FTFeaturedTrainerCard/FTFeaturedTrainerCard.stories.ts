@@ -57,3 +57,23 @@ export const WithoutReviews: Story = {
     },
   },
 }
+
+export const WithPromotion: Story = {
+  args: {
+    trainer: {
+      ...baseTrainer,
+      servicePrice: 200,
+      promotion: {
+        promoPrice: 150,
+        label: 'Primeira sessão',
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Preço promocional em verde claro sobre o gradiente do card.',
+      },
+    },
+  },
+}

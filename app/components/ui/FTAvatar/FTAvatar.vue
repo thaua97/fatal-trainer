@@ -1,54 +1,62 @@
 <script setup lang="ts">
-import { getInitialsFromName } from '#shared/utils/get-initials-from-name'
+import { getInitialsFromName } from "#shared/utils/get-initials-from-name";
 
-const props = withDefaults(defineProps<{
-  name: string
-  src?: string
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'hero' | 'fill'
-  monochrome?: boolean
-}>(), {
-  size: 'md',
-  monochrome: true,
-})
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    src?: string;
+    size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero" | "fill";
+    monochrome?: boolean;
+  }>(),
+  {
+    size: "md",
+    monochrome: true,
+  },
+);
 
-const imageError = ref(false)
+const imageError = ref(false);
 
-watch(() => props.src, () => {
-  imageError.value = false
-})
+watch(
+  () => props.src,
+  () => {
+    imageError.value = false;
+  },
+);
 
-const initials = computed(() => getInitialsFromName(props.name))
-const showImage = computed(() => Boolean(props.src) && !imageError.value)
+const initials = computed(() => getInitialsFromName(props.name));
+const showImage = computed(() => Boolean(props.src) && !imageError.value);
 
 function onImageError() {
-  imageError.value = true
+  imageError.value = true;
 }
 
 const sizeClass = computed(() => {
   switch (props.size) {
-    case 'xs':
-      return 'size-12 text-sm rounded-xl'
-    case 'sm':
-      return 'size-10 text-sm rounded-full'
-    case 'lg':
-      return 'size-[4.5rem] text-xl rounded-2xl'
-    case 'xl':
-      return 'size-72 rounded-3xl text-4xl xl:size-80'
-    case 'hero':
-      return 'h-80 w-full rounded-none text-5xl'
-    case 'fill':
-      return 'aspect-square w-full rounded-lg text-2xl'
+    case "xs":
+      return "size-12 text-sm rounded-xl";
+    case "sm":
+      return "size-10 text-sm rounded-full";
+    case "md":
+      return "size-[4.5rem] text-xl rounded-2xl";
+    case "lg":
+      return "size-[6.5rem] text-2xl rounded-2xl";
+    case "xl":
+      return "size-72 rounded-3xl text-4xl xl:size-80";
+    case "hero":
+      return "h-80 w-full rounded-none text-5xl";
+    case "fill":
+      return "aspect-square w-full rounded-lg text-2xl";
     default:
-      return 'size-16 text-base rounded-2xl'
+      return "size-16 text-base rounded-2xl";
   }
-})
+});
 
 const imageClass = computed(() => [
   sizeClass.value,
-  props.monochrome ? 'grayscale transition-all' : '',
-])
+  props.monochrome ? "grayscale transition-all" : "",
+]);
 
-const isBlock = computed(() => props.size === 'hero' || props.size === 'fill')
+const isBlock = computed(() => props.size === "hero" || props.size === "fill");
 </script>
 
 <template>
@@ -60,7 +68,7 @@ const isBlock = computed(() => props.size === 'hero' || props.size === 'fill')
     class="shrink-0 object-cover"
     :class="imageClass"
     @error="onImageError"
-  >
+  />
   <span
     v-else
     class="shrink-0 items-center justify-center font-semibold"

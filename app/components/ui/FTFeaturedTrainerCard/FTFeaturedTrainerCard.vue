@@ -12,6 +12,10 @@ const emit = defineEmits<{
   dotSelect: [index: number]
 }>()
 
+const trainerRef = toRef(props, 'trainer')
+const { servicePrice, promoPrice, hasPromotion } = useFTTrainerPrice(trainerRef)
+const { locale } = useI18n()
+
 const profilePath = computed(() => `/personal-trainers/${props.trainer.id}`)
 
 const specialtyLine = computed(
@@ -43,6 +47,22 @@ const statsSecondary = computed(() => {
     return 'Estrelas'
   }
   return null
+})
+
+const promoPriceLabel = computed(() => {
+  if (!hasPromotion.value || promoPrice.value == null) {
+    return null
+  }
+
+  return formatPrice(promoPrice.value, locale.value)
+})
+
+const originalPriceLabel = computed(() => {
+  if (!hasPromotion.value) {
+    return null
+  }
+
+  return formatPrice(servicePrice.value, locale.value)
 })
 </script>
 
@@ -111,9 +131,23 @@ const statsSecondary = computed(() => {
       </div>
 
       <div class="mt-4 flex items-end justify-between gap-4">
-        <p class="line-clamp-3 max-w-[70%] text-xl font-bold leading-snug">
-          {{ headline }}
-        </p>
+        <div class="min-w-0">
+          <p
+            v-if="promoPriceLabel"
+            class="mb-2 text-sm font-bold text-emerald-200"
+          >
+            {{ promoPriceLabel }}
+            <span
+              v-if="originalPriceLabel"
+              class="ml-2 font-medium text-emerald-100/60 line-through"
+            >
+              {{ originalPriceLabel }}
+            </span>
+          </p>
+          <p class="line-clamp-3 max-w-[70%] text-xl font-bold leading-snug">
+            {{ headline }}
+          </p>
+        </div>
         <NuxtLink
           :to="profilePath"
           :class="[$style.cardCta, 'shrink-0']"

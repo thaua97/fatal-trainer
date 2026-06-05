@@ -1,39 +1,26 @@
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
+import { mountFT } from '@tests/helpers/mount-ft'
 import FTFeaturedTrainerCard from './FTFeaturedTrainerCard.vue'
 import FTCarouselDots from '../FTCarouselDots/FTCarouselDots.vue'
-import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
+import { mockPromoTrainer, mockTrainer } from '@tests/helpers/mock-trainer'
 
-const mockTrainer: PersonalTrainer = {
-  id: 'trainer-001',
-  name: 'Ana Silva',
-  profession: 'Personal Trainer — Funcional',
-  description: 'Personal dedicado a resultados sustentáveis, com foco em técnica.',
-  photoUrl: 'https://example.com/photo.jpg',
-  servicePrice: 120,
-  rating: 4.8,
-  reviewCount: 127,
-  specialties: ['Funcional'],
-  reviews: [
-    { author: 'Maria', rating: 5, comment: 'Ótima!' },
-    { author: 'João', rating: 4, comment: 'Recomendo.' },
-  ],
+const linkStub = {
+  template: '<a :href="to"><slot /></a>',
+  props: ['to'],
 }
 
 describe('FTFeaturedTrainerCard', () => {
   it('renders trainer name and links to profile', () => {
-    const wrapper = mount(FTFeaturedTrainerCard, {
+    const trainer = mockTrainer({ id: 'trainer-001' })
+    const wrapper = mountFT(FTFeaturedTrainerCard, {
       props: {
-        trainer: mockTrainer,
+        trainer,
         activeIndex: 0,
         slideCount: 3,
       },
       global: {
         stubs: {
-          NuxtLink: {
-            template: '<a :href="to"><slot /></a>',
-            props: ['to'],
-          },
+          NuxtLink: linkStub,
           UIcon: true,
           FTCarouselDots: true,
         },
@@ -45,20 +32,37 @@ describe('FTFeaturedTrainerCard', () => {
       .toBe('/personal-trainers/trainer-001')
   })
 
-  it('emits dotSelect when a dot is clicked', async () => {
-    const wrapper = mount(FTFeaturedTrainerCard, {
+  it('renders promotional pricing when available', () => {
+    const wrapper = mountFT(FTFeaturedTrainerCard, {
       props: {
-        trainer: mockTrainer,
+        trainer: mockPromoTrainer({ id: 'trainer-001', servicePrice: 200 }),
+        activeIndex: 0,
+        slideCount: 3,
+      },
+      global: {
+        stubs: {
+          NuxtLink: linkStub,
+          UIcon: true,
+          FTCarouselDots: true,
+        },
+      },
+    })
+
+    expect(wrapper.text()).toMatch(/R\$/)
+    expect(wrapper.find('.line-through').exists()).toBe(true)
+  })
+
+  it('emits dotSelect when a dot is clicked', async () => {
+    const wrapper = mountFT(FTFeaturedTrainerCard, {
+      props: {
+        trainer: mockTrainer({ id: 'trainer-001' }),
         activeIndex: 0,
         slideCount: 3,
       },
       global: {
         components: { FTCarouselDots },
         stubs: {
-          NuxtLink: {
-            template: '<a :href="to"><slot /></a>',
-            props: ['to'],
-          },
+          NuxtLink: linkStub,
           UIcon: true,
         },
       },
