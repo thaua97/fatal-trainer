@@ -14,7 +14,10 @@ const filtersOpen = ref(false)
     <section aria-label="Personais em destaque">
       <FTFeaturedTrainersCarousel />
     </section>
-    <div class="relative flex items-center justify-center lg:justify-between">
+    <div
+      id="catalog"
+      class="relative flex items-center justify-center lg:justify-between"
+    >
       <div class="text-center lg:text-left">
         <h1 class="text-2xl font-bold tracking-tight text-slate-900 lg:text-3xl">
           {{ $t('catalog.exploreTitle') }}

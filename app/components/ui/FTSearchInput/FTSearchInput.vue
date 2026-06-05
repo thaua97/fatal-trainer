@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   debounceMs: 200,
   testId: 'trainer-search',
+  placeholder: undefined,
 })
 
 const { t } = useI18n()

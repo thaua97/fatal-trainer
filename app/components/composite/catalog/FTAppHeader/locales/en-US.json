@@ -1,0 +1,11 @@
+{
+  "header": {
+    "navLabel": "Main navigation",
+    "about": "About",
+    "trainers": "Trainers",
+    "report": "Report",
+    "register": "Sign up",
+    "login": "Log in",
+    "menu": "Open menu"
+  }
+}
