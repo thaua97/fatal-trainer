@@ -1,6 +1,7 @@
 {
   "profile": {
     "message": "Send message",
-    "favorite": "Favorite"
+    "favorite": "Favorite",
+    "promotionValidUntil": "Valid until {date}"
   }
 }

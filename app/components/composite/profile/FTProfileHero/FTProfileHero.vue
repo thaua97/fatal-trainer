@@ -7,6 +7,35 @@ const props = defineProps<{
 
 const trainerRef = toRef(props, 'trainer')
 const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
+const {
+  servicePrice,
+  promoPrice,
+  hasPromotion,
+  discountPercent,
+  promotionLabel,
+  promotionEndsAt,
+  priceView,
+} = useFTTrainerPrice(trainerRef)
+
+const { t, locale } = useI18n()
+
+const promotionValidity = computed(() => {
+  if (!promotionEndsAt.value) {
+    return null
+  }
+
+  const date = new Date(`${promotionEndsAt.value}T12:00:00`)
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+
+  return t('profile.promotionValidUntil', {
+    date: new Intl.DateTimeFormat(locale.value, {
+      day: '2-digit',
+      month: '2-digit',
+    }).format(date),
+  })
+})
 </script>
 
 <template>
@@ -20,7 +49,7 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
           :monochrome="false"
         />
         <FTIconButton
-          to="/"
+          to="/personal-trainers"
           class="absolute left-4 top-4"
           :ariaLabel="$t('profile.backToCatalog')"
         >
@@ -59,9 +88,16 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
             :review-count="trainer.reviewCount"
           />
         </div>
-        <h1 class="mt-1 text-2xl font-bold text-slate-900">
-          {{ trainer.name }}
-        </h1>
+        <div class="mt-1 flex flex-wrap items-center gap-2">
+          <h1 class="text-2xl font-bold text-slate-900">
+            {{ trainer.name }}
+          </h1>
+          <FTPromoBadge
+            v-if="hasPromotion"
+            :percent="discountPercent"
+            :label="promotionLabel"
+          />
+        </div>
         <p
           v-if="specialtyLine"
           class="mt-1 text-sm text-slate-500"
@@ -70,9 +106,21 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
         </p>
         <FTPriceLabel
           class="mt-3"
-          :price="trainer.servicePrice"
+          :price="servicePrice"
+          :promo-price="promoPrice"
+          :price-view="priceView"
+          show-discount
           size="lg"
         />
+        <p
+          v-if="promotionLabel || promotionValidity"
+          class="mt-2 text-sm"
+          :class="$style.promoNote"
+        >
+          <span v-if="promotionLabel">{{ promotionLabel }}</span>
+          <span v-if="promotionLabel && promotionValidity"> · </span>
+          <span v-if="promotionValidity">{{ promotionValidity }}</span>
+        </p>
       </div>
     </div>
 
@@ -87,7 +135,7 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
       <div class="flex-1 pt-2">
         <div class="mb-4 flex gap-2">
           <FTIconButton
-            to="/"
+            to="/personal-trainers"
             :ariaLabel="$t('profile.backToCatalog')"
           >
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
@@ -110,9 +158,16 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
             :review-count="trainer.reviewCount"
           />
         </div>
-        <h1 class="mt-1 text-3xl font-bold text-slate-900">
-          {{ trainer.name }}
-        </h1>
+        <div class="mt-1 flex flex-wrap items-center gap-2">
+          <h1 class="text-3xl font-bold text-slate-900">
+            {{ trainer.name }}
+          </h1>
+          <FTPromoBadge
+            v-if="hasPromotion"
+            :percent="discountPercent"
+            :label="promotionLabel"
+          />
+        </div>
         <p
           v-if="specialtyLine"
           class="mt-1 text-sm text-slate-500"
@@ -121,9 +176,21 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
         </p>
         <FTPriceLabel
           class="mt-4"
-          :price="trainer.servicePrice"
+          :price="servicePrice"
+          :promo-price="promoPrice"
+          :price-view="priceView"
+          show-discount
           size="lg"
         />
+        <p
+          v-if="promotionLabel || promotionValidity"
+          class="mt-2 text-sm"
+          :class="$style.promoNote"
+        >
+          <span v-if="promotionLabel">{{ promotionLabel }}</span>
+          <span v-if="promotionLabel && promotionValidity"> · </span>
+          <span v-if="promotionValidity">{{ promotionValidity }}</span>
+        </p>
       </div>
     </header>
   </div>
@@ -133,5 +200,9 @@ const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
 .sheetTop {
   background: #fff;
   border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.promoNote {
+  color: var(--ft-promo-strong);
 }
 </style>
