@@ -1,5 +1,6 @@
 import type { PersonalTrainer } from '../entities/personal-trainer'
 import type { ListQuery, SortBy } from '../value-objects/list-query'
+import { getDiscountPercent, getEffectivePrice } from './trainer-pricing'
 
 function compareValues(a: number | string, b: number | string, order: ListQuery['sortOrder']): number {
   if (a === b) return 0
@@ -10,13 +11,19 @@ function compareValues(a: number | string, b: number | string, order: ListQuery[
 function getSortValue(trainer: PersonalTrainer, sortBy: SortBy): number | string {
   switch (sortBy) {
     case 'price':
-      return trainer.servicePrice
+      return getEffectivePrice(trainer)
     case 'rating':
       return trainer.rating ?? 0
     case 'distance':
       return trainer.distanceKm ?? Number.MAX_SAFE_INTEGER
     case 'name':
       return trainer.name.toLowerCase()
+    case 'reviewCount':
+      return trainer.reviewCount ?? 0
+    case 'experienceYears':
+      return trainer.experienceYears ?? 0
+    case 'discount':
+      return getDiscountPercent(trainer) ?? -1
   }
 }
 

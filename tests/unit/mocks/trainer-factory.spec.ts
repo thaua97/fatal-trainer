@@ -48,4 +48,11 @@ describe('generateMockTrainers', () => {
     expect(featured.length).toBe(6)
     expect(featured.every((trainer) => (trainer.rating ?? 0) >= 3.5)).toBe(true)
   })
+
+  it('assigns promotions to roughly one third of trainers', () => {
+    const promoted = trainers.filter((trainer) => trainer.promotion != null)
+
+    expect(promoted.length).toBe(12)
+    expect(promoted.every((trainer) => (trainer.promotion?.promoPrice ?? 0) < trainer.servicePrice)).toBe(true)
+  })
 })

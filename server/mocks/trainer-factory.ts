@@ -1,4 +1,5 @@
 import type { PersonalTrainer, TrainerModality } from '#shared/domain/catalog/entities/personal-trainer'
+import { CATALOG_SPECIALTIES, PROMOTION_LABELS } from '#shared/domain/catalog/constants/catalog-options'
 import { getMockAvatarUrl, getMockGalleryUrls } from './mock-photos'
 
 const NAMES = [
@@ -26,19 +27,6 @@ const NAMES = [
   'Caio Mendonça',
   'Daniela Pires',
   'Eduardo Santana',
-] as const
-
-const SPECIALTIES = [
-  'Musculação',
-  'Funcional',
-  'HIIT',
-  'CrossFit',
-  'Emagrecimento',
-  'Yoga',
-  'Pilates',
-  'Corrida',
-  'Reabilitação',
-  'Treino para idosos',
 ] as const
 
 const CITIES = [
@@ -96,7 +84,7 @@ function pickName(index: number): string {
 }
 
 function pickSpecialty(index: number): string {
-  return SPECIALTIES[index % SPECIALTIES.length]!
+  return CATALOG_SPECIALTIES[index % CATALOG_SPECIALTIES.length]!
 }
 
 function pickModalities(index: number): TrainerModality[] {
@@ -118,11 +106,28 @@ function generateReviews(index: number): PersonalTrainer['reviews'] {
 
 const FEATURED_INDICES = new Set([0, 2, 4, 7, 11, 15])
 
+function buildPromotion(index: number, servicePrice: number): PersonalTrainer['promotion'] {
+  if (index % 3 !== 0) {
+    return undefined
+  }
+
+  const discountFactor = 0.65 + (index % 4) * 0.05
+  const promoPrice = Math.round(servicePrice * discountFactor)
+  const endsAt = new Date(Date.now() + (index + 14) * 86_400_000).toISOString().slice(0, 10)
+
+  return {
+    promoPrice,
+    label: PROMOTION_LABELS[index % PROMOTION_LABELS.length],
+    endsAt,
+  }
+}
+
 export function generateMockTrainers(count = 36): PersonalTrainer[] {
   return Array.from({ length: count }, (_, index) => {
     const specialty = pickSpecialty(index)
     const location = pickCity(index)
     const modalities = pickModalities(index)
+    const servicePrice = 80 + (index * 7) % 171
 
     return {
       id: padId(index),
@@ -130,13 +135,13 @@ export function generateMockTrainers(count = 36): PersonalTrainer[] {
       profession: `Personal Trainer — ${specialty}`,
       description: DESCRIPTIONS[index % DESCRIPTIONS.length]!,
       photoUrl: getMockAvatarUrl(index),
-      servicePrice: 80 + (index * 7) % 171,
+      servicePrice,
       rating: 3.5 + (index % 16) / 10,
       reviewCount: 5 + (index * 13) % 116,
       distanceKm: 1 + (index * 3) % 25,
       city: location.city,
       state: location.state,
-      specialties: [specialty, SPECIALTIES[(index + 1) % SPECIALTIES.length]!],
+      specialties: [specialty, CATALOG_SPECIALTIES[(index + 1) % CATALOG_SPECIALTIES.length]!],
       modalities,
       cref: `${String(100000 + index).slice(0, 6)}-G/${location.state}`,
       gallery: getMockGalleryUrls(index),
@@ -144,6 +149,7 @@ export function generateMockTrainers(count = 36): PersonalTrainer[] {
       experienceYears: 2 + (index % 15),
       reviews: generateReviews(index),
       featured: FEATURED_INDICES.has(index),
+      promotion: buildPromotion(index, servicePrice),
     }
   })
 }
