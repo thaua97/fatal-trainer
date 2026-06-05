@@ -1,0 +1,11 @@
+{
+  "landing": {
+    "trainers": {
+      "eyebrow": "Catalog",
+      "title": "Featured trainers",
+      "subtitle": "A selection of professionals rated by the community. See the full listing with advanced filters.",
+      "viewAll": "View all",
+      "empty": "No trainers available at the moment."
+    }
+  }
+}

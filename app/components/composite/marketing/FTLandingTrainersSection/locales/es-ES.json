@@ -1,0 +1,11 @@
+{
+  "landing": {
+    "trainers": {
+      "eyebrow": "Catálogo",
+      "title": "Entrenadores destacados",
+      "subtitle": "Una selección de profesionales valorados por la comunidad. Consulta el listado completo con filtros avanzados.",
+      "viewAll": "Ver todos",
+      "empty": "No hay entrenadores disponibles en este momento."
+    }
+  }
+}

@@ -3,7 +3,7 @@ const props = withDefaults(defineProps<{
   label?: string
   fallbackTo?: string
 }>(), {
-  fallbackTo: '/',
+  fallbackTo: '/personal-trainers',
 })
 
 const { t } = useI18n()

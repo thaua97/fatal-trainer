@@ -1,10 +1,25 @@
 {
   "seo": {
     "profileFallbackTitle": "Perfil — Fatal Trainer",
-    "profileFallbackDescription": "Perfil do personal trainer"
+    "profileFallbackDescription": "Perfil do personal trainer",
+    "catalogTitle": "Fatal Trainer — Explorar personais",
+    "catalogDescription": "Catálogo de personal trainers autônomos. Compare especialidades, preços e avaliações."
   },
   "profile": {
     "notFound": "Personal trainer não encontrado.",
-    "backToList": "Voltar à listagem"
+    "backToList": "Voltar à listagem",
+    "promotionValidUntil": "Válido até {date}"
+  },
+  "catalog": {
+    "featuredAriaLabel": "Personais em destaque",
+    "exploreTitle": "Explorar personais",
+    "country": "Brasil",
+    "applyFilters": "Aplicar filtros",
+    "filters": "Filtros",
+    "clearFilters": "Limpar filtros",
+    "onPromotionOnly": "Apenas em promoção",
+    "priceViewTitle": "Visualização de valor",
+    "priceViewSession": "Por sessão",
+    "priceViewMonthly": "Mensal"
   }
 }

@@ -48,7 +48,7 @@ export const Loading: Story = {
     components: { FTFeaturedTrainersCarousel },
     template: `
       <div
-        class="relative aspect-[4/5] max-h-[420px] w-full overflow-hidden rounded-3xl [&_.animate-pulse]:bg-white/25!"
+        class="relative aspect-4/5 max-h-[420px] w-full overflow-hidden rounded-3xl [&_.animate-pulse]:bg-white/25!"
         style="background: linear-gradient(135deg, rgb(var(--ft-primary-rgb) / 0.96) 0%, rgb(167 139 250 / 0.92) 42%, rgb(56 189 248 / 0.88) 100%)"
         data-testid="featured-trainers-loading"
       >

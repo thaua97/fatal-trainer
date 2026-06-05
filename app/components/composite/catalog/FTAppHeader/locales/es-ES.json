@@ -1,0 +1,11 @@
+{
+  "header": {
+    "navLabel": "Navegación principal",
+    "about": "Sobre",
+    "trainers": "Entrenadores",
+    "report": "Denuncia",
+    "register": "Registro",
+    "login": "Iniciar sesión",
+    "menu": "Abrir menú"
+  }
+}

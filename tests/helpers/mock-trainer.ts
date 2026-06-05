@@ -17,3 +17,17 @@ export function mockTrainer(overrides: Partial<PersonalTrainer> = {}): PersonalT
     ...overrides,
   }
 }
+
+export function mockPromoTrainer(overrides: Partial<PersonalTrainer> = {}): PersonalTrainer {
+  const servicePrice = overrides.servicePrice ?? 200
+
+  return mockTrainer({
+    servicePrice,
+    promotion: {
+      promoPrice: Math.round(servicePrice * 0.75),
+      label: 'Primeira sessão',
+      endsAt: '2026-06-30',
+    },
+    ...overrides,
+  })
+}

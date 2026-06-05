@@ -1,5 +1,6 @@
 {
   "profile": {
-    "perSession": "por sessão"
+    "perSession": "por sessão",
+    "perMonth": "por mês"
   }
 }

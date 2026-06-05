@@ -1,13 +1,70 @@
 :root {
+  /* Fatal Trainer — design tokens */
   --ft-primary: #7c3aed;
   --ft-primary-hover: #6d28d9;
-  --ft-primary-subtle: #cbc0ff;
+  --ft-primary-subtle: #ede9fe;
   --ft-primary-rgb: 124 58 237;
   --ft-primary-foreground: #fff;
   --ft-surface-search: rgb(241 245 249);
+
+  /* Landing page */
+  --ft-landing-bg: #ffffff;
+  --ft-landing-surface: #f5f3ff;
+  --ft-landing-surface-muted: #ede9fe;
+  --ft-landing-gradient-from: #5b21b6;
+  --ft-landing-gradient-to: #00aeff4d;
+  --ft-landing-accent-lime: #ffffff;
+  --ft-landing-accent-orange: #fb923c;
+
+  /* Promoções */
+  --ft-promo: #16a34a;
+  --ft-promo-strong: #15803d;
+  --ft-promo-subtle: #dcfce7;
+  --ft-promo-rgb: 22 163 74;
+
+  /* Nuxt UI — escala primary alinhada ao violet-600 do projeto */
+  --ui-color-primary-50: #f5f3ff;
+  --ui-color-primary-100: #ede9fe;
+  --ui-color-primary-200: #ddd6fe;
+  --ui-color-primary-300: #c4b5fd;
+  --ui-color-primary-400: #a78bfa;
+  --ui-color-primary-500: #8b5cf6;
+  --ui-color-primary-600: #7c3aed;
+  --ui-color-primary-700: #6d28d9;
+  --ui-color-primary-800: #5b21b6;
+  --ui-color-primary-900: #4c1d95;
+  --ui-color-primary-950: #2e1065;
+}
+
+:root,
+.light {
+  --ui-primary: var(--ft-primary);
+
+  --ui-bg: #ffffff;
+  --ui-bg-muted: #f8fafc;
+  --ui-bg-elevated: #f1f5f9;
+  --ui-bg-accented: #e2e8f0;
+  --ui-bg-inverted: #0f172a;
+
+  --ui-text-dimmed: #94a3b8;
+  --ui-text-muted: #64748b;
+  --ui-text-toned: #475569;
+  --ui-text: #334155;
+  --ui-text-highlighted: #0f172a;
+  --ui-text-inverted: var(--ft-primary-foreground);
+
+  --ui-border: #e2e8f0;
+  --ui-border-muted: #e2e8f0;
+  --ui-border-accented: #cbd5e1;
+  --ui-border-inverted: #0f172a;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   background-color: #fff;
+  color: var(--ui-text-highlighted);
+}
+
+.font-display {
+  font-family: 'Syne', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 }

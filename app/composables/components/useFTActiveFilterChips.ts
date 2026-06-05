@@ -37,6 +37,9 @@ export function useFTActiveFilterChips() {
     if (f.city) {
       result.push({ key: 'city', label: f.city })
     }
+    if (f.onPromotion === true) {
+      result.push({ key: 'onPromotion', label: t('catalog.onPromotionOnly') })
+    }
 
     return result
   })
@@ -72,6 +75,10 @@ export function useFTActiveFilterChips() {
     }
     if (chip.key === 'city') {
       updateFilters({ city: undefined, page: 1 })
+      return
+    }
+    if (chip.key === 'onPromotion') {
+      updateFilters({ onPromotion: undefined, page: 1 })
     }
   }
 

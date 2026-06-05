@@ -1,8 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { fileURLToPath } from 'node:url'
 import { buildI18nLocales } from './i18n/locale-files'
 
+const rootDir = fileURLToPath(new URL('.', import.meta.url))
+
 export default defineNuxtConfig({
+  alias: {
+    '@': `${rootDir}/app`,
+    '@tests': `${rootDir}/tests`,
+  },
   modules: ['@nuxt/ui', '@nuxt/eslint', '@nuxt/test-utils/module', '@nuxtjs/i18n'],
+
+  ui: {
+    colorMode: false,
+  },
 
   i18n: {
     langDir: '..',
@@ -20,6 +31,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: {
+        class: 'light',
+      },
       link: [
         {
           rel: 'preconnect',
@@ -36,7 +50,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap',
         },
       ],
     },

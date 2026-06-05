@@ -1,0 +1,11 @@
+{
+  "landing": {
+    "trainers": {
+      "eyebrow": "Catálogo",
+      "title": "Personais em destaque",
+      "subtitle": "Uma seleção de profissionais avaliados pela comunidade. Veja a listagem completa com filtros avançados.",
+      "viewAll": "Ver todos",
+      "empty": "Nenhum personal disponível no momento."
+    }
+  }
+}

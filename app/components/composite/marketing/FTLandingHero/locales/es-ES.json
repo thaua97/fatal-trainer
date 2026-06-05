@@ -1,0 +1,12 @@
+{
+  "landing": {
+    "hero": {
+      "eyebrow": "Fatal Trainer",
+      "title": "Tu entrenador ideal, cerca de ti",
+      "subtitle": "Compara especialidades, precios y valoraciones de entrenadores personales autónomos. Sesiones presenciales, online o híbridas — como mejor te funcione.",
+      "ctaPrimary": "Explorar entrenadores",
+      "ctaSecondary": "Registrarse",
+      "imageAlt": "Entrenador personal orientando a un alumno en un entrenamiento funcional"
+    }
+  }
+}

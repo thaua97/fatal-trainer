@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mountFT } from '../../../../tests/helpers/mount-ft'
+import { mountFT } from '@tests/helpers/mount-ft'
 import FTLoadMoreSentinel from './FTLoadMoreSentinel.vue'
 
 

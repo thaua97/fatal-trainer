@@ -19,10 +19,10 @@ const label = computed(() => {
 </script>
 
 <template>
-  <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-900">
+  <span class="inline-flex items-center gap-1 text-sm font-medium text-slate-900 lg:text-base">
     <UIcon
       name="i-lucide-star"
-      class="size-3.5 text-amber-400"
+      class="size-3.5 text-amber-400 lg:size-4"
     />
     {{ label }}
   </span>

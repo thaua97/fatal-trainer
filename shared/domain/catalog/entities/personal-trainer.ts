@@ -1,5 +1,11 @@
 export type TrainerModality = 'presencial' | 'online' | 'hibrido'
 
+export interface TrainerPromotion {
+  promoPrice: number
+  label?: string
+  endsAt?: string
+}
+
 export interface TrainerReview {
   author: string
   rating: number
@@ -26,4 +32,5 @@ export interface PersonalTrainer {
   experienceYears?: number
   reviews?: TrainerReview[]
   featured?: boolean
+  promotion?: TrainerPromotion
 }

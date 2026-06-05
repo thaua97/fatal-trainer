@@ -34,7 +34,12 @@ function loadTrainers(): PersonalTrainer[] {
 
 export function findAllTrainers(query: ListQuery): PaginatedTrainersResponse {
   const trainers = loadTrainers()
-  const filtered = filterTrainers(trainers, query.search)
+  const filtered = filterTrainers(trainers, {
+    search: query.search,
+    specialties: query.specialties,
+    modalities: query.modalities,
+    onPromotion: query.onPromotion,
+  })
   const sorted = sortTrainers(filtered, query.sortBy, query.sortOrder)
 
   const start = (query.page - 1) * query.pageSize
