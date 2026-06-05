@@ -4,7 +4,11 @@
     "priceAsc": "Lowest price",
     "priceDesc": "Highest price",
     "rating": "Best rating",
+    "reviewCount": "Most reviews",
     "distance": "Nearest",
-    "nameAsc": "Name A–Z"
+    "nameAsc": "Name A–Z",
+    "nameDesc": "Name Z–A",
+    "discount": "Biggest discount",
+    "experience": "Most experience"
   }
 }

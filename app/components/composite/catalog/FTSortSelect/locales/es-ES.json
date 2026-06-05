@@ -4,7 +4,11 @@
     "priceAsc": "Precio más bajo",
     "priceDesc": "Precio más alto",
     "rating": "Mejor valoración",
+    "reviewCount": "Más reseñas",
     "distance": "Más cercano",
-    "nameAsc": "Nombre A–Z"
+    "nameAsc": "Nombre A–Z",
+    "nameDesc": "Nombre Z–A",
+    "discount": "Mayor descuento",
+    "experience": "Más experiencia"
   }
 }

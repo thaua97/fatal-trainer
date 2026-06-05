@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { formatTrainerMeta } from '#shared/domain/profile/services/format-trainer-meta'
 
-definePageMeta({
-  layout: 'profile',
-})
-
 const { t } = useI18n()
 const route = useRoute()
 const id = computed(() => route.params.id as string)
@@ -23,7 +19,7 @@ useSeoMeta({
 
 <template>
   <div
-    class="pb-28 lg:pb-8"
+    class="-mx-4 pb-28 sm:-mx-6 lg:mx-0 lg:pb-8"
     data-testid="trainer-profile-page"
   >
     <div v-if="pending" class="space-y-6">
@@ -43,7 +39,7 @@ useSeoMeta({
       test-id="trainer-not-found"
     >
       <UButton
-        to="/"
+        to="/personal-trainers"
         color="primary"
         class="mt-6 rounded-full px-8"
         data-testid="back-to-list"
@@ -54,7 +50,7 @@ useSeoMeta({
 
     <article v-else-if="trainer">
       <FTProfileHeader :trainer="trainer" />
-      <FTProfileCta />
+      <FTProfileCta :trainer="trainer" />
     </article>
   </div>
 </template>

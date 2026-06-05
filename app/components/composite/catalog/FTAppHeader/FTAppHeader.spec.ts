@@ -25,7 +25,7 @@ describe('FTAppHeader', () => {
   it('renders desktop navigation links', async () => {
     const wrapper = await mountHeader()
     expect(wrapper.find('[data-testid="app-header-nav-about"]').attributes('href')).toBe('/sobre')
-    expect(wrapper.find('[data-testid="app-header-nav-trainers"]').attributes('href')).toBe('/')
+    expect(wrapper.find('[data-testid="app-header-nav-trainers"]').attributes('href')).toBe('/personal-trainers')
     expect(wrapper.find('[data-testid="app-header-nav-report"]').attributes('href')).toBe('/denuncia')
   })
 

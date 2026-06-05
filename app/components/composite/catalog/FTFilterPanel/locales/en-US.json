@@ -1,6 +1,13 @@
 {
   "catalog": {
     "filters": "Filters",
-    "sortBy": "Sort by"
+    "sortBy": "Sort by",
+    "specialties": "Specialties",
+    "modality": "Modality",
+    "onPromotionOnly": "On promotion only",
+    "priceViewTitle": "Price view",
+    "priceViewSession": "Per session",
+    "priceViewMonthly": "Monthly",
+    "clearFilters": "Clear filters"
   }
 }

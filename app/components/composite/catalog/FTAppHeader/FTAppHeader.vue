@@ -16,7 +16,7 @@ function localeMenuLabel(code: FTLocaleCode) {
 const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
   [
     { label: t('header.about'), icon: 'i-lucide-info', to: '/sobre' },
-    { label: t('header.trainers'), icon: 'i-lucide-users', to: '/' },
+    { label: t('header.trainers'), icon: 'i-lucide-users', to: '/personal-trainers' },
     { label: t('header.report'), icon: 'i-lucide-flag', to: '/denuncia' },
   ],
   [
@@ -40,11 +40,11 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
       <div class="flex h-14 w-full items-center justify-between sm:h-16 md:hidden">
         <NuxtLink
           :to="homeTo"
-          class="shrink-0 text-lg font-bold"
+          class="group shrink-0"
           data-testid="app-header-logo"
           @click="onHomeClick"
         >
-          <span class="text-violet-600">Fatal</span><span class="text-slate-900">Trainer</span>
+          <FTLogo />
         </NuxtLink>
 
         <div class="flex flex-1 items-center justify-end">
@@ -71,11 +71,11 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
         <div class="flex justify-end">
           <NuxtLink
             :to="homeTo"
-            class="text-lg font-bold"
+            class="group"
             data-testid="app-header-logo-desktop"
             @click="onHomeClick"
           >
-            <span class="text-violet-600">Fatal</span><span class="text-slate-900">Trainer</span>
+            <FTLogo />
           </NuxtLink>
         </div>
 
@@ -92,9 +92,9 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
             {{ t('header.about') }}
           </NuxtLink>
           <NuxtLink
-            to="/"
+            to="/personal-trainers"
             class="text-sm font-medium transition-colors"
-            :class="isNavActive('/') ? 'text-violet-600' : 'text-slate-600 hover:text-violet-600'"
+            :class="isNavActive('/personal-trainers') ? 'text-violet-600' : 'text-slate-600 hover:text-violet-600'"
             data-testid="app-header-nav-trainers"
           >
             {{ t('header.trainers') }}

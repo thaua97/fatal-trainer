@@ -24,6 +24,8 @@ export function useFTTrainerList() {
       minRating: undefined,
       city: undefined,
       maxDistanceKm: undefined,
+      onPromotion: undefined,
+      priceView: undefined,
       sortBy: DEFAULT_LIST_QUERY.sortBy,
       sortOrder: DEFAULT_LIST_QUERY.sortOrder,
       page: 1,

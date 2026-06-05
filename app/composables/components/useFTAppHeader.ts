@@ -6,7 +6,7 @@ export interface FTAppHeaderLink {
 
 const NAV_LINKS: FTAppHeaderLink[] = [
   { key: 'about', to: '/sobre', icon: 'i-lucide-info' },
-  { key: 'trainers', to: '/', icon: 'i-lucide-users' },
+  { key: 'trainers', to: '/personal-trainers', icon: 'i-lucide-users' },
   { key: 'report', to: '/denuncia', icon: 'i-lucide-flag' },
 ]
 
@@ -22,6 +22,7 @@ export function useFTAppHeader() {
 
   function isNavActive(to: string) {
     if (to === '/') return route.path === '/'
+    if (to === '/personal-trainers') return route.path === '/personal-trainers' || route.path.startsWith('/personal-trainers/')
     return route.path === to
   }
 
@@ -29,7 +30,7 @@ export function useFTAppHeader() {
     if (route.path !== '/') return
 
     event.preventDefault()
-    navigateTo({ path: '/', query: {} })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return {

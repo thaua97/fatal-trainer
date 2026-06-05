@@ -9,8 +9,12 @@ export function useFTSortSelect() {
     { label: t('sort.priceAsc'), value: 'price' as ListQuery['sortBy'], order: 'asc' as ListQuery['sortOrder'] },
     { label: t('sort.priceDesc'), value: 'price' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
     { label: t('sort.rating'), value: 'rating' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
+    { label: t('sort.reviewCount'), value: 'reviewCount' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
     { label: t('sort.distance'), value: 'distance' as ListQuery['sortBy'], order: 'asc' as ListQuery['sortOrder'] },
     { label: t('sort.nameAsc'), value: 'name' as ListQuery['sortBy'], order: 'asc' as ListQuery['sortOrder'] },
+    { label: t('sort.nameDesc'), value: 'name' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
+    { label: t('sort.discount'), value: 'discount' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
+    { label: t('sort.experience'), value: 'experienceYears' as ListQuery['sortBy'], order: 'desc' as ListQuery['sortOrder'] },
   ])
 
   const sortKey = computed({
