@@ -1,0 +1,12 @@
+{
+  "landing": {
+    "hero": {
+      "eyebrow": "Fatal Trainer",
+      "title": "Your ideal trainer, near you",
+      "subtitle": "Compare specialties, prices, and reviews of independent personal trainers. In-person, online, or hybrid sessions — whatever works for you.",
+      "ctaPrimary": "Explore trainers",
+      "ctaSecondary": "Sign up",
+      "imageAlt": "Personal trainer coaching a client during a functional workout"
+    }
+  }
+}
