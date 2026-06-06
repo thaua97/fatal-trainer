@@ -4,7 +4,7 @@ import type { FTLocaleCode } from '#shared/types/locale'
 
 const { t } = useI18n()
 const { homeTo, isNavActive, onHomeClick } = useFTAppHeader()
-
+const { isAuthenticated } = useAuth()
 const { localeItems, currentLocale, switchLocale } = useFTLocaleSwitcher()
 
 function localeMenuLabel(code: FTLocaleCode) {
@@ -13,22 +13,32 @@ function localeMenuLabel(code: FTLocaleCode) {
   return t('locale.en-US')
 }
 
-const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
-  [
+const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
+  const navSection: DropdownMenuItem[] = [
     { label: t('header.about'), icon: 'i-lucide-info', to: '/sobre' },
     { label: t('header.trainers'), icon: 'i-lucide-users', to: '/personal-trainers' },
     { label: t('header.report'), icon: 'i-lucide-flag', to: '/denuncia' },
-  ],
-  [
+  ]
+
+  if (isAuthenticated.value) {
+    return [navSection]
+  }
+
+  const authSection: DropdownMenuItem[] = [
     { label: t('header.register'), icon: 'i-lucide-user-plus', to: '/registro' },
     { label: t('header.login'), icon: 'i-lucide-log-in', to: '/login' },
-  ],
-  localeItems.value.map(item => ({
-    label: localeMenuLabel(item.code as FTLocaleCode),
-    icon: item.code === currentLocale.value ? 'i-lucide-check' : undefined,
-    onSelect: () => switchLocale(item.code as FTLocaleCode),
-  })),
-])
+  ]
+
+  return [
+    navSection,
+    authSection,
+    localeItems.value.map(item => ({
+      label: localeMenuLabel(item.code as FTLocaleCode),
+      icon: item.code === currentLocale.value ? 'i-lucide-check' : undefined,
+      onSelect: () => switchLocale(item.code as FTLocaleCode),
+    })),
+  ]
+})
 </script>
 
 <template>
@@ -47,10 +57,12 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
           <FTLogo />
         </NuxtLink>
 
-        <div class="flex flex-1 items-center justify-end">
+        <div class="flex items-center gap-2">
+          <FTAppHeaderUserMenu v-if="isAuthenticated" />
+
           <UDropdownMenu
             :items="mobileMenuItems"
-            :content="{ align: 'center', side: 'bottom', sideOffset: 8 }"
+            :content="{ align: 'end', side: 'bottom', sideOffset: 8 }"
             :ui="{ content: 'min-w-52' }"
           >
             <UButton
@@ -67,7 +79,7 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
       </div>
 
       <!-- Desktop -->
-      <div class="relative hidden w-full max-w-7xl mx-auto h-14 sm:h-16 md:flex md:justify-between md:items-center md:px-8">
+      <div class="relative mx-auto hidden h-14 w-full max-w-7xl items-center justify-between px-8 sm:h-16 md:flex">
         <div class="flex justify-end">
           <NuxtLink
             :to="homeTo"
@@ -109,28 +121,31 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => [
           </NuxtLink>
         </nav>
 
-        <div class="flex items-center gap-1">
-          <UButton
-            to="/registro"
-            variant="ghost"
-            color="neutral"
-            size="sm"
-            class="rounded-full text-slate-600"
-            data-testid="app-header-auth-register"
-          >
-            {{ t('header.register') }}
-          </UButton>
-          <UButton
-            to="/login"
-            variant="ghost"
-            color="neutral"
-            size="sm"
-            class="rounded-full text-slate-600"
-            data-testid="app-header-auth-login"
-          >
-            {{ t('header.login') }}
-          </UButton>
-          <FTLocaleSwitcher />
+        <div class="flex items-center gap-2">
+          <FTAppHeaderUserMenu v-if="isAuthenticated" />
+          <template v-else>
+            <UButton
+              to="/registro"
+              variant="ghost"
+              color="neutral"
+              size="sm"
+              class="rounded-full text-slate-600"
+              data-testid="app-header-auth-register"
+            >
+              {{ t('header.register') }}
+            </UButton>
+            <UButton
+              to="/login"
+              variant="ghost"
+              color="neutral"
+              size="sm"
+              class="rounded-full text-slate-600"
+              data-testid="app-header-auth-login"
+            >
+              {{ t('header.login') }}
+            </UButton>
+            <FTLocaleSwitcher />
+          </template>
         </div>
       </div>
     </div>

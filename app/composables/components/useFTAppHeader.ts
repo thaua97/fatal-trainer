@@ -23,6 +23,7 @@ export function useFTAppHeader() {
   function isNavActive(to: string) {
     if (to === '/') return route.path === '/'
     if (to === '/personal-trainers') return route.path === '/personal-trainers' || route.path.startsWith('/personal-trainers/')
+    if (to === '/painel/perfil') return route.path.startsWith('/painel/')
     return route.path === to
   }
 

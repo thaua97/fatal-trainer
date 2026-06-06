@@ -1,0 +1,85 @@
+{
+  "auth": {
+    "brand": {
+      "eyebrow": "Fatal Trainer",
+      "loginTitle": "Encuentra el personal ideal para ti",
+      "loginSubtitle": "Accede a tu cuenta y continúa tu camino de entrenamiento con profesionales verificados.",
+      "registerTitle": "Comienza tu camino fitness hoy",
+      "registerSubtitle": "Regístrate como alumno o personal trainer y forma parte de nuestra comunidad.",
+      "imageAlt": "Atleta en movimiento"
+    },
+    "roles": {
+      "label": "Tipo de cuenta",
+      "student": "Alumno",
+      "personalTrainer": "Personal"
+    },
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en tu cuenta para continuar",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "forgotPassword": "Olvidé mi contraseña",
+      "forgotPasswordToast": "Recuperación de contraseña próximamente.",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión...",
+      "noAccount": "¿No tienes una cuenta?",
+      "createAccount": "Regístrate",
+      "demoHint": "Cuentas demo: aluno{'@'}fataltrainer.com / personal{'@'}fataltrainer.com — contraseña: 123456"
+    },
+    "register": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Elige cómo deseas registrarte",
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "terms": "He leído y acepto los términos de uso",
+      "submit": "Crear cuenta",
+      "submitting": "Creando cuenta...",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar sesión"
+    },
+    "social": {
+      "divider": "o continúa con",
+      "comingSoon": "Pronto"
+    },
+    "placeholders": {
+      "email": "tu{'@'}email.com",
+      "password": "Tu contraseña",
+      "name": "Tu nombre completo"
+    },
+    "errors": {
+      "submitFailed": "No se pudo completar la operación. Inténtalo de nuevo.",
+      "email": {
+        "required": "Ingresa tu correo electrónico.",
+        "invalid": "Ingresa un correo válido.",
+        "invalidCredentials": "Correo o contraseña incorrectos.",
+        "alreadyRegistered": "Este correo ya está registrado."
+      },
+      "password": {
+        "required": "Ingresa tu contraseña.",
+        "tooShort": "La contraseña debe tener al menos 6 caracteres."
+      },
+      "confirmPassword": {
+        "required": "Confirma tu contraseña.",
+        "mismatch": "Las contraseñas no coinciden."
+      },
+      "name": {
+        "required": "Ingresa tu nombre.",
+        "tooShort": "El nombre debe tener al menos 2 caracteres."
+      },
+      "role": {
+        "required": "Selecciona el tipo de cuenta."
+      },
+      "termsAccepted": {
+        "required": "Debes aceptar los términos de uso."
+      }
+    },
+    "header": {
+      "welcome": "¡Bienvenido(a), {name}!",
+      "roleStudent": "Alumno",
+      "rolePersonal": "Personal",
+      "logout": "Salir"
+    }
+  }
+}

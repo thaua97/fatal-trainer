@@ -1,0 +1,85 @@
+{
+  "auth": {
+    "brand": {
+      "eyebrow": "Fatal Trainer",
+      "loginTitle": "Encontre o personal ideal para você",
+      "loginSubtitle": "Acesse sua conta e continue sua jornada de treinos com profissionais verificados.",
+      "registerTitle": "Comece sua jornada fitness hoje",
+      "registerSubtitle": "Cadastre-se como aluno ou personal trainer e faça parte da nossa comunidade.",
+      "imageAlt": "Atleta em movimento"
+    },
+    "roles": {
+      "label": "Tipo de conta",
+      "student": "Aluno",
+      "personalTrainer": "Personal"
+    },
+    "login": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Entre na sua conta para continuar",
+      "email": "E-mail",
+      "password": "Senha",
+      "forgotPassword": "Esqueci minha senha",
+      "forgotPasswordToast": "Recuperação de senha em breve.",
+      "submit": "Entrar",
+      "submitting": "Entrando...",
+      "noAccount": "Não tem uma conta?",
+      "createAccount": "Cadastre-se",
+      "demoHint": "Contas demo: aluno{'@'}fataltrainer.com / personal{'@'}fataltrainer.com — senha: 123456"
+    },
+    "register": {
+      "title": "Crie sua conta",
+      "subtitle": "Escolha como deseja se cadastrar",
+      "name": "Nome completo",
+      "email": "E-mail",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha",
+      "terms": "Li e aceito os termos de uso",
+      "submit": "Criar conta",
+      "submitting": "Criando conta...",
+      "hasAccount": "Já tem uma conta?",
+      "signIn": "Entrar"
+    },
+    "social": {
+      "divider": "ou continue com",
+      "comingSoon": "Em breve"
+    },
+    "placeholders": {
+      "email": "seu{'@'}email.com",
+      "password": "Sua senha",
+      "name": "Seu nome completo"
+    },
+    "errors": {
+      "submitFailed": "Não foi possível completar a operação. Tente novamente.",
+      "email": {
+        "required": "Informe seu e-mail.",
+        "invalid": "Informe um e-mail válido.",
+        "invalidCredentials": "E-mail ou senha incorretos.",
+        "alreadyRegistered": "Este e-mail já está cadastrado."
+      },
+      "password": {
+        "required": "Informe sua senha.",
+        "tooShort": "A senha deve ter pelo menos 6 caracteres."
+      },
+      "confirmPassword": {
+        "required": "Confirme sua senha.",
+        "mismatch": "As senhas não coincidem."
+      },
+      "name": {
+        "required": "Informe seu nome.",
+        "tooShort": "O nome deve ter pelo menos 2 caracteres."
+      },
+      "role": {
+        "required": "Selecione o tipo de conta."
+      },
+      "termsAccepted": {
+        "required": "Você precisa aceitar os termos de uso."
+      }
+    },
+    "header": {
+      "welcome": "Bem-vindo(a), {name}!",
+      "roleStudent": "Aluno",
+      "rolePersonal": "Personal",
+      "logout": "Sair"
+    }
+  }
+}

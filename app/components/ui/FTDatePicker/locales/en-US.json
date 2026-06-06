@@ -1,0 +1,6 @@
+{
+  "datePicker": {
+    "placeholder": "Select date",
+    "ariaLabel": "Select date"
+  }
+}

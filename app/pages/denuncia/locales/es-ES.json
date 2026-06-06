@@ -1,8 +1,10 @@
 {
   "seo": {
-    "title": "Denuncia — Fatal Trainer",
-    "description": "Canal de denuncias de Fatal Trainer."
+    "title": "Denuncia y Soporte — Fatal Trainer",
+    "description": "Canal de denuncias y soporte de Fatal Trainer. Reporte abusos, ofensas y otros problemas."
   },
-  "title": "Denuncia",
-  "placeholder": "Esta página está en construcción."
+  "eyebrow": "Canal seguro",
+  "title": "Denuncia y Soporte",
+  "subtitle": "Use este formulario para reportar abusos, ofensas, precios incorrectos o cualquier conducta inadecuada de un profesional.",
+  "formHeading": "Formulario de denuncia"
 }
