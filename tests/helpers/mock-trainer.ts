@@ -24,9 +24,13 @@ export function mockPromoTrainer(overrides: Partial<PersonalTrainer> = {}): Pers
   return mockTrainer({
     servicePrice,
     promotion: {
+      discountPercent: 25,
       promoPrice: Math.round(servicePrice * 0.75),
       label: 'Primeira sessão',
+      startsAt: '2026-01-01',
       endsAt: '2026-06-30',
+      maxRedemptions: 20,
+      redemptionCount: 3,
     },
     ...overrides,
   })

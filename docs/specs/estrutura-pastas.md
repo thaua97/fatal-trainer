@@ -36,6 +36,7 @@ Derivados dos módulos funcionais (RF §2):
 |----------|-----------|--------------|------------------|
 | **Catalog** | M1 | UC-01 a UC-05 | Listagem, busca, filtros, ordenação, paginação |
 | **Profile** | M2 | UC-06, UC-07 | Visualização de perfil, navegação de retorno |
+| **Report** | — | — | Denúncia/suporte: formulário, validação e envio de ocorrências |
 | **Shared Kernel** | M3 | (transversal) | Entidades, tipos, utilitários, contratos de API |
 
 ---

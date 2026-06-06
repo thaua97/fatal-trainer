@@ -113,12 +113,18 @@ function buildPromotion(index: number, servicePrice: number): PersonalTrainer['p
 
   const discountFactor = 0.65 + (index % 4) * 0.05
   const promoPrice = Math.round(servicePrice * discountFactor)
+  const discountPercent = Math.round((1 - discountFactor) * 100)
+  const startsAt = new Date(Date.now() - 3 * 86_400_000).toISOString().slice(0, 10)
   const endsAt = new Date(Date.now() + (index + 14) * 86_400_000).toISOString().slice(0, 10)
 
   return {
+    discountPercent,
     promoPrice,
     label: PROMOTION_LABELS[index % PROMOTION_LABELS.length],
+    startsAt,
     endsAt,
+    maxRedemptions: 10 + (index % 5) * 5,
+    redemptionCount: index % 4,
   }
 }
 

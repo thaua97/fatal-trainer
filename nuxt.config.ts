@@ -24,6 +24,10 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieKey: 'ft_locale',
       fallbackLocale: 'pt-BR',
+      redirectOn: 'root',
+    },
+    experimental: {
+      localeDetector: './locale-detector.ts',
     },
   },
 
@@ -71,4 +75,15 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-06-04',
   devtools: { enabled: true },
+
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@internationalized/date',
+        '@vueuse/core',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+      ],
+    },
+  },
 })
