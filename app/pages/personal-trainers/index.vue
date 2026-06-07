@@ -17,33 +17,10 @@ const { count: activeFilterCount } = useFTActiveFilterCount();
       <FTFeaturedTrainersCarousel />
     </section>
 
-    <header
-      id="catalog"
-      class="relative overflow-hidden rounded-3xl border border-violet-100/60 bg-gradient-to-br from-[var(--ft-landing-surface)]/70 via-white to-white px-6 py-7 lg:px-10 lg:py-9"
-    >
-      <div
-        class="pointer-events-none absolute -right-8 -top-8 size-40 rounded-full bg-violet-200/20 blur-3xl"
-        aria-hidden="true"
-      />
-      <div class="relative text-center lg:text-left">
-        <p
-          class="text-xs font-semibold uppercase tracking-[0.2em] text-violet-600/80 lg:text-sm"
-        >
-          {{ $t("catalog.country") }}
-        </p>
-        <h1
-          class="font-display mt-2 text-3xl font-extrabold tracking-tight text-slate-900 lg:text-4xl"
-        >
-          {{ $t("catalog.exploreTitle") }}
-        </h1>
-
-        <div class="mx-auto mt-5 max-w-md lg:mx-0">
-          <FTCitySelector test-id="catalog-city-filter" />
-        </div>
-      </div>
-    </header>
+    <FTCitySelectorModal />
 
     <div
+      id="catalog"
       class="grid gap-6 lg:grid-cols-[minmax(260px,300px)_minmax(0,1fr)] lg:gap-8"
     >
       <FTFilterPanel mode="sidebar" show-clear />

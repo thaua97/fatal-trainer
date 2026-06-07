@@ -1,6 +1,10 @@
 import { DEFAULT_LIST_QUERY } from '#shared/domain/catalog/value-objects/list-query'
+import { useCatalogCityGate } from '~/composables/catalog/useCatalogCityGate'
+import { usePersonalTrainers } from '~/composables/catalog/usePersonalTrainers'
+import { useTrainerFilters } from '~/composables/catalog/useTrainerFilters'
 
 export function useFTTrainerList() {
+  const { fetchEnabled, isAwaitingCity } = useCatalogCityGate()
   const { filters, updateFilters } = useTrainerFilters()
   const {
     trainers,
@@ -12,13 +16,17 @@ export function useFTTrainerList() {
     hasMore,
     isLoadingMore,
     loadMore,
-  } = usePersonalTrainers()
+  } = usePersonalTrainers({}, { enabled: fetchEnabled })
 
   watch(filters, (value) => {
     Object.assign(query.value, value)
   }, { deep: true, immediate: true })
 
   const isLoading = computed(() => {
+    if (isAwaitingCity.value) {
+      return false
+    }
+
     if (trainers.value.length > 0) {
       return false
     }
@@ -53,6 +61,7 @@ export function useFTTrainerList() {
     isLoading,
     isLoadingMore,
     isEmpty,
+    isAwaitingCity,
     hasMore,
     loadMore,
     clearFilters,
