@@ -26,6 +26,10 @@ const mockTrainers: PersonalTrainer[] = [
 ]
 
 const carouselStubs = {
+  FTSectionHeading: {
+    props: ['spacing'],
+    template: '<h2 data-testid="featured-trainers-heading"><slot /></h2>',
+  },
   USkeleton: { template: '<span class="u-skeleton-stub" />' },
   UCarousel: {
     props: ['items'],
@@ -55,10 +59,13 @@ describe('FTFeaturedTrainersCarousel', () => {
   it('shows loading skeleton while loading', () => {
     mockedUseCarousel.mockReturnValue({
       trainers: ref([]),
+      mode: ref('featured'),
       isLoading: ref(true),
       isEmpty: ref(false),
       hasError: ref(false),
       shouldShow: ref(true),
+      sectionTitleKey: ref('catalog.featuredTitle'),
+      sectionTitle: ref('Em destaque'),
     })
 
     const wrapper = mount(FTFeaturedTrainersCarousel, {
@@ -66,15 +73,19 @@ describe('FTFeaturedTrainersCarousel', () => {
     })
 
     expect(wrapper.find('[data-testid="featured-trainers-loading"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="featured-trainers-heading"]').text()).toBe('Em destaque')
   })
 
   it('hides when shouldShow is false', () => {
     mockedUseCarousel.mockReturnValue({
       trainers: ref([]),
+      mode: ref('hidden'),
       isLoading: ref(false),
       isEmpty: ref(true),
       hasError: ref(false),
       shouldShow: ref(false),
+      sectionTitleKey: ref('catalog.featuredTitle'),
+      sectionTitle: ref('Em destaque'),
     })
 
     const wrapper = mount(FTFeaturedTrainersCarousel, {
@@ -84,19 +95,42 @@ describe('FTFeaturedTrainersCarousel', () => {
     expect(wrapper.find('[data-testid="featured-trainers-carousel"]').exists()).toBe(false)
   })
 
-  it('renders one card per featured trainer', () => {
+  it('renders one card per featured trainer with featured title', () => {
     mockedUseCarousel.mockReturnValue({
       trainers: ref(mockTrainers),
+      mode: ref('featured'),
       isLoading: ref(false),
       isEmpty: ref(false),
       hasError: ref(false),
       shouldShow: ref(true),
+      sectionTitleKey: ref('catalog.featuredTitle'),
+      sectionTitle: ref('Em destaque'),
     })
 
     const wrapper = mount(FTFeaturedTrainersCarousel, {
       global: { stubs: carouselStubs },
     })
 
+    expect(wrapper.find('[data-testid="featured-trainers-heading"]').text()).toBe('Em destaque')
     expect(wrapper.findAll('[data-testid="featured-trainer-card"]')).toHaveLength(2)
+  })
+
+  it('shows recommended title in fallback mode', () => {
+    mockedUseCarousel.mockReturnValue({
+      trainers: ref(mockTrainers),
+      mode: ref('recommended'),
+      isLoading: ref(false),
+      isEmpty: ref(false),
+      hasError: ref(false),
+      shouldShow: ref(true),
+      sectionTitleKey: ref('catalog.recommendedTitle'),
+      sectionTitle: ref('Recomendados'),
+    })
+
+    const wrapper = mount(FTFeaturedTrainersCarousel, {
+      global: { stubs: carouselStubs },
+    })
+
+    expect(wrapper.find('[data-testid="featured-trainers-heading"]').text()).toBe('Recomendados')
   })
 })
