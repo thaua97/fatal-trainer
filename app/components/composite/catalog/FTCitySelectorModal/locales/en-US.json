@@ -1,0 +1,11 @@
+{
+  "cityModal": {
+    "eyebrow": "Near you",
+    "title": "Find trainers in your city",
+    "subtitle": "Search by city or use your location. You can change this later in the filters.",
+    "label": "Your city",
+    "placeholder": "Type or search for your city…",
+    "skipAll": "Browse trainers across Brazil",
+    "awaitingCity": "Select a city to see who is available in your area."
+  }
+}

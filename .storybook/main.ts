@@ -25,6 +25,8 @@ const composableAliases = Object.fromEntries(
   Object.entries(catalogComposableMocks).flatMap(([name, mockPath]) => [
     [join(appDir, 'composables/catalog', `${name}.ts`), mockPath],
     [join(appDir, 'composables/components', `${name}.ts`), mockPath],
+  ]).concat([
+    [join(appDir, 'composables/catalog/useCatalogCityGate.ts'), composableMock('useCatalogCityGate')],
   ]),
 )
 

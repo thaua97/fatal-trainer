@@ -55,6 +55,14 @@ const isEmpty = computed(() => {
   return fullState!.isEmpty.value
 })
 
+const isAwaitingCity = computed(() => {
+  if (props.variant === 'full') {
+    return fullState!.isAwaitingCity.value
+  }
+
+  return false
+})
+
 const clearFilters = props.variant === 'full'
   ? fullState!.clearFilters
   : () => {}
@@ -112,8 +120,15 @@ const emptyTitleKey = computed(() => {
 
 <template>
   <div>
+    <FTEmptyState
+      v-if="isAwaitingCity"
+      variant="search"
+      :title="$t('cityModal.awaitingCity')"
+      test-id="trainer-list-awaiting-city"
+    />
+
     <div
-      v-if="isLoading"
+      v-else-if="isLoading"
       class="flex flex-col xl:grid xl:grid-cols-2 xl:gap-4"
       data-testid="trainer-list-loading"
       aria-busy="true"

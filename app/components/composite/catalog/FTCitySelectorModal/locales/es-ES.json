@@ -1,0 +1,11 @@
+{
+  "cityModal": {
+    "eyebrow": "Cerca de ti",
+    "title": "Encuentra entrenadores en tu ciudad",
+    "subtitle": "Busca por ciudad o usa tu ubicación. Puedes cambiarlo después en los filtros.",
+    "label": "Tu ciudad",
+    "placeholder": "Escribe o busca tu ciudad…",
+    "skipAll": "Ver entrenadores de todo Brasil",
+    "awaitingCity": "Selecciona una ciudad para ver quién está disponible en tu zona."
+  }
+}

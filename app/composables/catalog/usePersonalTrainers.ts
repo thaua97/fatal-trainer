@@ -1,10 +1,19 @@
+import type { Ref } from 'vue'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { PaginatedTrainersResponse } from '#shared/types/api'
 import type { ListQuery } from '#shared/domain/catalog/value-objects/list-query'
 import { DEFAULT_LIST_QUERY } from '#shared/domain/catalog/value-objects/list-query'
 import { personalTrainersService } from '~/services/catalog/personal-trainers.service'
 
-export function usePersonalTrainers(initialQuery: Partial<ListQuery> = {}) {
+export interface UsePersonalTrainersOptions {
+  enabled?: Ref<boolean>
+}
+
+export function usePersonalTrainers(
+  initialQuery: Partial<ListQuery> = {},
+  options: UsePersonalTrainersOptions = {},
+) {
+  const enabled = options.enabled ?? ref(true)
   const query = useState<ListQuery>('personal-trainers-query', () => ({
     ...DEFAULT_LIST_QUERY,
     ...initialQuery,
@@ -58,9 +67,21 @@ export function usePersonalTrainers(initialQuery: Partial<ListQuery> = {}) {
     }
   }
 
-  watch(query, () => {
-    fetchTrainers()
-  }, { deep: true, immediate: true })
+  watch(enabled, (isEnabled) => {
+    if (isEnabled) {
+      fetchTrainers()
+    }
+  })
+
+  watch(
+    query,
+    () => {
+      if (enabled.value) {
+        fetchTrainers()
+      }
+    },
+    { deep: true, immediate: true },
+  )
 
   const trainers = computed(() => accumulatedTrainers.value)
   const total = computed(() => meta.value.total)

@@ -1,0 +1,7 @@
+{
+  "cityFilter": {
+    "label": "Cidade",
+    "placeholder": "Buscar cidade...",
+    "openModal": "Selecionar cidade"
+  }
+}

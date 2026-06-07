@@ -1,13 +1,16 @@
-import { defineComponent, flushPromises, nextTick } from 'vue'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { defineComponent, nextTick, ref, type VueWrapper } from 'vue'
+import { flushPromises } from '@vue/test-utils'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountFT } from '@tests/helpers/mount-ft'
 import { usePersonalTrainers } from '~/composables/catalog/usePersonalTrainers'
 
-const personalTrainersService = {
-  list: vi.fn(),
-  getById: vi.fn(),
-  listFeatured: vi.fn(),
-}
+const { personalTrainersService } = vi.hoisted(() => ({
+  personalTrainersService: {
+    list: vi.fn(),
+    getById: vi.fn(),
+    listFeatured: vi.fn(),
+  },
+}))
 
 vi.mock('~/services/catalog/personal-trainers.service', () => ({
   personalTrainersService,
@@ -21,6 +24,8 @@ const TestHarness = defineComponent({
 })
 
 describe('usePersonalTrainers', () => {
+  let wrappers: VueWrapper[] = []
+
   beforeEach(() => {
     personalTrainersService.list.mockReset()
 
@@ -38,6 +43,17 @@ describe('usePersonalTrainers', () => {
     useState('personal-trainers-last-response', () => null)
   })
 
+  afterEach(() => {
+    wrappers.forEach(wrapper => wrapper.unmount())
+    wrappers = []
+  })
+
+  function mountHarness<T extends typeof TestHarness>(component: T = TestHarness as T) {
+    const wrapper = mountFT(component)
+    wrappers.push(wrapper)
+    return wrapper
+  }
+
   it('loads first page on mount', async () => {
     personalTrainersService.list.mockResolvedValue({
       items: [{ id: 'trainer-1' }],
@@ -47,11 +63,39 @@ describe('usePersonalTrainers', () => {
       hasMore: false,
     })
 
-    const wrapper = mountFT(TestHarness)
+    const wrapper = mountHarness()
     await flushPromises()
 
     expect(personalTrainersService.list).toHaveBeenCalled()
     expect(wrapper.vm.trainers).toHaveLength(1)
+  })
+
+  it('does not fetch while enabled is false', async () => {
+    personalTrainersService.list.mockResolvedValue({
+      items: [{ id: 'trainer-1' }],
+      total: 1,
+      page: 1,
+      pageSize: 20,
+      hasMore: false,
+    })
+
+    const enabled = ref(false)
+    const Harness = defineComponent({
+      setup() {
+        return usePersonalTrainers({}, { enabled })
+      },
+      template: '<div />',
+    })
+
+    mountHarness(Harness)
+    await flushPromises()
+
+    expect(personalTrainersService.list).not.toHaveBeenCalled()
+
+    enabled.value = true
+    await flushPromises()
+
+    expect(personalTrainersService.list).toHaveBeenCalledTimes(1)
   })
 
   it('loadMore requests next page', async () => {
@@ -71,7 +115,7 @@ describe('usePersonalTrainers', () => {
         hasMore: false,
       })
 
-    const wrapper = mountFT(TestHarness)
+    const wrapper = mountHarness()
     await flushPromises()
 
     wrapper.vm.loadMore()
@@ -90,7 +134,7 @@ describe('usePersonalTrainers', () => {
       hasMore: false,
     })
 
-    const wrapper = mountFT(TestHarness)
+    const wrapper = mountHarness()
     await flushPromises()
 
     wrapper.vm.query.search = 'new search'
