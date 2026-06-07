@@ -2,8 +2,16 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { defineComponent, nextTick } from 'vue'
 import { mountFT } from '@tests/helpers/mount-ft'
 import { useFTCitySelector } from '~/composables/components/useFTCitySelector'
-import { mockUpdateTrainerFilters } from '@tests/helpers/mock-trainer-filters'
+import {
+  mockUpdateTrainerFilters,
+  mockUseTrainerFilters,
+  resetMockTrainerFilters,
+} from '@tests/helpers/mock-trainer-filters'
 import type { GeoResolver } from '~/composables/core/useGeoLocation'
+
+vi.mock('../../../app/composables/catalog/useTrainerFilters', () => ({
+  useTrainerFilters: () => mockUseTrainerFilters(),
+}))
 
 const mocks = vi.hoisted(() => ({
   cities: [
@@ -37,6 +45,7 @@ const Harness = defineComponent({
 describe('useFTCitySelector', () => {
   beforeEach(() => {
     window.localStorage.clear()
+    resetMockTrainerFilters()
   })
 
   afterEach(() => {
@@ -95,6 +104,26 @@ describe('useFTCitySelector', () => {
 
     expect(wrapper.vm.city).toBe('Pelotas')
     expect(mockUpdateTrainerFilters).toHaveBeenCalledWith({ city: 'Pelotas' })
+  })
+
+  it('detects São Paulo using the default offline resolver', async () => {
+    vi.stubGlobal('navigator', {
+      geolocation: {
+        getCurrentPosition: (success: PositionCallback) => {
+          success({
+            coords: { latitude: -23.5505, longitude: -46.6333 },
+          } as GeolocationPosition)
+        },
+      },
+    })
+
+    const wrapper = mountFT(Harness)
+    await wrapper.vm.onDetect()
+    await nextTick()
+
+    expect(wrapper.vm.city).toBe('São Paulo')
+    expect(wrapper.vm.state).toBe('SP')
+    expect(wrapper.vm.geoError).toBeUndefined()
   })
 
   it('exposes a localized error when geolocation is unsupported', async () => {

@@ -1,4 +1,5 @@
 import type { BrazilianCity } from '#shared/data/brazilian-cities'
+import { createBrazilianGeoResolver } from '~/composables/core/createBrazilianGeoResolver'
 import type { GeoError, GeoResolver } from '~/composables/core/useGeoLocation'
 
 const GEO_ERROR_KEYS: Record<GeoError, string> = {
@@ -25,7 +26,9 @@ export function useFTCitySelector(options: UseFTCitySelectorOptions = {}) {
   const { t } = useI18n()
   const { filters, updateFilters } = useTrainerFilters()
   const { cities } = useFTBrazilianCities()
-  const geo = useGeoLocation({ resolver: options.resolver })
+  const geo = useGeoLocation({
+    resolver: options.resolver ?? createBrazilianGeoResolver(),
+  })
 
   // Initialize from the URL only; the persisted location is applied on mount so
   // the change (from empty) propagates to the URL through the watcher below.
