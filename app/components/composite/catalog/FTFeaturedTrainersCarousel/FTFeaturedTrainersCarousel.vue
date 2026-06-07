@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 
-const { trainers, isLoading, shouldShow } = useFTFeaturedTrainersCarousel()
+const { trainers, isLoading, shouldShow, sectionTitle } = useFTFeaturedTrainersCarousel()
 
 const carouselRef = ref<{ emblaApi: { scrollTo: (index: number) => void } | null } | null>(null)
 const activeIndex = ref(0)
@@ -24,11 +24,19 @@ watch(trainers, () => {
     v-if="shouldShow"
     data-testid="featured-trainers-carousel"
   >
+    <FTSectionHeading
+      spacing="sm"
+      class="mb-3"
+      data-testid="featured-trainers-heading"
+    >
+      {{ sectionTitle }}
+    </FTSectionHeading>
+
     <div
       v-if="isLoading"
       :class="[$style.cardGradient, 'relative aspect-4/5 max-h-[420px] w-full overflow-hidden rounded-3xl [&_.animate-pulse]:bg-white/25!']"
       aria-busy="true"
-      aria-label="Carregando personais em destaque"
+      :aria-label="sectionTitle"
       data-testid="featured-trainers-loading"
     >
       <div class="relative flex h-full flex-col justify-between p-6">

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { vi } from 'vitest'
 import type { ListQuery } from '../../shared/domain/catalog/value-objects/list-query'
 import { DEFAULT_LIST_QUERY } from '../../shared/domain/catalog/value-objects/list-query'
@@ -20,7 +20,7 @@ export function resetMockTrainerFilters() {
 
 export function mockUseTrainerFilters() {
   return {
-    filters: mockTrainerFiltersState,
+    filters: computed(() => mockTrainerFiltersState.value),
     updateFilters: mockUpdateTrainerFilters,
     defaultQuery: DEFAULT_LIST_QUERY,
   }

@@ -1,17 +1,21 @@
 <script setup lang="ts">
+import { formatAdminLocation } from '#shared/utils/format-admin-user'
+
 const props = defineProps<{
-  distanceKm: number
+  city?: string
+  state?: string
 }>()
 
-const { locale } = useI18n()
-
 const label = computed(() =>
-  `${props.distanceKm.toLocaleString(locale.value, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} km`,
+  formatAdminLocation({ city: props.city, state: props.state }),
 )
 </script>
 
 <template>
-  <span class="inline-flex items-center gap-1 text-xs text-slate-500">
+  <span
+    v-if="label"
+    class="inline-flex items-center gap-1 text-xs text-slate-500"
+  >
     <UIcon
       name="i-lucide-map-pin"
       class="size-3.5"

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { PersonalTrainer } from "#shared/domain/catalog/entities/personal-trainer";
-import { formatModalityLabels } from "#shared/utils/format-modality-labels";
 
 const props = defineProps<{
   trainer: PersonalTrainer;
 }>();
 
-const { t } = useI18n();
 const {
   servicePrice,
   promoPrice,
@@ -15,16 +13,11 @@ const {
   priceView,
 } = useFTTrainerPrice(toRef(props, "trainer"));
 
-const subtitle = computed(() => {
-  const parts = [...formatModalityLabels(props.trainer.modalities, t)];
-  const specialty = props.trainer.specialties?.[0];
-  if (specialty) parts.push(specialty);
-  return parts.join(" · ");
-});
+const subtitle = computed(() => props.trainer.specialties?.[0] ?? "");
 
 const hasMetadata = computed(
   () =>
-    props.trainer.distanceKm != null ||
+    !!props.trainer.city ||
     (props.trainer.modalities?.length ?? 0) > 0,
 );
 </script>
@@ -86,8 +79,14 @@ const hasMetadata = computed(
         v-if="hasMetadata"
         class="mt-2 flex flex-wrap items-center gap-2 lg:mt-3 lg:gap-2.5"
       >
-        <li v-if="trainer.distanceKm != null" class="inline-flex">
-          <FTDistanceLabel :distance-km="trainer.distanceKm" />
+        <li
+          v-if="trainer.city"
+          class="inline-flex"
+        >
+          <FTDistanceLabel
+            :city="trainer.city"
+            :state="trainer.state"
+          />
         </li>
         <li
           v-for="modality in trainer.modalities"

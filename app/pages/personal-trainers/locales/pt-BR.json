@@ -14,6 +14,8 @@
   },
   "catalog": {
     "featuredAriaLabel": "Personais em destaque",
+    "featuredTitle": "Em destaque",
+    "recommendedTitle": "Recomendados",
     "exploreTitle": "Explorar personais",
     "country": "Brasil",
     "applyFilters": "Aplicar filtros",

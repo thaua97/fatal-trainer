@@ -14,6 +14,8 @@
   },
   "catalog": {
     "featuredAriaLabel": "Featured trainers",
+    "featuredTitle": "Featured",
+    "recommendedTitle": "Recommended",
     "exploreTitle": "Explore trainers",
     "country": "Brazil",
     "applyFilters": "Apply filters",

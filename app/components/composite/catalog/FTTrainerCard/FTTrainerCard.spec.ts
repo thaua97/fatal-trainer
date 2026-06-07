@@ -12,13 +12,15 @@ describe('FTTrainerCard', () => {
     expect(wrapper.find('[data-testid="trainer-card"]').exists()).toBe(true)
     expect(wrapper.find('figure').exists()).toBe(true)
     expect(wrapper.find('header h2').text()).toBe(trainer.name)
+    expect(wrapper.find('header p').text()).toBe('Funcional')
+    expect(wrapper.text()).toContain('São Paulo, SP')
     expect(wrapper.findAll('ul > li')).toHaveLength(3)
   })
 
-  it('omits metadata list when distance and modalities are absent', () => {
+  it('omits metadata list when city and modalities are absent', () => {
     const wrapper = mountFT(FTTrainerCard, {
       props: {
-        trainer: mockTrainer({ distanceKm: undefined, modalities: [] }),
+        trainer: mockTrainer({ city: undefined, state: undefined, modalities: [] }),
       },
     })
 

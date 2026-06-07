@@ -11,7 +11,9 @@ export default meta
 type Story = StoryObj<typeof FTDistanceLabel>
 
 export const Default: Story = {
-  args: {distanceKm:2.3},
-
+  args: { city: 'São Paulo', state: 'SP' },
 }
 
+export const CityOnly: Story = {
+  args: { city: 'Rio de Janeiro' },
+}

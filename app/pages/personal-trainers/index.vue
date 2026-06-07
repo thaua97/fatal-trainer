@@ -9,11 +9,15 @@ useSeoMeta({
 const filtersOpen = ref(false);
 const { clearFilters } = useFTFilterPanel();
 const { count: activeFilterCount } = useFTActiveFilterCount();
+const { sectionTitle, shouldShow: showFeaturedCarousel } = useFTFeaturedTrainersCarousel();
 </script>
 
 <template>
   <div class="space-y-6 lg:space-y-8">
-    <section :aria-label="$t('catalog.featuredAriaLabel')">
+    <section
+      v-if="showFeaturedCarousel"
+      :aria-label="sectionTitle"
+    >
       <FTFeaturedTrainersCarousel />
     </section>
 
