@@ -61,10 +61,27 @@ export function discoverColocatedLocaleFiles(
   return discoverLocaleFilesInDir(join(rootDir, 'app'), code, rootDir).sort()
 }
 
+const LOCALE_LANGUAGE: Record<FTLocaleCode, string> = {
+  'pt-BR': 'pt-BR',
+  'es-ES': 'es-ES',
+  'en-US': 'en-US',
+}
+
 export function buildI18nLocales() {
-  return FT_LOCALE_CODES.map(code => ({
+  const primary = FT_LOCALE_CODES.map(code => ({
     code,
     name: LOCALE_NAMES[code],
+    language: LOCALE_LANGUAGE[code],
     files: discoverColocatedLocaleFiles(code),
   }))
+
+  return [
+    ...primary,
+    {
+      code: 'pt',
+      name: 'Português',
+      language: 'pt',
+      files: discoverColocatedLocaleFiles('pt-BR'),
+    },
+  ]
 }

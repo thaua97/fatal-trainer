@@ -18,6 +18,7 @@ const catalogComposableMocks = {
   'useFTModalityFilter': composableMock('useFTModalityFilter'),
   'useFTPromotionFilter': composableMock('useFTPromotionFilter'),
   'useFTPriceViewFilter': composableMock('useFTPriceViewFilter'),
+  'useFTCitySelector': composableMock('useFTCitySelector'),
 } as const
 
 const composableAliases = Object.fromEntries(

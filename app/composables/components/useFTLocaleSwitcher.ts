@@ -4,10 +4,12 @@ export function useFTLocaleSwitcher() {
   const { locale, locales, setLocale } = useI18n()
 
   const localeItems = computed(() =>
-    locales.value.map(entry => ({
-      code: entry.code as FTLocaleCode,
-      label: entry.name ?? entry.code,
-    })),
+    locales.value
+      .filter(entry => FT_LOCALE_CODES.includes(entry.code as FTLocaleCode))
+      .map(entry => ({
+        code: entry.code as FTLocaleCode,
+        label: entry.name ?? entry.code,
+      })),
   )
 
   const currentLocale = computed(() => locale.value as FTLocaleCode)

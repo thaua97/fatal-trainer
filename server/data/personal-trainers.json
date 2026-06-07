@@ -1,1 +1,1774 @@
-[]
+[
+  {
+    "id": "trainer-001",
+    "name": "Ana Silva",
+    "profession": "Personal Trainer — Musculação",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/1552109/pexels-photo-1552109.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 80,
+    "rating": 3.5,
+    "reviewCount": 5,
+    "distanceKm": 1,
+    "city": "São Paulo",
+    "state": "SP",
+    "specialties": [
+      "Musculação",
+      "Funcional"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100000-G/SP",
+    "gallery": [
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 2,
+    "reviews": [
+      {
+        "author": "Felipe Alves",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": true,
+    "promotion": {
+      "discountPercent": 35,
+      "promoPrice": 52,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-06-20",
+      "maxRedemptions": 10,
+      "redemptionCount": 0
+    }
+  },
+  {
+    "id": "trainer-002",
+    "name": "Bruno Costa",
+    "profession": "Personal Trainer — Funcional",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/1229356/pexels-photo-1229356.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 87,
+    "rating": 3.6,
+    "reviewCount": 18,
+    "distanceKm": 4,
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "specialties": [
+      "Funcional",
+      "HIIT"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100001-G/RJ",
+    "gallery": [
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 3,
+    "reviews": [
+      {
+        "author": "Gabriela Nunes",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Henrique Lima",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-003",
+    "name": "Carla Mendes",
+    "profession": "Personal Trainer — HIIT",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/6455772/pexels-photo-6455772.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 94,
+    "rating": 3.7,
+    "reviewCount": 31,
+    "distanceKm": 7,
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "specialties": [
+      "HIIT",
+      "CrossFit"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100002-G/MG",
+    "gallery": [
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 4,
+    "reviews": [
+      {
+        "author": "Henrique Lima",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Isabela Martins",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "João Pedro Souza",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "trainer-004",
+    "name": "Diego Ferreira",
+    "profession": "Personal Trainer — CrossFit",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/4164761/pexels-photo-4164761.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 101,
+    "rating": 3.8,
+    "reviewCount": 44,
+    "distanceKm": 10,
+    "city": "Curitiba",
+    "state": "PR",
+    "specialties": [
+      "CrossFit",
+      "Emagrecimento"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100003-G/PR",
+    "gallery": [
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 5,
+    "reviews": [
+      {
+        "author": "Isabela Martins",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 20,
+      "promoPrice": 81,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-06-23",
+      "maxRedemptions": 25,
+      "redemptionCount": 3
+    }
+  },
+  {
+    "id": "trainer-005",
+    "name": "Elena Rocha",
+    "profession": "Personal Trainer — Emagrecimento",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/3775549/pexels-photo-3775549.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 108,
+    "rating": 3.9,
+    "reviewCount": 57,
+    "distanceKm": 13,
+    "city": "Porto Alegre",
+    "state": "RS",
+    "specialties": [
+      "Emagrecimento",
+      "Yoga"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100004-G/RS",
+    "gallery": [
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 6,
+    "reviews": [
+      {
+        "author": "João Pedro Souza",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Karina Duarte",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "trainer-006",
+    "name": "Felipe Alves",
+    "profession": "Personal Trainer — Yoga",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/8409998/pexels-photo-8409998.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 115,
+    "rating": 4,
+    "reviewCount": 70,
+    "distanceKm": 16,
+    "city": "Brasília",
+    "state": "DF",
+    "specialties": [
+      "Yoga",
+      "Pilates"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100005-G/DF",
+    "gallery": [
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 7,
+    "reviews": [
+      {
+        "author": "Karina Duarte",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Lucas Barbosa",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Mariana Teixeira",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-007",
+    "name": "Gabriela Nunes",
+    "profession": "Personal Trainer — Pilates",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 122,
+    "rating": 4.1,
+    "reviewCount": 83,
+    "distanceKm": 19,
+    "city": "Salvador",
+    "state": "BA",
+    "specialties": [
+      "Pilates",
+      "Corrida"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100006-G/BA",
+    "gallery": [
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 8,
+    "reviews": [
+      {
+        "author": "Lucas Barbosa",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 25,
+      "promoPrice": 92,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-06-26",
+      "maxRedemptions": 15,
+      "redemptionCount": 2
+    }
+  },
+  {
+    "id": "trainer-008",
+    "name": "Henrique Lima",
+    "profession": "Personal Trainer — Corrida",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/949131/pexels-photo-949131.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 129,
+    "rating": 4.2,
+    "reviewCount": 96,
+    "distanceKm": 22,
+    "city": "Recife",
+    "state": "PE",
+    "specialties": [
+      "Corrida",
+      "Reabilitação"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100007-G/PE",
+    "gallery": [
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 9,
+    "reviews": [
+      {
+        "author": "Mariana Teixeira",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Nicolas Prado",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "trainer-009",
+    "name": "Isabela Martins",
+    "profession": "Personal Trainer — Reabilitação",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/2204196/pexels-photo-2204196.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 136,
+    "rating": 4.3,
+    "reviewCount": 109,
+    "distanceKm": 25,
+    "city": "São Paulo",
+    "state": "SP",
+    "specialties": [
+      "Reabilitação",
+      "Treino para idosos"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100008-G/SP",
+    "gallery": [
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 10,
+    "reviews": [
+      {
+        "author": "Nicolas Prado",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Olivia Campos",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Paulo Henrique",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-010",
+    "name": "João Pedro Souza",
+    "profession": "Personal Trainer — Treino para idosos",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/407936/pexels-photo-407936.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 143,
+    "rating": 4.4,
+    "reviewCount": 6,
+    "distanceKm": 3,
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "specialties": [
+      "Treino para idosos",
+      "Musculação"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100009-G/RJ",
+    "gallery": [
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 11,
+    "reviews": [
+      {
+        "author": "Olivia Campos",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 30,
+      "promoPrice": 100,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-06-29",
+      "maxRedemptions": 30,
+      "redemptionCount": 1
+    }
+  },
+  {
+    "id": "trainer-011",
+    "name": "Karina Duarte",
+    "profession": "Personal Trainer — Musculação",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 150,
+    "rating": 4.5,
+    "reviewCount": 19,
+    "distanceKm": 6,
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "specialties": [
+      "Musculação",
+      "Funcional"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100010-G/MG",
+    "gallery": [
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 12,
+    "reviews": [
+      {
+        "author": "Paulo Henrique",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Rafaela Moura",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-012",
+    "name": "Lucas Barbosa",
+    "profession": "Personal Trainer — Funcional",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 157,
+    "rating": 4.6,
+    "reviewCount": 32,
+    "distanceKm": 9,
+    "city": "Curitiba",
+    "state": "PR",
+    "specialties": [
+      "Funcional",
+      "HIIT"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100011-G/PR",
+    "gallery": [
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 13,
+    "reviews": [
+      {
+        "author": "Rafaela Moura",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Samuel Ribeiro",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Tatiana Freitas",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": true
+  },
+  {
+    "id": "trainer-013",
+    "name": "Mariana Teixeira",
+    "profession": "Personal Trainer — HIIT",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/6455823/pexels-photo-6455823.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 164,
+    "rating": 4.7,
+    "reviewCount": 45,
+    "distanceKm": 12,
+    "city": "Porto Alegre",
+    "state": "RS",
+    "specialties": [
+      "HIIT",
+      "CrossFit"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100012-G/RS",
+    "gallery": [
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 14,
+    "reviews": [
+      {
+        "author": "Samuel Ribeiro",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 35,
+      "promoPrice": 107,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-02",
+      "maxRedemptions": 20,
+      "redemptionCount": 0
+    }
+  },
+  {
+    "id": "trainer-014",
+    "name": "Nicolas Prado",
+    "profession": "Personal Trainer — CrossFit",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/8412867/pexels-photo-8412867.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 171,
+    "rating": 4.8,
+    "reviewCount": 58,
+    "distanceKm": 15,
+    "city": "Brasília",
+    "state": "DF",
+    "specialties": [
+      "CrossFit",
+      "Emagrecimento"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100013-G/DF",
+    "gallery": [
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 15,
+    "reviews": [
+      {
+        "author": "Tatiana Freitas",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Vinícius Araújo",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-015",
+    "name": "Olivia Campos",
+    "profession": "Personal Trainer — Emagrecimento",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/6583500/pexels-photo-6583500.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 178,
+    "rating": 4.9,
+    "reviewCount": 71,
+    "distanceKm": 18,
+    "city": "Salvador",
+    "state": "BA",
+    "specialties": [
+      "Emagrecimento",
+      "Yoga"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100014-G/BA",
+    "gallery": [
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 16,
+    "reviews": [
+      {
+        "author": "Vinícius Araújo",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Amanda Lopes",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Caio Mendonça",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-016",
+    "name": "Paulo Henrique",
+    "profession": "Personal Trainer — Yoga",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/703014/pexels-photo-703014.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 185,
+    "rating": 5,
+    "reviewCount": 84,
+    "distanceKm": 21,
+    "city": "Recife",
+    "state": "PE",
+    "specialties": [
+      "Yoga",
+      "Pilates"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100015-G/PE",
+    "gallery": [
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 2,
+    "reviews": [
+      {
+        "author": "Amanda Lopes",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": true,
+    "promotion": {
+      "discountPercent": 20,
+      "promoPrice": 148,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-05",
+      "maxRedemptions": 10,
+      "redemptionCount": 3
+    }
+  },
+  {
+    "id": "trainer-017",
+    "name": "Rafaela Moura",
+    "profession": "Personal Trainer — Pilates",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/1552109/pexels-photo-1552109.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 192,
+    "rating": 3.5,
+    "reviewCount": 97,
+    "distanceKm": 24,
+    "city": "São Paulo",
+    "state": "SP",
+    "specialties": [
+      "Pilates",
+      "Corrida"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100016-G/SP",
+    "gallery": [
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 3,
+    "reviews": [
+      {
+        "author": "Caio Mendonça",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Daniela Pires",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-018",
+    "name": "Samuel Ribeiro",
+    "profession": "Personal Trainer — Corrida",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/1229356/pexels-photo-1229356.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 199,
+    "rating": 3.6,
+    "reviewCount": 110,
+    "distanceKm": 2,
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "specialties": [
+      "Corrida",
+      "Reabilitação"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100017-G/RJ",
+    "gallery": [
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 4,
+    "reviews": [
+      {
+        "author": "Daniela Pires",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Eduardo Santana",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Ana Silva 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-019",
+    "name": "Tatiana Freitas",
+    "profession": "Personal Trainer — Reabilitação",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/6455772/pexels-photo-6455772.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 206,
+    "rating": 3.7,
+    "reviewCount": 7,
+    "distanceKm": 5,
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "specialties": [
+      "Reabilitação",
+      "Treino para idosos"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100018-G/MG",
+    "gallery": [
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 5,
+    "reviews": [
+      {
+        "author": "Eduardo Santana",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 25,
+      "promoPrice": 155,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-08",
+      "maxRedemptions": 25,
+      "redemptionCount": 2
+    }
+  },
+  {
+    "id": "trainer-020",
+    "name": "Vinícius Araújo",
+    "profession": "Personal Trainer — Treino para idosos",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/4164761/pexels-photo-4164761.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 213,
+    "rating": 3.8,
+    "reviewCount": 20,
+    "distanceKm": 8,
+    "city": "Curitiba",
+    "state": "PR",
+    "specialties": [
+      "Treino para idosos",
+      "Musculação"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100019-G/PR",
+    "gallery": [
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 6,
+    "reviews": [
+      {
+        "author": "Ana Silva 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Bruno Costa 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-021",
+    "name": "Amanda Lopes",
+    "profession": "Personal Trainer — Musculação",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/3775549/pexels-photo-3775549.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 220,
+    "rating": 3.9,
+    "reviewCount": 33,
+    "distanceKm": 11,
+    "city": "Porto Alegre",
+    "state": "RS",
+    "specialties": [
+      "Musculação",
+      "Funcional"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100020-G/RS",
+    "gallery": [
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 7,
+    "reviews": [
+      {
+        "author": "Bruno Costa 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Carla Mendes 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Diego Ferreira 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-022",
+    "name": "Caio Mendonça",
+    "profession": "Personal Trainer — Funcional",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/8409998/pexels-photo-8409998.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 227,
+    "rating": 4,
+    "reviewCount": 46,
+    "distanceKm": 14,
+    "city": "Brasília",
+    "state": "DF",
+    "specialties": [
+      "Funcional",
+      "HIIT"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100021-G/DF",
+    "gallery": [
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 8,
+    "reviews": [
+      {
+        "author": "Carla Mendes 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 30,
+      "promoPrice": 159,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-11",
+      "maxRedemptions": 15,
+      "redemptionCount": 1
+    }
+  },
+  {
+    "id": "trainer-023",
+    "name": "Daniela Pires",
+    "profession": "Personal Trainer — HIIT",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 234,
+    "rating": 4.1,
+    "reviewCount": 59,
+    "distanceKm": 17,
+    "city": "Salvador",
+    "state": "BA",
+    "specialties": [
+      "HIIT",
+      "CrossFit"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100022-G/BA",
+    "gallery": [
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 9,
+    "reviews": [
+      {
+        "author": "Diego Ferreira 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Elena Rocha 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-024",
+    "name": "Eduardo Santana",
+    "profession": "Personal Trainer — CrossFit",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/949131/pexels-photo-949131.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 241,
+    "rating": 4.2,
+    "reviewCount": 72,
+    "distanceKm": 20,
+    "city": "Recife",
+    "state": "PE",
+    "specialties": [
+      "CrossFit",
+      "Emagrecimento"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100023-G/PE",
+    "gallery": [
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 10,
+    "reviews": [
+      {
+        "author": "Elena Rocha 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Felipe Alves 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Gabriela Nunes 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-025",
+    "name": "Ana Silva 2",
+    "profession": "Personal Trainer — Emagrecimento",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/2204196/pexels-photo-2204196.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 248,
+    "rating": 4.3,
+    "reviewCount": 85,
+    "distanceKm": 23,
+    "city": "São Paulo",
+    "state": "SP",
+    "specialties": [
+      "Emagrecimento",
+      "Yoga"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100024-G/SP",
+    "gallery": [
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 11,
+    "reviews": [
+      {
+        "author": "Felipe Alves 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 35,
+      "promoPrice": 161,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-14",
+      "maxRedemptions": 30,
+      "redemptionCount": 0
+    }
+  },
+  {
+    "id": "trainer-026",
+    "name": "Bruno Costa 2",
+    "profession": "Personal Trainer — Yoga",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/407936/pexels-photo-407936.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 84,
+    "rating": 4.4,
+    "reviewCount": 98,
+    "distanceKm": 1,
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "specialties": [
+      "Yoga",
+      "Pilates"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100025-G/RJ",
+    "gallery": [
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 12,
+    "reviews": [
+      {
+        "author": "Gabriela Nunes 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Henrique Lima 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-027",
+    "name": "Carla Mendes 2",
+    "profession": "Personal Trainer — Pilates",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 91,
+    "rating": 4.5,
+    "reviewCount": 111,
+    "distanceKm": 4,
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "specialties": [
+      "Pilates",
+      "Corrida"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100026-G/MG",
+    "gallery": [
+      "https://images.pexels.com/photos/1533829/pexels-photo-1533829.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 13,
+    "reviews": [
+      {
+        "author": "Henrique Lima 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Isabela Martins 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "João Pedro Souza 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-028",
+    "name": "Diego Ferreira 2",
+    "profession": "Personal Trainer — Corrida",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 98,
+    "rating": 4.6,
+    "reviewCount": 8,
+    "distanceKm": 7,
+    "city": "Curitiba",
+    "state": "PR",
+    "specialties": [
+      "Corrida",
+      "Reabilitação"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100027-G/PR",
+    "gallery": [
+      "https://images.pexels.com/photos/17840/pexels-photo-17840.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 14,
+    "reviews": [
+      {
+        "author": "Isabela Martins 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 20,
+      "promoPrice": 78,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-17",
+      "maxRedemptions": 20,
+      "redemptionCount": 3
+    }
+  },
+  {
+    "id": "trainer-029",
+    "name": "Elena Rocha 2",
+    "profession": "Personal Trainer — Reabilitação",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/6455823/pexels-photo-6455823.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 105,
+    "rating": 4.7,
+    "reviewCount": 21,
+    "distanceKm": 10,
+    "city": "Porto Alegre",
+    "state": "RS",
+    "specialties": [
+      "Reabilitação",
+      "Treino para idosos"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100028-G/RS",
+    "gallery": [
+      "https://images.pexels.com/photos/416475/pexels-photo-416475.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 15,
+    "reviews": [
+      {
+        "author": "João Pedro Souza 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Karina Duarte 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-030",
+    "name": "Felipe Alves 2",
+    "profession": "Personal Trainer — Treino para idosos",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/8412867/pexels-photo-8412867.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 112,
+    "rating": 4.8,
+    "reviewCount": 34,
+    "distanceKm": 13,
+    "city": "Brasília",
+    "state": "DF",
+    "specialties": [
+      "Treino para idosos",
+      "Musculação"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100029-G/DF",
+    "gallery": [
+      "https://images.pexels.com/photos/2261487/pexels-photo-2261487.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 16,
+    "reviews": [
+      {
+        "author": "Karina Duarte 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Lucas Barbosa 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Mariana Teixeira 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-031",
+    "name": "Gabriela Nunes 2",
+    "profession": "Personal Trainer — Musculação",
+    "description": "Personal dedicado a resultados sustentáveis, com foco em técnica e progressão de carga.",
+    "photoUrl": "https://images.pexels.com/photos/6583500/pexels-photo-6583500.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 119,
+    "rating": 4.9,
+    "reviewCount": 47,
+    "distanceKm": 16,
+    "city": "Salvador",
+    "state": "BA",
+    "specialties": [
+      "Musculação",
+      "Funcional"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100030-G/BA",
+    "gallery": [
+      "https://images.pexels.com/photos/3253494/pexels-photo-3253494.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 2,
+    "reviews": [
+      {
+        "author": "Lucas Barbosa 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 25,
+      "promoPrice": 89,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-20",
+      "maxRedemptions": 10,
+      "redemptionCount": 2
+    }
+  },
+  {
+    "id": "trainer-032",
+    "name": "Henrique Lima 2",
+    "profession": "Personal Trainer — Funcional",
+    "description": "Especialista em treinos funcionais para quem busca condicionamento e definição.",
+    "photoUrl": "https://images.pexels.com/photos/703014/pexels-photo-703014.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 126,
+    "rating": 5,
+    "reviewCount": 60,
+    "distanceKm": 19,
+    "city": "Recife",
+    "state": "PE",
+    "specialties": [
+      "Funcional",
+      "HIIT"
+    ],
+    "modalities": [
+      "online"
+    ],
+    "cref": "100031-G/PE",
+    "gallery": [
+      "https://images.pexels.com/photos/260352/pexels-photo-260352.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 3,
+    "reviews": [
+      {
+        "author": "Mariana Teixeira 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Nicolas Prado 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-033",
+    "name": "Isabela Martins 2",
+    "profession": "Personal Trainer — HIIT",
+    "description": "Atendimento personalizado para emagrecimento com acompanhamento de hábitos.",
+    "photoUrl": "https://images.pexels.com/photos/1552109/pexels-photo-1552109.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 133,
+    "rating": 3.5,
+    "reviewCount": 73,
+    "distanceKm": 22,
+    "city": "São Paulo",
+    "state": "SP",
+    "specialties": [
+      "HIIT",
+      "CrossFit"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "100032-G/SP",
+    "gallery": [
+      "https://images.pexels.com/photos/2827392/pexels-photo-2827392.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–21h",
+    "experienceYears": 4,
+    "reviews": [
+      {
+        "author": "Nicolas Prado 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Olivia Campos 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      },
+      {
+        "author": "Paulo Henrique 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-034",
+    "name": "João Pedro Souza 2",
+    "profession": "Personal Trainer — CrossFit",
+    "description": "Experiência em preparação física para corrida de rua e provas de endurance.",
+    "photoUrl": "https://images.pexels.com/photos/1229356/pexels-photo-1229356.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 140,
+    "rating": 3.6,
+    "reviewCount": 86,
+    "distanceKm": 25,
+    "city": "Rio de Janeiro",
+    "state": "RJ",
+    "specialties": [
+      "CrossFit",
+      "Emagrecimento"
+    ],
+    "modalities": [
+      "presencial",
+      "online"
+    ],
+    "cref": "100033-G/RJ",
+    "gallery": [
+      "https://images.pexels.com/photos/3823488/pexels-photo-3823488.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sáb, 7h–20h",
+    "experienceYears": 5,
+    "reviews": [
+      {
+        "author": "Olivia Campos 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 30,
+      "promoPrice": 98,
+      "label": "Primeira sessão",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-07-23",
+      "maxRedemptions": 25,
+      "redemptionCount": 1
+    }
+  },
+  {
+    "id": "trainer-035",
+    "name": "Karina Duarte 2",
+    "profession": "Personal Trainer — Emagrecimento",
+    "description": "Treinos adaptados para iniciantes, com ênfase em mobilidade e postura.",
+    "photoUrl": "https://images.pexels.com/photos/6455772/pexels-photo-6455772.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 147,
+    "rating": 3.7,
+    "reviewCount": 99,
+    "distanceKm": 3,
+    "city": "Belo Horizonte",
+    "state": "MG",
+    "specialties": [
+      "Emagrecimento",
+      "Yoga"
+    ],
+    "modalities": [
+      "presencial",
+      "hibrido"
+    ],
+    "cref": "100034-G/MG",
+    "gallery": [
+      "https://images.pexels.com/photos/3825163/pexels-photo-3825163.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Ter–Qui, 8h–18h",
+    "experienceYears": 6,
+    "reviews": [
+      {
+        "author": "Paulo Henrique 2",
+        "rating": 4,
+        "comment": "Resultados visíveis em poucas semanas. Recomendo!"
+      },
+      {
+        "author": "Rafaela Moura 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-036",
+    "name": "Lucas Barbosa 2",
+    "profession": "Personal Trainer — Yoga",
+    "description": "Abordagem integrada entre força, cardio e recuperação ativa.",
+    "photoUrl": "https://images.pexels.com/photos/4164761/pexels-photo-4164761.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 154,
+    "rating": 3.8,
+    "reviewCount": 112,
+    "distanceKm": 6,
+    "city": "Curitiba",
+    "state": "PR",
+    "specialties": [
+      "Yoga",
+      "Pilates"
+    ],
+    "modalities": [
+      "presencial"
+    ],
+    "cref": "100035-G/PR",
+    "gallery": [
+      "https://images.pexels.com/photos/791764/pexels-photo-791764.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop",
+      "https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+    ],
+    "availability": "Seg–Sex, 6h–12h | Sáb, 8h–14h",
+    "experienceYears": 7,
+    "reviews": [
+      {
+        "author": "Rafaela Moura 2",
+        "rating": 5,
+        "comment": "Pontual, motivador e sempre disponível para tirar dúvidas."
+      },
+      {
+        "author": "Samuel Ribeiro 2",
+        "rating": 4,
+        "comment": "Excelente profissional, treinos desafiadores e bem explicados."
+      },
+      {
+        "author": "Tatiana Freitas 2",
+        "rating": 5,
+        "comment": "Muito atencioso e adapta o treino conforme meu dia a dia."
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": "trainer-037",
+    "userId": "ed0d15a6-3297-465f-9630-7b08b786da03",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/3775549/pexels-photo-3775549.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false,
+    "promotion": {
+      "discountPercent": 19,
+      "promoPrice": 81,
+      "label": "Pacote mensal",
+      "startsAt": "2026-06-03",
+      "endsAt": "2026-06-08",
+      "redemptionCount": 0
+    }
+  },
+  {
+    "id": "trainer-038",
+    "userId": "bdaf05d6-82b5-496d-ba88-3bdc31cf8d99",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/8409998/pexels-photo-8409998.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 103,
+    "contactPhone": "53991625225",
+    "city": "Pelotas",
+    "state": "RS",
+    "specialties": [
+      "HIIT"
+    ],
+    "modalities": [
+      "hibrido"
+    ],
+    "cref": "wqweqweqw",
+    "gallery": [],
+    "availability": "seg-sex, 10-12",
+    "experienceYears": 5,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-039",
+    "userId": "306cb177-ba4e-488c-9511-d902053309a6",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-040",
+    "userId": "d02e7891-e2ec-455f-abc2-9466262fb3f6",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/949131/pexels-photo-949131.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-041",
+    "userId": "9bac99d0-f796-4b15-ae34-66bf541c510f",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/2204196/pexels-photo-2204196.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-042",
+    "userId": "11b85257-424a-4b10-a1b9-b871058595fe",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/407936/pexels-photo-407936.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-043",
+    "userId": "acaed90f-941b-46fe-85da-63d6f681fbe7",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "/uploads/trainers/trainer-043/a8c53467-7415-4a8d-af8e-3687fc1c0328.png",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [
+      "/uploads/trainers/trainer-043/a8c53467-7415-4a8d-af8e-3687fc1c0328.png"
+    ],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  },
+  {
+    "id": "trainer-044",
+    "userId": "a989c909-49d4-4ec3-aaaa-9ac5501737fc",
+    "name": "Carlos Personal",
+    "profession": "Personal Trainer",
+    "description": "Complete seu perfil para aparecer no catálogo com mais detalhes.",
+    "photoUrl": "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+    "servicePrice": 100,
+    "contactPhone": "",
+    "city": "",
+    "state": "",
+    "specialties": [],
+    "modalities": [],
+    "cref": "",
+    "gallery": [],
+    "availability": "",
+    "experienceYears": 0,
+    "reviews": [],
+    "featured": false
+  }
+]

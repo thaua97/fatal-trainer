@@ -1,6 +1,6 @@
 # Especificação — Biblioteca de componentes FT
 
-**Versão:** 1.2  
+**Versão:** 1.3  
 **Status:** Normativo  
 **Documentos base:** [estrutura-pastas.md](./estrutura-pastas.md) · [prd-design.md](../prd-design.md) · [design/fatal-trainer.pen](../../design/fatal-trainer.pen)
 
@@ -107,6 +107,16 @@ app/composables/components/useFT<Nome>.ts
 
 - Prefixo `useFT` alinhado ao componente (`useFTTrainerList` ↔ `FTTrainerList`).
 - Composables de **domínio** (`usePersonalTrainers`, `useTrainerFilters`) permanecem em `app/composables/catalog/` ou `profile/`; `useFT*` apenas encapsula uso na UI.
+
+**Composables genéricos / transversais** (sem prefixo `FT`, reutilizáveis entre contextos):
+
+```
+app/composables/core/use<Nome>.ts
+```
+
+- Para utilitários de baixo nível, agnósticos de domínio (`useLocalStorage`, `useGeoLocation`).
+- Devem ser **SSR-safe**, tipados e testáveis em isolamento; sem dependência de `FT*`.
+- Geolocalização segue o padrão de **resolver plugável** (`useGeoLocation`): coords → cidade via resolver injetável, com fallback `manual` quando offline/sem correspondência.
 
 ---
 
@@ -505,14 +515,14 @@ Não existe “só código” nem “só design” para componentes da bibliotec
 
 ### Primitivos (`ui/`)
 
-`FTActiveFilterChip`, `FTAvatar`, `FTBackLink`, `FTDistanceLabel`, `FTGradientBubbles`, `FTIconButton`, `FTLoadMoreSentinel`, `FTModalityBadge`, `FTPriceLabel`, `FTProfileSection`, `FTRatingBadge`, `FTResultsCounter`, `FTSearchInput`, `FTSectionHeading`, `FTStarRating`, `FTTrainerCardSkeleton`
+`FTActiveFilterChip`, `FTAvatar`, `FTBackLink`, `FTCityPicker`, `FTDistanceLabel`, `FTGradientBubbles`, `FTIconButton`, `FTLoadMoreSentinel`, `FTModalityBadge`, `FTPriceLabel`, `FTProfileSection`, `FTRatingBadge`, `FTResultsCounter`, `FTSearchInput`, `FTSectionHeading`, `FTStarRating`, `FTTrainerCardSkeleton`
 
 ### Compostos (`composite/`)
 
 | Contexto | Componentes |
 |----------|---------------|
 | `common/` | `FTEmptyState`, `FTErrorState` |
-| `catalog/` | `FTAppHeader`, `FTActiveFilterChips`, `FTCatalogToolbar`, `FTFilterFab`, `FTFilterPanel`, `FTSortSelect`, `FTTrainerCard`, `FTTrainerList` |
+| `catalog/` | `FTAppHeader`, `FTActiveFilterChips`, `FTCatalogToolbar`, `FTCitySelector`, `FTFilterFab`, `FTFilterPanel`, `FTSortSelect`, `FTTrainerCard`, `FTTrainerList` |
 | `profile/` | `FTProfileCta`, `FTProfileGallery`, `FTProfileHeader`, `FTProfileHero`, `FTProfileLocationRow`, `FTProfileReviewList` |
 
 ---
@@ -521,6 +531,7 @@ Não existe “só código” nem “só design” para componentes da bibliotec
 
 | Versão | Data | Alterações |
 |--------|------|------------|
+| 1.3 | 2026-06-06 | `composables/core/` (genéricos SSR-safe) + padrão de geolocalização plugável; `FTCitySelector` (composite) e `FTCityPicker` (primitivo) no inventário |
 | 1.2 | 2026-06-05 | §5 Pilares — Nuxt UI + HTML semântico + Tailwind como modelo normativo de implementação |
 | 1.1 | 2026-06-05 | §5 HTML semântico obrigatório — mapa de elementos, regras, padrões e checklist |
 | 1.0 | 2026-06-04 | Versão inicial — UI vs composite, arquivos obrigatórios, sync `.pen` ↔ código |

@@ -16,7 +16,10 @@ const trainerRef = toRef(props, 'trainer')
 const { servicePrice, promoPrice, hasPromotion } = useFTTrainerPrice(trainerRef)
 const { locale } = useI18n()
 
+const { toMediaUrl } = useMediaUrl()
+
 const profilePath = computed(() => `/personal-trainers/${props.trainer.id}`)
+const displayPhotoUrl = computed(() => toMediaUrl(props.trainer.photoUrl))
 
 const specialtyLine = computed(
   () => props.trainer.specialties?.[0] ?? props.trainer.profession,
@@ -72,7 +75,7 @@ const originalPriceLabel = computed(() => {
     data-testid="featured-trainer-card"
   >
     <img
-      :src="trainer.photoUrl"
+      :src="displayPhotoUrl"
       :alt="`Foto de ${trainer.name}`"
       :class="$style.cardPhoto"
       loading="lazy"

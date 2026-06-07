@@ -2,6 +2,13 @@
   "catalog": {
     "noTrainersFound": "No se encontró ningún entrenador personal.",
     "loadingTrainers": "Cargando entrenadores personales",
-    "clearFilters": "Limpiar filtros"
+    "clearFilters": "Limpiar filtros",
+    "loadMore": "Cargar más",
+    "seenAll": "Has visto todos los entrenadores personales"
+  },
+  "favorites": {
+    "emptyTitle": "Aún no hay favoritos",
+    "emptyDescription": "Toca el corazón en el perfil de un entrenador para guardarlo aquí.",
+    "exploreCta": "Explorar entrenadores"
   }
 }

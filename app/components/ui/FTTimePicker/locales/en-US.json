@@ -1,0 +1,10 @@
+{
+  "timePicker": {
+    "placeholder": "Select time",
+    "start": "Start",
+    "end": "End",
+    "ariaLabelStart": "Start time",
+    "ariaLabelEnd": "End time",
+    "selectHour": "Select {hour}"
+  }
+}

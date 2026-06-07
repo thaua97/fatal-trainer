@@ -25,6 +25,6 @@ export const DEFAULT_LIST_QUERY: ListQuery = {
   sortBy: 'name',
   sortOrder: 'asc',
   page: 1,
-  pageSize: 24,
+  pageSize: 20,
   priceView: DEFAULT_PRICE_VIEW,
 }

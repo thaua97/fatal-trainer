@@ -1,0 +1,9 @@
+{
+  "cityPicker": {
+    "label": "Ciudad",
+    "placeholder": "Buscar ciudad...",
+    "detect": "Usar mi ubicación",
+    "ariaLabel": "Buscar y seleccionar ciudad",
+    "empty": "No se encontraron ciudades"
+  }
+}

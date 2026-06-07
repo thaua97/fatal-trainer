@@ -7,15 +7,23 @@ const props = defineProps<{
 
 const trainerRef = toRef(props, 'trainer')
 const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
+const trainerId = computed(() => props.trainer.id)
+const { isFavorited, toggle, pending: favoritePending } = useFTFavoriteTrainer(trainerId)
 const {
-  servicePrice,
-  promoPrice,
+  sessionServicePrice,
+  sessionPromoPrice,
+  monthlyServicePrice,
+  monthlyPromoPrice,
   hasPromotion,
   discountPercent,
   promotionLabel,
   promotionEndsAt,
-  priceView,
 } = useFTTrainerPrice(trainerRef)
+
+const { openChat, canContact } = useWhatsApp({
+  phone: computed(() => props.trainer.contactPhone),
+  trainerName: computed(() => props.trainer.name),
+})
 
 const { t, locale } = useI18n()
 
@@ -56,11 +64,26 @@ const promotionValidity = computed(() => {
           <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
         </FTIconButton>
         <div class="absolute right-4 top-4 flex gap-2">
-          <FTIconButton :ariaLabel="$t('profile.message')">
+          <FTIconButton
+            :ariaLabel="$t('profile.message')"
+            :disabled="!canContact"
+            data-testid="profile-message-button"
+            @click="openChat"
+          >
             <UIcon name="i-lucide-message-circle" class="size-5 text-slate-900" />
           </FTIconButton>
-          <FTIconButton :ariaLabel="$t('profile.favorite')">
-            <UIcon name="i-lucide-heart" class="size-5 text-slate-900" />
+          <FTIconButton
+            :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
+            :aria-pressed="isFavorited"
+            :disabled="favoritePending"
+            data-testid="profile-favorite-button"
+            @click="toggle"
+          >
+            <UIcon
+              name="i-lucide-heart"
+              class="size-5 transition-colors duration-200"
+              :class="isFavorited ? 'fill-violet-600 text-violet-600' : 'text-slate-900'"
+            />
           </FTIconButton>
         </div>
         <div
@@ -104,14 +127,22 @@ const promotionValidity = computed(() => {
         >
           {{ specialtyLine }}
         </p>
-        <FTPriceLabel
-          class="mt-3"
-          :price="servicePrice"
-          :promo-price="promoPrice"
-          :price-view="priceView"
-          show-discount
-          size="lg"
-        />
+        <div class="mt-3 flex flex-col gap-0.5">
+          <FTPriceLabel
+            :price="sessionServicePrice"
+            :promo-price="sessionPromoPrice"
+            price-view="session"
+            show-discount
+            size="lg"
+          />
+          <FTPriceLabel
+            :price="monthlyServicePrice"
+            :promo-price="monthlyPromoPrice"
+            price-view="monthly"
+            show-discount
+            size="md"
+          />
+        </div>
         <p
           v-if="promotionLabel || promotionValidity"
           class="mt-2 text-sm"
@@ -140,11 +171,26 @@ const promotionValidity = computed(() => {
           >
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
           </FTIconButton>
-          <FTIconButton :ariaLabel="$t('profile.message')">
+          <FTIconButton
+            :ariaLabel="$t('profile.message')"
+            :disabled="!canContact"
+            data-testid="profile-message-button"
+            @click="openChat"
+          >
             <UIcon name="i-lucide-message-circle" class="size-5 text-slate-900" />
           </FTIconButton>
-          <FTIconButton :ariaLabel="$t('profile.favorite')">
-            <UIcon name="i-lucide-heart" class="size-5 text-slate-900" />
+          <FTIconButton
+            :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
+            :aria-pressed="isFavorited"
+            :disabled="favoritePending"
+            data-testid="profile-favorite-button"
+            @click="toggle"
+          >
+            <UIcon
+              name="i-lucide-heart"
+              class="size-5 transition-colors duration-200"
+              :class="isFavorited ? 'fill-violet-600 text-violet-600' : 'text-slate-900'"
+            />
           </FTIconButton>
         </div>
         <div class="flex items-start justify-between gap-4">
@@ -174,14 +220,22 @@ const promotionValidity = computed(() => {
         >
           {{ specialtyLine }}
         </p>
-        <FTPriceLabel
-          class="mt-4"
-          :price="servicePrice"
-          :promo-price="promoPrice"
-          :price-view="priceView"
-          show-discount
-          size="lg"
-        />
+        <div class="mt-4 flex flex-col gap-0.5">
+          <FTPriceLabel
+            :price="sessionServicePrice"
+            :promo-price="sessionPromoPrice"
+            price-view="session"
+            show-discount
+            size="lg"
+          />
+          <FTPriceLabel
+            :price="monthlyServicePrice"
+            :promo-price="monthlyPromoPrice"
+            price-view="monthly"
+            show-discount
+            size="md"
+          />
+        </div>
         <p
           v-if="promotionLabel || promotionValidity"
           class="mt-2 text-sm"

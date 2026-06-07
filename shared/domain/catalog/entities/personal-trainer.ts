@@ -1,9 +1,13 @@
 export type TrainerModality = 'presencial' | 'online' | 'hibrido'
 
 export interface TrainerPromotion {
+  discountPercent?: number
   promoPrice: number
   label?: string
+  startsAt?: string
   endsAt?: string
+  maxRedemptions?: number
+  redemptionCount?: number
 }
 
 export interface TrainerReview {
@@ -14,11 +18,13 @@ export interface TrainerReview {
 
 export interface PersonalTrainer {
   id: string
+  userId?: string
   name: string
   profession: string
   description: string
   photoUrl: string
   servicePrice: number
+  contactPhone?: string
   rating?: number
   reviewCount?: number
   distanceKm?: number

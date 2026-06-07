@@ -1,4 +1,8 @@
 export default defineI18nConfig(() => ({
   legacy: false,
-  fallbackLocale: 'pt-BR',
+  fallbackLocale: {
+    pt: ['pt-BR'],
+    'pt-PT': ['pt-BR'],
+    default: ['pt-BR'],
+  },
 }))

@@ -1,0 +1,167 @@
+{
+  "seo": {
+    "title": "My Profile — Fatal Trainer",
+    "description": "Manage your info, photo gallery, and promotions on Fatal Trainer."
+  },
+  "dashboard": {
+    "edit": {
+      "back": "Back",
+      "viewPublic": "View public profile",
+      "changePhoto": "Change photo",
+      "uploadingPhoto": "Uploading...",
+      "locationTitle": "Location details",
+      "availabilityTitle": "Availability",
+      "experienceTitle": "Experience",
+      "crefPlaceholder": "CREF 000000-G/UF",
+      "pricingTitle": "Service pricing",
+      "pricingSessionHint": "This is the price charged per individual session.",
+      "pricingMonthlyHint": "Monthly estimate based on {sessions} sessions per month. The saved value remains per session."
+    },
+    "errors": {
+      "forbidden": "Only personal trainers can access this page."
+    },
+    "tabs": {
+      "info": "Information",
+      "gallery": "Gallery",
+      "promotion": "Promotions"
+    },
+    "info": {
+      "success": "Information saved successfully.",
+      "submit": "Save information",
+      "submitting": "Saving...",
+      "fields": {
+        "name": "Name",
+        "contactPhone": "Contact phone",
+        "profession": "Profession / title",
+        "description": "About you",
+        "specialties": "Specialties",
+        "modalities": "Service modalities",
+        "city": "City",
+        "state": "State",
+        "servicePrice": "Price per session",
+        "cref": "CREF",
+        "availability": "Availability",
+        "availabilityDays": "Weekdays",
+        "availabilityHours": "Service hours",
+        "experienceYears": "Years of experience"
+      },
+      "placeholders": {
+        "contactPhone": "+1 (555) 000-0000",
+        "citySearch": "Search city...",
+        "state": "CA",
+        "availability": "Mon–Fri, 7am–8pm"
+      },
+      "hints": {
+        "description": "Minimum 20 characters. Share your approach and differentiators."
+      },
+      "errors": {
+        "submitFailed": "Could not save. Please try again.",
+        "name": {
+          "required": "Enter your name.",
+          "tooShort": "Name is too short."
+        },
+        "contactPhone": {
+          "required": "Enter a contact phone.",
+          "invalid": "Invalid phone number."
+        },
+        "profession": {
+          "required": "Enter your profession or title."
+        },
+        "description": {
+          "required": "Write a description.",
+          "tooShort": "Description is too short (min. 20 characters)."
+        },
+        "specialties": {
+          "required": "Select at least one specialty.",
+          "invalid": "Invalid specialty."
+        },
+        "modalities": {
+          "required": "Select at least one modality.",
+          "invalid": "Invalid modality."
+        },
+        "city": {
+          "required": "Enter the city."
+        },
+        "state": {
+          "required": "Enter the state.",
+          "invalid": "Invalid state code."
+        },
+        "servicePrice": {
+          "invalid": "Enter a valid price."
+        },
+        "cref": {
+          "required": "Enter your CREF."
+        },
+        "availability": {
+          "required": "Enter your availability."
+        },
+        "experienceYears": {
+          "invalid": "Enter valid years of experience."
+        }
+      }
+    },
+    "gallery": {
+      "success": "Gallery updated.",
+      "emptyTitle": "No gallery photos yet",
+      "emptyDescription": "Upload photos of your work to stand out in the catalog.",
+      "upload": "Upload photo",
+      "limitReached": "Photo limit reached",
+      "uploadHint": "JPG, PNG or WebP. Max 5 MB per photo, up to 12 images.",
+      "setCover": "Set cover",
+      "coverBadge": "Cover",
+      "remove": "Remove photo",
+      "imageAlt": "Gallery photo {index}",
+      "errors": {
+        "uploadFailed": "Photo upload failed.",
+        "deleteFailed": "Could not remove the photo.",
+        "coverFailed": "Could not set cover photo.",
+        "required": "Select a file.",
+        "invalidType": "Unsupported format.",
+        "tooLarge": "File too large (max 5 MB).",
+        "limit": "12 photo limit reached."
+      }
+    },
+    "promotion": {
+      "success": "Promotion saved successfully.",
+      "submit": "Save promotion",
+      "submitting": "Saving...",
+      "previewLabel": "Catalog preview",
+      "redemptionsUnlimited": "{count} clients redeemed (unlimited)",
+      "redemptionsLimited": "{count} of {max} clients redeemed",
+      "fields": {
+        "active": "Active promotion",
+        "activeHint": "Show discount in the catalog during the configured period",
+        "discountPercent": "Discount (%)",
+        "label": "Promotion label",
+        "startsAt": "Visibility start",
+        "endsAt": "Visibility end",
+        "maxRedemptions": "Redemption limit",
+        "unlimitedRedemptions": "Unlimited redemptions"
+      },
+      "errors": {
+        "submitFailed": "Could not save promotion.",
+        "discountPercent": {
+          "invalid": "Discount must be between 5% and 80%."
+        },
+        "label": {
+          "required": "Select a label."
+        },
+        "startsAt": {
+          "required": "Enter start date.",
+          "invalid": "Invalid start date."
+        },
+        "endsAt": {
+          "required": "Enter end date.",
+          "invalid": "Invalid end date.",
+          "beforeStart": "Must be after start date."
+        },
+        "maxRedemptions": {
+          "invalid": "Enter a valid limit (min. 1)."
+        },
+        "active": {
+          "noServicePrice": "Set a valid price in the Information tab before activating a promotion."
+        }
+      }
+    }
+  }
+}

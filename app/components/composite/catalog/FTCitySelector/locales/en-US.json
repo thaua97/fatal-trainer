@@ -1,0 +1,13 @@
+{
+  "cityFilter": {
+    "label": "City",
+    "placeholder": "Search city...",
+    "detect": "Use my location",
+    "errors": {
+      "unsupported": "Geolocation is not supported in this browser.",
+      "permissionDenied": "Location permission denied. Type your city.",
+      "positionUnavailable": "We couldn't get your location. Please try again.",
+      "manual": "We couldn't detect your city automatically. Type its name."
+    }
+  }
+}

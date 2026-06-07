@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  computePromoPrice,
   convertPriceForView,
   getDiscountPercent,
   getDisplayPrice,
@@ -20,12 +21,35 @@ describe('trainer-pricing', () => {
   it('returns promo price and discount percent', () => {
     const trainer = mockTrainer({
       servicePrice: 200,
-      promotion: { promoPrice: 150 },
+      promotion: {
+        discountPercent: 25,
+        promoPrice: 150,
+        startsAt: '2020-01-01',
+        endsAt: '2099-12-31',
+      },
     })
 
     expect(getEffectivePrice(trainer)).toBe(150)
     expect(isOnPromotion(trainer)).toBe(true)
     expect(getDiscountPercent(trainer)).toBe(25)
+  })
+
+  it('computes promo price from discount percent', () => {
+    expect(computePromoPrice(200, 25)).toBe(150)
+  })
+
+  it('returns false when promotion is outside date range', () => {
+    const trainer = mockTrainer({
+      promotion: {
+        discountPercent: 20,
+        promoPrice: 80,
+        startsAt: '2020-01-01',
+        endsAt: '2020-01-31',
+      },
+    })
+
+    expect(isOnPromotion(trainer, '2026-06-01')).toBe(false)
+    expect(getEffectivePrice(trainer, '2026-06-01')).toBe(trainer.servicePrice)
   })
 
   it('converts session price to monthly view', () => {

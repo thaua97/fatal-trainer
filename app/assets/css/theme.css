@@ -22,6 +22,44 @@
   --ft-promo-subtle: #dcfce7;
   --ft-promo-rgb: 22 163 74;
 
+  /* Admin — gradient orbs */
+  --ft-admin-orb-violet-rgb: 167 139 250;
+  --ft-admin-orb-sky-rgb: 125 211 252;
+  --ft-admin-orb-peach-rgb: 253 186 116;
+
+  /* Admin — role badges */
+  --ft-admin-badge-admin-from-rgb: 237 233 254;
+  --ft-admin-badge-admin-to-rgb: 221 214 254;
+  --ft-admin-badge-admin-text: #5b21b6;
+  --ft-admin-badge-student-from-rgb: 224 242 254;
+  --ft-admin-badge-student-to-rgb: 186 230 253;
+  --ft-admin-badge-student-text: #0369a1;
+  --ft-admin-badge-trainer-from-rgb: 255 237 213;
+  --ft-admin-badge-trainer-to-rgb: 254 215 170;
+  --ft-admin-badge-trainer-text: #c2410c;
+
+  /* Admin — user status badges */
+  --ft-admin-badge-active-from-rgb: 209 250 229;
+  --ft-admin-badge-active-to-rgb: 167 243 208;
+  --ft-admin-badge-active-text: #047857;
+  --ft-admin-badge-inactive-from-rgb: 255 228 230;
+  --ft-admin-badge-inactive-to-rgb: 254 205 211;
+  --ft-admin-badge-inactive-text: #be123c;
+
+  /* Admin — report status badges */
+  --ft-admin-badge-pending-from-rgb: 254 243 199;
+  --ft-admin-badge-pending-to-rgb: 253 230 138;
+  --ft-admin-badge-pending-text: #b45309;
+  --ft-admin-badge-review-from-rgb: 219 234 254;
+  --ft-admin-badge-review-to-rgb: 191 219 254;
+  --ft-admin-badge-review-text: #1d4ed8;
+  --ft-admin-badge-resolved-from-rgb: 209 250 229;
+  --ft-admin-badge-resolved-to-rgb: 167 243 208;
+  --ft-admin-badge-resolved-text: #047857;
+  --ft-admin-badge-archived-from-rgb: 241 245 249;
+  --ft-admin-badge-archived-to-rgb: 226 232 240;
+  --ft-admin-badge-archived-text: #475569;
+
   /* Nuxt UI — escala primary alinhada ao violet-600 do projeto */
   --ui-color-primary-50: #f5f3ff;
   --ui-color-primary-100: #ede9fe;

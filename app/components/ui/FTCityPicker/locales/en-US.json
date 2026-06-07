@@ -1,0 +1,9 @@
+{
+  "cityPicker": {
+    "label": "City",
+    "placeholder": "Search city...",
+    "detect": "Use my location",
+    "ariaLabel": "Search and select city",
+    "empty": "No cities found"
+  }
+}

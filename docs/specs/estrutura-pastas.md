@@ -1,6 +1,6 @@
 # Estrutura de Pastas — Fatal Trainer
 
-**Versão:** 1.0  
+**Versão:** 1.3  
 **Stack:** Nuxt 4 + Vue 3 + TypeScript + DDD-lite  
 **Documentos base:** [PRD.md](../PRD.md) · [requisitos-nao-funcionais.md](../requisitos-nao-funcionais.md) · [especificacao-componentes-ft.md](./especificacao-componentes-ft.md)
 
@@ -36,6 +36,7 @@ Derivados dos módulos funcionais (RF §2):
 |----------|-----------|--------------|------------------|
 | **Catalog** | M1 | UC-01 a UC-05 | Listagem, busca, filtros, ordenação, paginação |
 | **Profile** | M2 | UC-06, UC-07 | Visualização de perfil, navegação de retorno |
+| **Report** | — | — | Denúncia/suporte: formulário, validação e envio de ocorrências |
 | **Shared Kernel** | M3 | (transversal) | Entidades, tipos, utilitários, contratos de API |
 
 ---
@@ -105,7 +106,11 @@ fatal-trainer/
 │   │   │   ├── usePersonalTrainers.ts
 │   │   │   └── useTrainerFilters.ts
 │   │   ├── components/               # orquestração por composite
-│   │   │   └── useFTTrainerList.ts
+│   │   │   ├── useFTTrainerList.ts
+│   │   │   └── useFTCitySelector.ts
+│   │   ├── core/                     # genéricos SSR-safe (sem prefixo FT)
+│   │   │   ├── useLocalStorage.ts
+│   │   │   └── useGeoLocation.ts
 │   │   └── profile/
 │   │       └── useTrainerProfile.ts
 │   ├── layouts/
@@ -223,6 +228,7 @@ flowchart LR
 | Composite (dados) | Composable `useFT*` em `app/composables/components/` | `useFTTrainerList.ts` |
 | Composables domínio | Prefixo `use` | `useTrainerFilters.ts` |
 | Composables composite | Prefixo `useFT` | `useFTTrainerList.ts` |
+| Composables genéricos | Prefixo `use` em `app/composables/core/` | `useLocalStorage.ts`, `useGeoLocation.ts` |
 | Server routes | kebab-case | `personal-trainers.get.ts` |
 | Testes colocados | Sufixo `.spec.ts` na pasta do componente | `FTAvatar.spec.ts` |
 | Stories colocados | Sufixo `.stories.ts` na pasta do componente | `FTAvatar.stories.ts` |
@@ -304,3 +310,4 @@ Evite paths relativos (`../../../shared/...`) — quebram no build SSR.
 | 1.0 | 2026-06-04 | Versão inicial — Nuxt 4 + DDD-lite |
 | 1.1 | 2026-06-04 | Biblioteca FT — primitivos em `ui/`, compostos em `composite/`, stories/specs colocados |
 | 1.2 | 2026-06-04 | [especificacao-componentes-ft.md](./especificacao-componentes-ft.md) — normas FT e sync `.pen` ↔ código |
+| 1.3 | 2026-06-06 | `app/composables/core/` para composables genéricos SSR-safe (`useLocalStorage`, `useGeoLocation`) |

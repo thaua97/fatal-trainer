@@ -40,6 +40,8 @@ const { onPromotion, label: promotionLabel } = useFTPromotionFilter()
         v-model="search"
       />
 
+      <FTCitySelector />
+
       <section>
         <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
           {{ $t('catalog.specialties') }}
@@ -125,6 +127,8 @@ const { onPromotion, label: promotionLabel } = useFTPromotionFilter()
       v-if="showSearch"
       v-model="search"
     />
+
+    <FTCitySelector />
 
     <section>
       <h3 class="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">

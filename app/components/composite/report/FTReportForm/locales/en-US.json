@@ -1,0 +1,59 @@
+{
+  "report": {
+    "types": {
+      "abuse": "Abuse",
+      "offense": "Offense",
+      "wrongPricing": "Wrong pricing",
+      "fakeProfile": "Fake or misleading profile",
+      "harassment": "Harassment",
+      "spam": "Spam or inappropriate content",
+      "other": "Other"
+    },
+    "fields": {
+      "type": "Incident type",
+      "occurredAt": "Incident date",
+      "trainer": "Reported professional",
+      "description": "Describe what happened",
+      "contactEmail": "Contact email"
+    },
+    "placeholders": {
+      "type": "Select type",
+      "description": "Describe what happened in as much detail as possible...",
+      "contactEmail": "you{'@'}email.com"
+    },
+    "hints": {
+      "description": "Minimum 20 characters.",
+      "contactEmail": "We will use this email to update you about your report."
+    },
+    "submit": "Submit report",
+    "submitting": "Submitting...",
+    "newReport": "Submit another report",
+    "success": {
+      "title": "Report received",
+      "description": "We received your report and will contact you at the email provided soon."
+    },
+    "errors": {
+      "type": {
+        "required": "Select an incident type."
+      },
+      "occurredAt": {
+        "required": "Enter the incident date.",
+        "invalid": "Invalid date.",
+        "future": "The date cannot be in the future."
+      },
+      "trainerId": {
+        "required": "Select the reported professional.",
+        "notFound": "Professional not found."
+      },
+      "description": {
+        "required": "Describe what happened.",
+        "tooShort": "Description must be at least 20 characters."
+      },
+      "contactEmail": {
+        "required": "Enter a contact email.",
+        "invalid": "Enter a valid email."
+      },
+      "submitFailed": "Could not submit the report. Please try again."
+    }
+  }
+}

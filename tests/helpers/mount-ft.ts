@@ -30,9 +30,26 @@ const defaultStubs = {
   },
   USkeleton: { template: '<span class="u-skeleton-stub" />' },
   UDropdownMenu: { template: '<div><slot /></div>' },
+  UPopover: { template: '<div><slot /><slot name="content" /></div>' },
+  UCalendar: { template: '<div class="u-calendar-stub" />' },
+  USelectMenu: { template: '<select data-testid="report-trainer-select-stub" />' },
+  UTextarea: { template: '<textarea data-testid="report-description" />' },
+  UAlert: { template: '<div data-testid="u-alert-stub"><slot name="actions" /></div>', props: ['title', 'description'] },
+  FTDatePicker: { template: '<input data-testid="report-date-picker" />' },
+  FTTrainerSelectMenu: { template: '<select data-testid="report-trainer-select" />' },
+  FTAvatar: { template: '<span class="ft-avatar-stub" />', props: ['src', 'name', 'size'] },
   UCarousel: {
     props: ['items'],
     template: '<div data-testid="u-carousel-stub"><slot v-for="(item, index) in items" :key="index" :item="item" :index="index" /></div>',
+  },
+  UTabs: {
+    props: ['items', 'modelValue'],
+    template: '<div data-testid="u-tabs-stub"><slot name="info" /><slot name="gallery" /><slot name="promotion" /></div>',
+  },
+  UCheckbox: {
+    props: ['modelValue', 'label'],
+    emits: ['update:modelValue'],
+    template: '<label><input type="checkbox" :checked="modelValue" @change="$emit(\'update:modelValue\', $event.target.checked)" /><span>{{ label }}</span></label>',
   },
 }
 

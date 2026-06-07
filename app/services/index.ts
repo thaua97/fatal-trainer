@@ -1,0 +1,8 @@
+export { apiFetch, getApiBaseUrl } from '~/services/api/create-api-client'
+export { extractApiErrors, extractApiErrorMessage } from '~/services/api/extract-api-errors'
+export { authService } from '~/services/auth/auth.service'
+export { personalTrainersService } from '~/services/catalog/personal-trainers.service'
+export { favoritesService } from '~/services/catalog/favorites.service'
+export { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
+export { reportsService } from '~/services/report/reports.service'
+export { adminService } from '~/services/admin/admin.service'

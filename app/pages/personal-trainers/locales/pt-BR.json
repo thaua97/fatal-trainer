@@ -3,7 +3,9 @@
     "profileFallbackTitle": "Perfil — Fatal Trainer",
     "profileFallbackDescription": "Perfil do personal trainer",
     "catalogTitle": "Fatal Trainer — Explorar personais",
-    "catalogDescription": "Catálogo de personal trainers autônomos. Compare especialidades, preços e avaliações."
+    "catalogDescription": "Catálogo de personal trainers autônomos. Compare especialidades, preços e avaliações.",
+    "favoritesTitle": "Fatal Trainer — Favoritos",
+    "favoritesDescription": "Seus personal trainers favoritos salvos para comparar e contratar depois."
   },
   "profile": {
     "notFound": "Personal trainer não encontrado.",
@@ -21,5 +23,14 @@
     "priceViewTitle": "Visualização de valor",
     "priceViewSession": "Por sessão",
     "priceViewMonthly": "Mensal"
+  },
+  "favorites": {
+    "eyebrow": "Sua lista",
+    "title": "Favoritos",
+    "subtitle": "Personais que você salvou para revisar e contratar quando quiser.",
+    "count": "{count} favorito | {count} favoritos",
+    "emptyTitle": "Nenhum favorito ainda",
+    "emptyDescription": "Toque no coração no perfil de um personal para salvá-lo aqui.",
+    "exploreCta": "Explorar personais"
   }
 }

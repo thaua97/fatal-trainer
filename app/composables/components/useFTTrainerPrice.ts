@@ -24,6 +24,32 @@ export function useFTTrainerPrice(trainer: Ref<PersonalTrainer> | PersonalTraine
     return convertPriceForView(rawPromo, priceView.value)
   })
 
+  const sessionServicePrice = computed(() =>
+    convertPriceForView(trainerRef.value.servicePrice, 'session'),
+  )
+
+  const monthlyServicePrice = computed(() =>
+    convertPriceForView(trainerRef.value.servicePrice, 'monthly'),
+  )
+
+  const sessionPromoPrice = computed(() => {
+    const rawPromo = trainerRef.value.promotion?.promoPrice
+    if (rawPromo == null) {
+      return undefined
+    }
+
+    return convertPriceForView(rawPromo, 'session')
+  })
+
+  const monthlyPromoPrice = computed(() => {
+    const rawPromo = trainerRef.value.promotion?.promoPrice
+    if (rawPromo == null) {
+      return undefined
+    }
+
+    return convertPriceForView(rawPromo, 'monthly')
+  })
+
   const hasPromotion = computed(() => promoPrice.value != null)
   const discountPercent = computed(() => getDiscountPercent(trainerRef.value))
   const promotionLabel = computed(() => trainerRef.value.promotion?.label)
@@ -43,6 +69,10 @@ export function useFTTrainerPrice(trainer: Ref<PersonalTrainer> | PersonalTraine
   return {
     servicePrice,
     promoPrice,
+    sessionServicePrice,
+    sessionPromoPrice,
+    monthlyServicePrice,
+    monthlyPromoPrice,
     hasPromotion,
     discountPercent,
     promotionLabel,

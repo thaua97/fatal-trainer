@@ -2,15 +2,29 @@ import { DEFAULT_LIST_QUERY } from '#shared/domain/catalog/value-objects/list-qu
 
 export function useFTTrainerList() {
   const { filters, updateFilters } = useTrainerFilters()
-  const { trainers, total, pending, status, data, query } = usePersonalTrainers()
+  const {
+    trainers,
+    total,
+    pending,
+    status,
+    data,
+    query,
+    hasMore,
+    isLoadingMore,
+    loadMore,
+  } = usePersonalTrainers()
 
   watch(filters, (value) => {
     Object.assign(query.value, value)
   }, { deep: true, immediate: true })
 
-  const isLoading = computed(
-    () => pending.value || status.value === 'pending' || data.value == null,
-  )
+  const isLoading = computed(() => {
+    if (trainers.value.length > 0) {
+      return false
+    }
+
+    return pending.value || status.value === 'pending' || data.value == null
+  })
 
   const isEmpty = computed(() => !isLoading.value && trainers.value.length === 0)
 
@@ -37,7 +51,10 @@ export function useFTTrainerList() {
     total,
     pending,
     isLoading,
+    isLoadingMore,
     isEmpty,
+    hasMore,
+    loadMore,
     clearFilters,
   }
 }

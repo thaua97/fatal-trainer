@@ -36,6 +36,10 @@ const { count: activeFilterCount } = useFTActiveFilterCount();
         >
           {{ $t("catalog.exploreTitle") }}
         </h1>
+
+        <div class="mx-auto mt-5 max-w-md lg:mx-0">
+          <FTCitySelector test-id="catalog-city-filter" />
+        </div>
       </div>
     </header>
 
