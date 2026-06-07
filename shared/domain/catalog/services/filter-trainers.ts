@@ -5,7 +5,7 @@ import { isOnPromotion } from './trainer-pricing'
 
 export type TrainerFilterQuery = Pick<
   ListQuery,
-  'search' | 'specialties' | 'modalities' | 'onPromotion'
+  'search' | 'specialties' | 'modalities' | 'onPromotion' | 'city'
 >
 
 function matchesSearch(trainer: PersonalTrainer, term: string): boolean {
@@ -46,11 +46,19 @@ function matchesPromotion(trainer: PersonalTrainer, onPromotion?: boolean): bool
   return isOnPromotion(trainer)
 }
 
+function matchesCity(trainer: PersonalTrainer, city?: string): boolean {
+  if (!city?.trim()) {
+    return true
+  }
+
+  return normalizeSearch(trainer.city ?? '') === normalizeSearch(city)
+}
+
 export function filterTrainers(
   trainers: PersonalTrainer[],
   query: TrainerFilterQuery = {},
 ): PersonalTrainer[] {
-  const { search, specialties, modalities, onPromotion } = query
+  const { search, specialties, modalities, onPromotion, city } = query
 
   return trainers.filter((trainer) => {
     if (search?.trim()) {
@@ -69,6 +77,10 @@ export function filterTrainers(
     }
 
     if (!matchesPromotion(trainer, onPromotion)) {
+      return false
+    }
+
+    if (!matchesCity(trainer, city)) {
       return false
     }
 

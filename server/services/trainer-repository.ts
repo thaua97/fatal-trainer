@@ -81,6 +81,7 @@ export function findAllTrainers(query: ListQuery): PaginatedTrainersResponse {
     specialties: query.specialties,
     modalities: query.modalities,
     onPromotion: query.onPromotion,
+    city: query.city,
   })
   const sorted = sortTrainers(filtered, query.sortBy, query.sortOrder)
 
@@ -97,6 +98,24 @@ export function findAllTrainers(query: ListQuery): PaginatedTrainersResponse {
 
 export function findTrainerById(id: string): PersonalTrainer | undefined {
   return loadTrainers().find((trainer) => trainer.id === id)
+}
+
+export function findTrainersByIds(
+  ids: string[],
+  page: number,
+  pageSize: number,
+): PaginatedTrainersResponse {
+  const uniqueIds = [...new Set(ids)]
+  const trainers = loadTrainers().filter((trainer) => uniqueIds.includes(trainer.id))
+  const start = (page - 1) * pageSize
+  const items = trainers.slice(start, start + pageSize)
+
+  return {
+    items,
+    total: trainers.length,
+    page,
+    pageSize,
+  }
 }
 
 export function findTrainerByUserId(userId: string): PersonalTrainer | undefined {
@@ -122,7 +141,7 @@ export function createTrainerForUser(user: AuthUser): PersonalTrainer {
     description: 'Complete seu perfil para aparecer no catálogo com mais detalhes.',
     photoUrl: getMockAvatarUrl(trainers.length),
     servicePrice: 100,
-    contactPhone: '',
+    contactPhone: user.phoneNumber ?? '',
     city: '',
     state: '',
     specialties: [],

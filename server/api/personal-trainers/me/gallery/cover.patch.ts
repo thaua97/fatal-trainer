@@ -15,8 +15,8 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const body = await readBody<{ url?: string }>(event)
-  const url = body.url?.trim()
+  const body = await readBody<{ url?: string, imageUrl?: string }>(event)
+  const url = (body.imageUrl ?? body.url)?.trim()
 
   if (!url) {
     throw createError({

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
   limit?: number
-  variant?: 'full' | 'preview'
+  variant?: 'full' | 'preview' | 'favorites'
 }>(), {
   variant: 'full',
   limit: 6,
@@ -15,31 +15,99 @@ const fullState = props.variant === 'full'
   ? useFTTrainerList()
   : null
 
-const trainers = computed(() =>
-  props.variant === 'preview'
-    ? previewState!.trainers.value
-    : fullState!.trainers.value,
-)
+const favoritesState = props.variant === 'favorites'
+  ? useFTTrainerListFavorites()
+  : null
 
-const isLoading = computed(() =>
-  props.variant === 'preview'
-    ? previewState!.isLoading.value
-    : fullState!.isLoading.value,
-)
+const trainers = computed(() => {
+  if (props.variant === 'preview') {
+    return previewState!.trainers.value
+  }
 
-const isEmpty = computed(() =>
-  props.variant === 'preview'
-    ? previewState!.isEmpty.value
-    : fullState!.isEmpty.value,
-)
+  if (props.variant === 'favorites') {
+    return favoritesState!.trainers.value
+  }
+
+  return fullState!.trainers.value
+})
+
+const isLoading = computed(() => {
+  if (props.variant === 'preview') {
+    return previewState!.isLoading.value
+  }
+
+  if (props.variant === 'favorites') {
+    return favoritesState!.isLoading.value
+  }
+
+  return fullState!.isLoading.value
+})
+
+const isEmpty = computed(() => {
+  if (props.variant === 'preview') {
+    return previewState!.isEmpty.value
+  }
+
+  if (props.variant === 'favorites') {
+    return favoritesState!.isEmpty.value
+  }
+
+  return fullState!.isEmpty.value
+})
 
 const clearFilters = props.variant === 'full'
   ? fullState!.clearFilters
   : () => {}
 
-const skeletonCount = computed(() =>
-  props.variant === 'preview' ? props.limit : 6,
-)
+const hasMore = computed(() => {
+  if (props.variant === 'full') {
+    return fullState!.hasMore.value
+  }
+
+  if (props.variant === 'favorites') {
+    return favoritesState!.hasMore.value
+  }
+
+  return false
+})
+
+const isLoadingMore = computed(() => {
+  if (props.variant === 'full') {
+    return fullState!.isLoadingMore.value
+  }
+
+  if (props.variant === 'favorites') {
+    return favoritesState!.isLoadingMore.value
+  }
+
+  return false
+})
+
+const loadMore = props.variant === 'full'
+  ? fullState!.loadMore
+  : props.variant === 'favorites'
+    ? favoritesState!.loadMore
+    : () => {}
+
+const skeletonCount = computed(() => {
+  if (props.variant === 'preview') {
+    return props.limit
+  }
+
+  return 6
+})
+
+const emptyTitleKey = computed(() => {
+  if (props.variant === 'preview') {
+    return 'landing.trainers.empty'
+  }
+
+  if (props.variant === 'favorites') {
+    return 'favorites.emptyTitle'
+  }
+
+  return 'catalog.noTrainersFound'
+})
 </script>
 
 <template>
@@ -60,9 +128,15 @@ const skeletonCount = computed(() =>
     <FTEmptyState
       v-else-if="isEmpty"
       variant="search"
-      :title="$t(variant === 'preview' ? 'landing.trainers.empty' : 'catalog.noTrainersFound')"
+      :title="$t(emptyTitleKey)"
       test-id="trainer-list-empty"
     >
+      <p
+        v-if="variant === 'favorites'"
+        class="mb-4 text-sm text-slate-500"
+      >
+        {{ $t('favorites.emptyDescription') }}
+      </p>
       <UButton
         v-if="variant === 'full'"
         color="primary"
@@ -71,6 +145,16 @@ const skeletonCount = computed(() =>
         @click="clearFilters"
       >
         {{ $t('catalog.clearFilters') }}
+      </UButton>
+      <UButton
+        v-else-if="variant === 'favorites'"
+        to="/personal-trainers"
+        color="primary"
+        variant="solid"
+        class="rounded-full px-6"
+        data-testid="favorites-explore-cta"
+      >
+        {{ $t('favorites.exploreCta') }}
       </UButton>
     </FTEmptyState>
 
@@ -85,6 +169,36 @@ const skeletonCount = computed(() =>
         :trainer="trainer"
         class="xl:rounded-2xl xl:border xl:border-slate-100/80 xl:px-4 xl:hover:border-violet-200/50"
       />
+
+      <div
+        v-if="variant === 'full' || variant === 'favorites'"
+        class="col-span-full mt-2 flex flex-col items-center gap-3 py-2"
+      >
+        <FTLoadMoreSentinel
+          v-if="isLoadingMore"
+          loading
+          :has-more="hasMore"
+        />
+
+        <UButton
+          v-else-if="hasMore"
+          color="neutral"
+          variant="outline"
+          class="rounded-full px-6"
+          data-testid="trainer-list-load-more"
+          @click="loadMore"
+        >
+          {{ $t('catalog.loadMore') }}
+        </UButton>
+
+        <p
+          v-else
+          class="text-sm text-slate-500"
+          data-testid="trainer-list-end"
+        >
+          {{ $t('catalog.seenAll') }}
+        </p>
+      </div>
     </div>
   </div>
 </template>

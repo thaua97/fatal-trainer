@@ -4,23 +4,54 @@ import type { BrazilianCity } from '#shared/data/brazilian-cities'
 const city = defineModel<string>('city', { required: true })
 const state = defineModel<string>('state', { required: true })
 
-defineProps<{
+const props = withDefaults(defineProps<{
   error?: string
   testId?: string
+  label?: string
+  placeholder?: string
+  ariaLabel?: string
+  withGeolocation?: boolean
+  detecting?: boolean
+  geoError?: string
+  disabled?: boolean
+}>(), {
+  testId: 'city-picker',
+  disabled: false,
+})
+
+const emit = defineEmits<{
+  detect: []
 }>()
 
 const { t } = useI18n()
-const { fieldUi } = useFTProfileEditFieldUi()
+
+const fieldLabel = computed(() => props.label ?? t('cityPicker.label'))
+const fieldPlaceholder = computed(
+  () => props.placeholder ?? t('cityPicker.placeholder'),
+)
+const fieldError = computed(() => props.error || props.geoError)
 const { searchTerm, filteredItems, loading, cities } = useFTBrazilianCities()
 
 const selectedValue = ref<string | undefined>()
+const isEditing = ref(false)
+const menuOpen = ref(false)
+const inputMenuRef = ref<{ $el: HTMLElement } | null>(null)
 
 function formatSelectedCityLabel(item: BrazilianCity): string {
   return `${item.city}, ${item.state}`
 }
 
-const inputIcon = computed(() =>
-  selectedValue.value ? 'i-lucide-map-pin' : 'i-lucide-search',
+const displayValue = computed(() => {
+  if (!city.value || !state.value) {
+    return ''
+  }
+
+  const item = findCityItem(city.value, state.value)
+  return item ? formatSelectedCityLabel(item) : `${city.value}, ${state.value}`
+})
+
+const triggerIcon = computed(() =>
+  displayValue.value ? 'i-lucide-map-pin' : 'i-lucide-search',
 )
 
 function findCityItem(nextCity: string, nextState: string): BrazilianCity | undefined {
@@ -30,16 +61,35 @@ function findCityItem(nextCity: string, nextState: string): BrazilianCity | unde
   )
 }
 
+function syncSearchTermFromSelection() {
+  if (!city.value || !state.value) {
+    searchTerm.value = ''
+    selectedValue.value = undefined
+    return
+  }
+
+  const item = findCityItem(city.value, state.value)
+  if (item) {
+    selectedValue.value = item.value
+    searchTerm.value = formatSelectedCityLabel(item)
+  }
+}
+
 watch([city, state, cities], ([nextCity, nextState]) => {
   if (!nextCity || !nextState) {
     selectedValue.value = undefined
+    if (!isEditing.value) {
+      searchTerm.value = ''
+    }
     return
   }
 
   const item = findCityItem(nextCity, nextState)
   if (item) {
     selectedValue.value = item.value
-    searchTerm.value = formatSelectedCityLabel(item)
+    if (!isEditing.value) {
+      searchTerm.value = formatSelectedCityLabel(item)
+    }
   }
 }, { immediate: true })
 
@@ -47,6 +97,7 @@ function onSelect(value: string | undefined) {
   if (!value) {
     city.value = ''
     state.value = ''
+    stopEditing()
     return
   }
 
@@ -58,9 +109,14 @@ function onSelect(value: string | undefined) {
   city.value = item.city
   state.value = item.state
   searchTerm.value = formatSelectedCityLabel(item)
+  stopEditing()
 }
 
 watch(searchTerm, (value) => {
+  if (!isEditing.value) {
+    return
+  }
+
   if (!value.trim()) {
     selectedValue.value = undefined
     city.value = ''
@@ -79,42 +135,241 @@ watch(searchTerm, (value) => {
     state.value = ''
   }
 })
+
+function focusInputMenu() {
+  nextTick(() => {
+    inputMenuRef.value?.$el.querySelector('input')?.focus()
+  })
+}
+
+function startEditing() {
+  if (props.disabled) {
+    return
+  }
+
+  isEditing.value = true
+  menuOpen.value = true
+  syncSearchTermFromSelection()
+  focusInputMenu()
+}
+
+function stopEditing() {
+  isEditing.value = false
+  menuOpen.value = false
+  syncSearchTermFromSelection()
+}
+
+function onMenuOpenChange(open: boolean) {
+  menuOpen.value = open
+
+  if (!open) {
+    window.setTimeout(() => {
+      if (!menuOpen.value) {
+        stopEditing()
+      }
+    }, 150)
+  }
+}
+
+function onDetectClick(event: Event) {
+  event.stopPropagation()
+  emit('detect')
+}
+
+const triggerClass = [
+  'group flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white',
+  'px-4 py-3.5 text-sm font-medium shadow-sm transition-all',
+  'hover:border-violet-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/25',
+  'has-disabled:cursor-not-allowed has-disabled:opacity-60',
+].join(' ')
+
+const triggerMainClass = [
+  'flex min-w-0 flex-1 items-center gap-3 border-0 bg-transparent p-0 text-left shadow-none outline-none',
+  'focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-60',
+].join(' ')
+
+const iconBoxClass = [
+  'flex size-9 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 transition-colors',
+  'group-hover:bg-violet-100',
+].join(' ')
+
+const editingTriggerClass = [
+  'group flex w-full items-center gap-2 rounded-2xl border border-slate-200 bg-white',
+  'px-4 py-3.5 text-sm font-medium shadow-sm transition-all',
+  'hover:border-violet-300 focus-within:border-violet-300 focus-within:outline-none focus-within:ring-2 focus-within:ring-violet-500/25',
+  'has-disabled:cursor-not-allowed has-disabled:opacity-60',
+].join(' ')
+
+const inputMenuUi = {
+  root: 'w-full min-w-0 flex-1',
+  base: editingTriggerClass,
+  leading: 'static flex shrink-0 items-center',
+  trailing: 'static flex shrink-0 items-center',
+  content: 'max-h-64 rounded-2xl border border-slate-200 bg-white shadow-lg ring-0 overflow-hidden',
+  item: [
+    'rounded-xl text-sm text-slate-700',
+    'data-highlighted:not-data-disabled:text-violet-700',
+    'data-highlighted:not-data-disabled:before:bg-violet-50',
+  ].join(' '),
+  empty: 'px-3 py-2 text-sm text-slate-400',
+}
+
+const geoButtonClass = [
+  'flex size-8 shrink-0 items-center justify-center rounded-full',
+  'text-slate-400 transition-colors',
+  'hover:bg-violet-50 hover:text-violet-600',
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/25',
+  'disabled:cursor-not-allowed disabled:opacity-60',
+].join(' ')
 </script>
 
 <template>
-  <UFormField
-    class="w-full"
-    :label="t('dashboard.info.fields.city')"
-    :error="error"
-    data-testid="city-picker"
-  >
+  <div class="w-full space-y-1.5">
+    <p class="text-sm font-medium text-slate-700">
+      {{ fieldLabel }}
+    </p>
+
+    <div
+      v-if="!isEditing"
+      :class="[triggerClass, disabled && 'pointer-events-none opacity-60']"
+      :data-testid="testId"
+    >
+      <button
+        type="button"
+        :class="triggerMainClass"
+        :disabled="disabled"
+        :aria-label="ariaLabel ?? t('cityPicker.ariaLabel')"
+        @click="startEditing"
+      >
+        <span :class="iconBoxClass">
+          <UIcon
+            v-if="loading"
+            name="i-lucide-loader-circle"
+            class="size-4 animate-spin"
+          />
+          <UIcon
+            v-else
+            :name="triggerIcon"
+            class="size-4"
+          />
+        </span>
+        <span
+          class="truncate"
+          :class="displayValue ? 'text-slate-900' : 'text-slate-400'"
+        >
+          {{ displayValue || fieldPlaceholder }}
+        </span>
+      </button>
+
+      <button
+        v-if="withGeolocation"
+        type="button"
+        :class="geoButtonClass"
+        :disabled="disabled || detecting"
+        :aria-label="t('cityPicker.detect')"
+        :data-testid="`${testId}-detect`"
+        @click="onDetectClick"
+      >
+        <UIcon
+          v-if="detecting"
+          name="i-lucide-loader-circle"
+          class="size-4 animate-spin"
+        />
+        <UIcon
+          v-else
+          name="i-lucide-locate-fixed"
+          class="size-4"
+        />
+      </button>
+    </div>
+
     <UInputMenu
+      v-else
+      ref="inputMenuRef"
       v-model="selectedValue"
+      v-model:open="menuOpen"
       v-model:search-term="searchTerm"
-      class="w-full"
+      class="w-full min-w-0"
       :items="filteredItems"
       value-key="value"
       label-key="label"
       ignore-filter
       virtualize
       open-on-focus
+      autofocus
+      variant="none"
+      leading
+      :trailing="withGeolocation"
       :reset-search-term-on-select="false"
       :reset-search-term-on-blur="false"
-      :loading="loading"
-      :placeholder="t('dashboard.info.placeholders.citySearch')"
-      :icon="inputIcon"
-      :trailing="false"
+      :loading="false"
+      :placeholder="fieldPlaceholder"
+      :disabled="disabled"
       autocomplete="off"
-      :data-testid="testId ?? 'trainer-info-city'"
-      :ui="fieldUi"
+      :aria-label="ariaLabel ?? t('cityPicker.ariaLabel')"
+      :data-testid="testId"
+      :ui="inputMenuUi"
       @update:model-value="onSelect"
+      @update:open="onMenuOpenChange"
     >
-      <template #item-label="{ item }">
-        <span class="flex min-w-0 items-center gap-1.5">
-          <span class="truncate">{{ (item as BrazilianCity).city }}</span>
-          <span class="shrink-0 text-muted">- {{ (item as BrazilianCity).state }}</span>
-        </span>
-      </template>
-    </UInputMenu>
-  </UFormField>
+        <template #leading>
+          <span :class="iconBoxClass">
+            <UIcon
+              v-if="loading"
+              name="i-lucide-loader-circle"
+              class="size-4 animate-spin"
+            />
+            <UIcon
+              v-else
+              :name="triggerIcon"
+              class="size-4"
+            />
+          </span>
+        </template>
+
+        <template #item-label="{ item }">
+          <span class="flex min-w-0 items-center gap-1.5">
+            <span class="truncate">{{ (item as BrazilianCity).city }}</span>
+            <span class="shrink-0 text-slate-400">- {{ (item as BrazilianCity).state }}</span>
+          </span>
+        </template>
+
+        <template #empty>
+          {{ t('cityPicker.empty') }}
+        </template>
+
+        <template
+          v-if="withGeolocation"
+          #trailing
+        >
+          <button
+            type="button"
+            :class="geoButtonClass"
+            :disabled="disabled || detecting"
+            :aria-label="t('cityPicker.detect')"
+            :data-testid="`${testId}-detect`"
+            @click="onDetectClick"
+          >
+            <UIcon
+              v-if="detecting"
+              name="i-lucide-loader-circle"
+              class="size-4 animate-spin"
+            />
+            <UIcon
+              v-else
+              name="i-lucide-locate-fixed"
+              class="size-4"
+            />
+          </button>
+        </template>
+      </UInputMenu>
+
+    <p
+      v-if="fieldError"
+      class="text-sm text-red-600"
+      role="alert"
+    >
+      {{ fieldError }}
+    </p>
+  </div>
 </template>

@@ -62,6 +62,27 @@ describe('filterTrainers', () => {
     expect(result).toHaveLength(2)
   })
 
+  it('filters by city (accent and case insensitive)', () => {
+    const list = [
+      mockTrainer({ id: '1', name: 'A', city: 'São Paulo' }),
+      mockTrainer({ id: '2', name: 'B', city: 'Santos' }),
+    ]
+
+    const result = filterTrainers(list, { city: 'sao paulo' })
+
+    expect(result).toHaveLength(1)
+    expect(result[0]?.city).toBe('São Paulo')
+  })
+
+  it('ignores a blank city filter', () => {
+    const list = [
+      mockTrainer({ id: '1', name: 'A', city: 'São Paulo' }),
+      mockTrainer({ id: '2', name: 'B', city: 'Santos' }),
+    ]
+
+    expect(filterTrainers(list, { city: '  ' })).toHaveLength(2)
+  })
+
   it('filters by onPromotion', () => {
     const result = filterTrainers(trainers, { onPromotion: true })
     expect(result).toHaveLength(1)

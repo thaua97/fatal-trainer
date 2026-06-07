@@ -163,6 +163,7 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
           <FTCityPicker
             v-model:city="form.city"
             v-model:state="form.state"
+            test-id="trainer-info-city"
             :error="fieldErrors.city || fieldErrors.state"
           />
         </div>

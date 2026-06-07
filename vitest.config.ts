@@ -18,5 +18,20 @@ export default defineVitestConfig({
       'tests/unit/**/*.spec.ts',
       'app/components/**/*.spec.ts',
     ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: [
+        'app/composables/core/**',
+        'app/composables/components/useFTCitySelector.ts',
+        'app/components/composite/catalog/FTCitySelector/**',
+      ],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 })

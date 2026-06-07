@@ -1,11 +1,13 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { UploadGalleryResponse } from '#shared/types/api'
+import { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
+import { extractApiErrors } from '~/services/api/extract-api-errors'
 
 const MAX_GALLERY_IMAGES = 12
 
 export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>) {
   const { setTrainer } = useMyTrainerProfile()
   const { t } = useI18n()
+  const { toMediaUrl } = useMediaUrl()
 
   const uploadPending = ref(false)
   const deletePending = ref(false)
@@ -14,7 +16,9 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
   const success = ref(false)
 
   const gallery = computed(() => trainer.value?.gallery ?? [])
+  const displayGallery = computed(() => gallery.value.map((url) => toMediaUrl(url)))
   const photoUrl = computed(() => trainer.value?.photoUrl ?? '')
+  const displayPhotoUrl = computed(() => toMediaUrl(photoUrl.value))
   const canUpload = computed(() => gallery.value.length < MAX_GALLERY_IMAGES)
 
   function resetStatus() {
@@ -34,10 +38,7 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
       const formData = new FormData()
       formData.append('file', file)
 
-      const response = await $fetch<UploadGalleryResponse>('/api/personal-trainers/me/gallery', {
-        method: 'POST',
-        body: formData,
-      })
+      const response = await trainerProfileService.uploadGallery(formData)
 
       if (trainer.value) {
         setTrainer({
@@ -48,23 +49,16 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
       }
 
       if (options?.setAsCover) {
-        const coverResponse = await $fetch<{ trainer: PersonalTrainer }>('/api/personal-trainers/me/gallery/cover', {
-          method: 'PATCH',
-          body: { url: response.url },
-        })
+        const coverResponse = await trainerProfileService.setCover(response.url)
         setTrainer(coverResponse.trainer)
       }
 
       success.value = true
       return response.url
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'data' in err) {
-        const data = (err as { data?: { errors?: Record<string, string> } }).data
-        const code = data?.errors?.file ?? data?.errors?.gallery
-        error.value = code ? t(`dashboard.gallery.errors.${code}`) : t('dashboard.gallery.errors.uploadFailed')
-      } else {
-        error.value = t('dashboard.gallery.errors.uploadFailed')
-      }
+      const data = extractApiErrors<Record<string, string>>(err)
+      const code = data.file ?? data.gallery
+      error.value = code ? t(`dashboard.gallery.errors.${code}`) : t('dashboard.gallery.errors.uploadFailed')
       return null
     } finally {
       uploadPending.value = false
@@ -84,9 +78,7 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
     deletePending.value = true
 
     try {
-      const response = await $fetch<{ trainer: PersonalTrainer }>(`/api/personal-trainers/me/gallery/${index}`, {
-        method: 'DELETE',
-      })
+      const response = await trainerProfileService.deleteGallery(index)
       setTrainer(response.trainer)
       success.value = true
     } catch {
@@ -105,10 +97,7 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
     coverPending.value = true
 
     try {
-      const response = await $fetch<{ trainer: PersonalTrainer }>('/api/personal-trainers/me/gallery/cover', {
-        method: 'PATCH',
-        body: { url },
-      })
+      const response = await trainerProfileService.setCover(url)
       setTrainer(response.trainer)
       success.value = true
     } catch {
@@ -129,7 +118,9 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
 
   return {
     gallery,
+    displayGallery,
     photoUrl,
+    displayPhotoUrl,
     canUpload,
     uploadPending,
     deletePending,

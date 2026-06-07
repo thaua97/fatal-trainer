@@ -2,6 +2,13 @@
   "catalog": {
     "noTrainersFound": "No personal trainers found.",
     "loadingTrainers": "Loading personal trainers",
-    "clearFilters": "Clear filters"
+    "clearFilters": "Clear filters",
+    "loadMore": "Load more",
+    "seenAll": "You have seen all personal trainers"
+  },
+  "favorites": {
+    "emptyTitle": "No favorites yet",
+    "emptyDescription": "Tap the heart on a trainer profile to save them here.",
+    "exploreCta": "Explore trainers"
   }
 }

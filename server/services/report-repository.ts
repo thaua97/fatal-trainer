@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import type { Report, ReportPayload } from '#shared/domain/report/entities/report'
 import type { CreateReportResponse } from '#shared/types/api'
+import { addMockReport } from '../mocks/mock-admin-store'
 
 const REPORTS_FILE = join(process.cwd(), 'server/data/reports.json')
 
@@ -31,6 +32,15 @@ export function createReport(payload: ReportPayload): CreateReportResponse {
 
   reports.push(report)
   saveReports(reports)
+
+  addMockReport({
+    type: report.type as 'other',
+    occurredAt: report.occurredAt,
+    trainerId: report.trainerId,
+    description: report.description,
+    contactEmail: report.contactEmail,
+    trainerName: undefined,
+  })
 
   return {
     id: report.id,

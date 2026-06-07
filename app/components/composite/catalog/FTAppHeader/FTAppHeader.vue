@@ -15,8 +15,8 @@ function localeMenuLabel(code: FTLocaleCode) {
 
 const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
   const navSection: DropdownMenuItem[] = [
-    { label: t('header.about'), icon: 'i-lucide-info', to: '/sobre' },
     { label: t('header.trainers'), icon: 'i-lucide-users', to: '/personal-trainers' },
+    { label: t('header.favorites'), icon: 'i-lucide-heart', to: '/personal-trainers/favoritos' },
     { label: t('header.report'), icon: 'i-lucide-flag', to: '/denuncia' },
   ]
 
@@ -96,20 +96,20 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
           :aria-label="t('header.navLabel')"
         >
           <NuxtLink
-            to="/sobre"
-            class="text-sm font-medium transition-colors"
-            :class="isNavActive('/sobre') ? 'text-violet-600' : 'text-slate-600 hover:text-violet-600'"
-            data-testid="app-header-nav-about"
-          >
-            {{ t('header.about') }}
-          </NuxtLink>
-          <NuxtLink
             to="/personal-trainers"
             class="text-sm font-medium transition-colors"
             :class="isNavActive('/personal-trainers') ? 'text-violet-600' : 'text-slate-600 hover:text-violet-600'"
             data-testid="app-header-nav-trainers"
           >
             {{ t('header.trainers') }}
+          </NuxtLink>
+          <NuxtLink
+            to="/personal-trainers/favoritos"
+            class="text-sm font-medium transition-colors"
+            :class="isNavActive('/personal-trainers/favoritos') ? 'text-violet-600' : 'text-slate-600 hover:text-violet-600'"
+            data-testid="app-header-nav-favorites"
+          >
+            {{ t('header.favorites') }}
           </NuxtLink>
           <NuxtLink
             to="/denuncia"

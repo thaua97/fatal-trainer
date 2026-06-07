@@ -1,6 +1,6 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { TrainerDetailResponse } from '#shared/types/api'
 import type { ReportTrainerOption } from '~/composables/report/useReportTrainerSearch'
+import { personalTrainersService } from '~/services/catalog/personal-trainers.service'
 
 function mapTrainerToOption(trainer: PersonalTrainer): ReportTrainerOption {
   return {
@@ -18,22 +18,35 @@ export function useFTTrainerSelectMenu(modelValue: Ref<string>) {
   const { trainerItems, pending, search } = useReportTrainerSearch()
 
   const selectedId = computed(() => modelValue.value.trim())
+  const prefetchedTrainer = useState<PersonalTrainer | null>('trainer-select-prefetched', () => null)
+  const prefetchPending = ref(false)
 
-  const prefetchUrl = computed(() =>
-    selectedId.value ? `/api/personal-trainers/${selectedId.value}` : undefined,
-  )
+  async function prefetchTrainer(id: string): Promise<void> {
+    if (!id) {
+      prefetchedTrainer.value = null
+      return
+    }
 
-  const { data: prefetchedTrainer } = useFetch<TrainerDetailResponse>(
-    prefetchUrl,
-    {
-      watch: [prefetchUrl],
-    },
-  )
+    prefetchPending.value = true
+
+    try {
+      const response = await personalTrainersService.getById(id)
+      prefetchedTrainer.value = response.trainer
+    } catch {
+      prefetchedTrainer.value = null
+    } finally {
+      prefetchPending.value = false
+    }
+  }
+
+  watch(selectedId, (id) => {
+    prefetchTrainer(id)
+  }, { immediate: true })
 
   const items = computed<ReportTrainerOption[]>(() => {
     const list = [...trainerItems.value]
 
-    const prefetched = prefetchedTrainer.value?.trainer
+    const prefetched = prefetchedTrainer.value
     if (prefetched && !list.some((item) => item.value === prefetched.id)) {
       list.unshift(mapTrainerToOption(prefetched))
     }
@@ -50,7 +63,7 @@ export function useFTTrainerSelectMenu(modelValue: Ref<string>) {
   return {
     search,
     items,
-    pending,
+    pending: computed(() => pending.value || prefetchPending.value),
     selectedAvatar,
   }
 }

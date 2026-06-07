@@ -1,6 +1,8 @@
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { LoginRequest, RegisterRequest } from '#shared/types/api'
 import type { LoginValidationErrors, RegisterValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
+import { authService } from '~/services/auth/auth.service'
+import { extractApiErrors } from '~/services/api/extract-api-errors'
 
 export function useAuth() {
   const user = useState<AuthUser | null>('auth-user', () => null)
@@ -26,7 +28,7 @@ export function useAuth() {
 
   async function fetchMe(): Promise<void> {
     try {
-      const response = await $fetch<{ user: AuthUser }>('/api/auth/me')
+      const response = await authService.getMe()
       user.value = response.user
     } catch {
       user.value = null
@@ -38,16 +40,15 @@ export function useAuth() {
   async function login(payload: LoginRequest): Promise<{ success: boolean, errors?: LoginValidationErrors }> {
     pending.value = true
     try {
-      const response = await $fetch<{ user: AuthUser }>('/api/auth/login', {
-        method: 'POST',
-        body: payload,
-      })
+      const response = await authService.login(payload)
       user.value = response.user
       welcomePending.value = true
+      const { syncFromLocalStorage } = useTrainerBookmakers()
+      await syncFromLocalStorage().catch(() => {})
       await navigateTo('/?welcome=1')
       return { success: true }
     } catch (err: unknown) {
-      const errors = extractFieldErrors<LoginValidationErrors>(err)
+      const errors = extractApiErrors<LoginValidationErrors>(err)
       return { success: false, errors }
     } finally {
       pending.value = false
@@ -57,16 +58,15 @@ export function useAuth() {
   async function register(payload: RegisterRequest): Promise<{ success: boolean, errors?: RegisterValidationErrors }> {
     pending.value = true
     try {
-      const response = await $fetch<{ user: AuthUser }>('/api/auth/register', {
-        method: 'POST',
-        body: payload,
-      })
+      const response = await authService.register(payload)
       user.value = response.user
       welcomePending.value = true
+      const { syncFromLocalStorage } = useTrainerBookmakers()
+      await syncFromLocalStorage().catch(() => {})
       await navigateTo('/?welcome=1')
       return { success: true }
     } catch (err: unknown) {
-      const errors = extractFieldErrors<RegisterValidationErrors>(err)
+      const errors = extractApiErrors<RegisterValidationErrors>(err)
       return { success: false, errors }
     } finally {
       pending.value = false
@@ -76,7 +76,7 @@ export function useAuth() {
   async function logout(): Promise<void> {
     pending.value = true
     try {
-      await $fetch('/api/auth/logout', { method: 'POST' })
+      await authService.logout()
     } catch {
       // Clear local state even if request fails
     } finally {
@@ -109,14 +109,4 @@ export function useAuth() {
     logout,
     consumeWelcome,
   }
-}
-
-function extractFieldErrors<T extends Record<string, string | undefined>>(err: unknown): T {
-  if (err && typeof err === 'object' && 'data' in err) {
-    const data = (err as { data?: { errors?: T } }).data
-    if (data?.errors) {
-      return data.errors
-    }
-  }
-  return {} as T
 }

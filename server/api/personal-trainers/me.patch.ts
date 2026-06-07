@@ -6,6 +6,7 @@ import {
   updateTrainerInfo,
   updateTrainerPromotion,
 } from '../../services/trainer-repository'
+import { updateUserInStore } from '../../mocks/mock-user-store'
 import { requireTrainerSession } from '../../utils/require-trainer-session'
 
 export default defineEventHandler(async (event) => {
@@ -55,6 +56,14 @@ export default defineEventHandler(async (event) => {
     }
 
     const updated = updateTrainerInfo(trainer.id, payload)
+    updateUserInStore(user.id, {
+      phoneNumber: payload.contactPhone.trim(),
+      name: payload.name.trim(),
+      avatarUrl: updated.photoUrl,
+      city: payload.city.trim(),
+      state: payload.state.trim().toUpperCase(),
+    })
+
     return { trainer: updated }
   }
 

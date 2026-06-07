@@ -2,6 +2,8 @@
   "profile": {
     "message": "Enviar mensagem",
     "favorite": "Favoritar",
-    "promotionValidUntil": "Válido até {date}"
+    "unfavorite": "Remover dos favoritos",
+    "promotionValidUntil": "Válido até {date}",
+    "whatsappMessage": "Olá {name}, vi seu perfil no Fatal Trainer e gostaria de agendar uma aula experimental"
   }
 }

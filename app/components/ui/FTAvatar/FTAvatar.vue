@@ -15,6 +15,7 @@ const props = withDefaults(
 );
 
 const imageError = ref(false);
+const { toMediaUrl } = useMediaUrl();
 
 watch(
   () => props.src,
@@ -24,7 +25,8 @@ watch(
 );
 
 const initials = computed(() => getInitialsFromName(props.name));
-const showImage = computed(() => Boolean(props.src) && !imageError.value);
+const resolvedSrc = computed(() => toMediaUrl(props.src));
+const showImage = computed(() => Boolean(resolvedSrc.value) && !imageError.value);
 
 function onImageError() {
   imageError.value = true;
@@ -62,7 +64,7 @@ const isBlock = computed(() => props.size === "hero" || props.size === "fill");
 <template>
   <img
     v-if="showImage"
-    :src="src"
+    :src="resolvedSrc"
     :alt="`Foto de ${name}`"
     loading="lazy"
     class="shrink-0 object-cover"

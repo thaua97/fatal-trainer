@@ -76,6 +76,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-04',
   devtools: { enabled: true },
 
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '',
+      assetsBaseUrl: process.env.NUXT_PUBLIC_ASSETS_BASE_URL || '',
+      useMockApi: process.env.NUXT_PUBLIC_USE_MOCK_API === 'true',
+    },
+  },
+
   vite: {
     optimizeDeps: {
       include: [

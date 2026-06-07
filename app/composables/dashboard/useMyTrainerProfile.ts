@@ -1,40 +1,46 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { MyTrainerResponse } from '#shared/types/api'
+import { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
 
 export function useMyTrainerProfile() {
   const trainer = useState<PersonalTrainer | null>('my-trainer-profile', () => null)
+  const created = useState('my-trainer-profile-created', () => false)
+  const pending = useState('my-trainer-profile-pending', () => false)
+  const error = useState<Error | null>('my-trainer-profile-error', () => null)
+  const hydrated = useState('my-trainer-profile-hydrated', () => false)
 
-  const { data, pending, error, refresh } = useFetch<MyTrainerResponse>('/api/personal-trainers/me', {
-    key: 'my-trainer-profile-fetch',
-    onResponse({ response }) {
-      if (response._data?.trainer) {
-        trainer.value = response._data.trainer
-      }
-    },
-  })
+  async function fetchMyProfile(): Promise<void> {
+    pending.value = true
+    error.value = null
 
-  watch(data, (value) => {
-    if (value?.trainer) {
-      trainer.value = value.trainer
+    try {
+      const response = await trainerProfileService.getMe()
+      trainer.value = response.trainer
+      created.value = response.created
+      hydrated.value = true
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err : new Error('fetchFailed')
+    } finally {
+      pending.value = false
     }
-  })
+  }
+
+  if (!hydrated.value && !pending.value) {
+    fetchMyProfile()
+  }
 
   function setTrainer(next: PersonalTrainer) {
     trainer.value = next
-    if (data.value) {
-      data.value = { ...data.value, trainer: next }
-    }
 
     const { setUserAvatarUrl } = useAuth()
     setUserAvatarUrl(next.photoUrl || undefined)
   }
 
   return {
-    trainer: computed(() => trainer.value ?? data.value?.trainer ?? null),
-    created: computed(() => data.value?.created ?? false),
+    trainer: computed(() => trainer.value),
+    created: computed(() => created.value),
     pending,
     error,
-    refresh,
+    refresh: fetchMyProfile,
     setTrainer,
   }
 }

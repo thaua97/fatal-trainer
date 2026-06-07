@@ -1,107 +1,107 @@
 # City Selector (Segregação por cidade) — Design Spec
 
 **Date:** 2026-06-06
-**Status:** Approved — pending implementation
+**Status:** Implemented
 
 ## Overview
 
-Na página de catálogo (`/personal-trainers`) os personais passam a ser segregados por
-cidade. O usuário escolhe a cidade através de um select customizado (ícone + input de
-texto + ListBox) que segue o padrão visual do projeto (tipografia `font-display`, bolha
-de gradiente violeta, campos `rounded-2xl`). A cidade pode ser:
+Na página de catálogo (`/personal-trainers`) os personais são segregados por cidade.
+O usuário escolhe a cidade através de um seletor composto (ícone + input de texto +
+ListBox virtualizado) que segue o padrão visual do projeto (tipografia `font-display`,
+bolha de gradiente violeta, campos `rounded-2xl`). A cidade pode ser:
 
 1. digitada/selecionada manualmente na lista de cidades brasileiras; ou
-2. detectada via geolocalização do navegador.
+2. detectada via geolocalização do navegador (best-effort, plugável).
 
 A localização escolhida dirige o filtro `city` existente (via URL) e é persistida em
 `localStorage`, sendo restaurada como padrão em visitas futuras.
 
 ## Decisions
 
-- **Componente:** estender o primitivo existente `FTCityPicker` (não criar componente
-  novo). Ele ganha uma afordância de geolocalização e passa a servir também o catálogo,
-  mantendo-se **apresentacional** (props + emits). O uso atual em formulários de perfil
-  permanece inalterado (geolocalização desligada por padrão).
+- **Componente composto:** novo `composite/catalog/FTCitySelector` que orquestra via
+  composable e **renderiza o primitivo existente `ui/FTCityPicker`** (doutrina ui ↔
+  composite). O primitivo permanece apresentacional (props + emits); o uso atual em
+  formulários de perfil continua inalterado (geolocalização desligada por padrão).
 - **Select base:** Nuxt UI `UInputMenu` (combobox = input + listbox virtualizado),
   consistente com o uso atual do `FTCityPicker`.
 - **Integração com a lista:** dirige o filtro `city` já existente em `ListQuery` via URL
   (`useTrainerFilters`) **e** persiste em `localStorage`. No carregamento, se a URL não
   tiver `city` mas houver localização salva, ela é aplicada como padrão.
 - **Geolocalização:** `useGeoLocation` usa `navigator.geolocation` + um **resolver
-  plugável** (coords → cidade). O resolver padrão é best-effort; quando não há
-  resolver/correspondência, sinaliza fallback "manual" para o usuário digitar. Permissão
-  negada / API indisponível são tratadas como erro amigável.
+  plugável** (coords → cidade). O resolver padrão é offline/best-effort; quando não há
+  resolver/correspondência, sinaliza fallback `manual` para o usuário digitar. Permissão
+  negada / API indisponível são tratadas como erro amigável e localizado.
 - **localStorage:** composable `useLocalStorage` **escrito do zero** (SSR-safe, reativo,
   JSON), sem envolver o `useLocalStorage` do VueUse.
-- **Placement:** o select aparece **tanto no header** ("Explorar personais") **quanto no
+- **Placement:** o seletor aparece **no header** ("Explorar personais") **e no
   `FTFilterPanel`** (sidebar + drawer mobile).
-- **Pasta de composables genéricos:** novo diretório `app/composables/core/`.
+- **Composables genéricos:** novo diretório `app/composables/core/`.
 
 ## Architecture
 
 ```
-app/composables/core/useLocalStorage.ts          # genérico, SSR-safe, reativo
-app/composables/core/useGeoLocation.ts            # localização selecionada + detect/select/clear (persistida)
-app/composables/components/useFTCitySelector.ts   # wiring: geo + filtro URL + cidades (catálogo)
+app/composables/core/useLocalStorage.ts            # genérico, SSR-safe, reativo
+app/composables/core/useGeoLocation.ts             # localização + detect/select/clear (persistida)
+app/composables/components/useFTCitySelector.ts    # wiring: geo + filtro URL + cidades (catálogo)
+app/components/composite/catalog/FTCitySelector/
+  ├─ FTCitySelector.vue          # composto: orquestra e renderiza FTCityPicker
+  ├─ FTCitySelector.spec.ts
+  ├─ FTCitySelector.stories.ts   # Composite/Catalog/FTCitySelector
+  └─ locales/{pt-BR,en-US,es-ES}.json  # cityFilter.* (label/placeholder/detect/errors)
 app/components/ui/FTCityPicker/
-  ├─ FTCityPicker.vue          # estendido: afordância de geolocalização
-  ├─ FTCityPicker.spec.ts      # estendido
-  ├─ FTCityPicker.stories.ts   # NOVO (exigido pela especificação de componentes)
-  └─ locales/{pt-BR,en-US,es-ES}.json  # NOVO (strings de geolocalização)
+  ├─ FTCityPicker.vue            # primitivo (icone + UInputMenu + botão geo)
+  ├─ FTCityPicker.spec.ts
+  └─ FTCityPicker.stories.ts     # NOVO (UI/FTCityPicker)
 ```
 
 Camadas (DDD-lite): a orquestração (geo, URL, storage) vive em composables; o componente
-`ui/FTCityPicker` permanece primitivo (apenas props/emits + `U*` + Tailwind).
+`ui/FTCityPicker` permanece primitivo (apenas props/emits + `U*` + Tailwind); o composite
+`FTCitySelector` conecta os dois.
 
-### `useLocalStorage<T>(key, defaultValue)`
+### `useLocalStorage<T>(key, defaultValue, options?)`
 
 - Retorna um `Ref<T>` reativo sincronizado com `localStorage`.
-- **SSR-safe:** no servidor (ou sem `window`) apenas retorna o `defaultValue`, sem
-  acessar `localStorage`.
-- Serialização JSON na leitura/escrita; `watch` grava de volta (deep).
-- Tratamento gracioso de exceções (modo privado / quota) sem quebrar a aplicação.
+- **SSR-safe:** no servidor (ou sem `window`) apenas retorna o `defaultValue`.
+- Serialização JSON (override via `options.serializer`); `watch` deep grava de volta;
+  `null`/`undefined` removem a chave.
+- Tratamento gracioso de exceções (modo privado / quota / JSON corrompido).
 
 ### `useGeoLocation(options?)`
 
 Estado:
-- `selectedLocation: Ref<{ city, state, value } | null>` — persistido via `useLocalStorage`
-  na chave `ft:geo-location`.
-- `pending: Ref<boolean>`, `error: Ref<GeoError | null>`, `isSupported: ComputedRef<boolean>`.
+- `selectedLocation: Ref<GeoLocationValue | null>` — persistido via `useLocalStorage` na
+  chave `ft:geo-location`.
+- `pending`, `error: Ref<GeoError | null>`, `isSupported: ComputedRef<boolean>`.
 
 Funções:
-- `detectByBrowser()` — `navigator.geolocation.getCurrentPosition`; resolve coords → cidade
-  via `options.resolver` (plugável); trata `unsupported`, `permission-denied`, `manual`
-  (sem resolver/sem match).
-- `selectByName(cityItem)` — define a localização a partir de uma cidade do dataset.
-- `clear()` — limpa a localização (e o filtro derivado, no nível do `useFTCitySelector`).
+- `detectByBrowser()` — `getCurrentPosition`; resolve coords → cidade via
+  `options.resolver` (plugável); trata `unsupported`, `permission-denied`,
+  `position-unavailable`, `manual`.
+- `selectByName(city)` — define a localização a partir de uma `BrazilianCity`.
+- `clear()` — limpa a localização.
 
-`GeoError` = `'unsupported' | 'permission-denied' | 'position-unavailable' | 'manual'`.
+`GeoError = 'unsupported' | 'permission-denied' | 'position-unavailable' | 'manual'`.
 
-### `useFTCitySelector()` (catálogo)
+### `useFTCitySelector(options?)` (catálogo)
 
 Conecta `useGeoLocation` + `useTrainerFilters` + `useFTBrazilianCities`:
-- `onSelect(cityItem)` → `updateFilters({ city })` + `geo.selectByName(cityItem)`.
-- `onDetect()` → `geo.detectByBrowser()`; ao resolver, `updateFilters({ city })`.
-- `onClear()` → `updateFilters({ city: undefined })` + `geo.clear()`.
-- `onMounted` → se `filters.city` vazio e `geo.selectedLocation` presente, aplica como
-  padrão (push para URL + prefill do input).
-- Expõe `pending` (detecting) e `error` (geoError) para o componente.
+- `city`/`state` são refs locais; um único `watch([city, state])` (batched) empurra o
+  filtro `city` para a URL e persiste a localização — suporta a escrita dupla do picker.
+- `watch(() => filters.value.city)` ressincroniza ao navegar (back/forward).
+- `onMounted`: se a URL não tem `city` e há localização salva, aplica-a (propaga para a
+  URL via o watcher).
+- `onDetect()` roda `geo.detectByBrowser()`; `onClear()` limpa cidade/estado.
+- `geoError` é a mensagem localizada (`cityFilter.errors.*`) derivada de `geo.error`.
+- Aceita `options.resolver` para injetar um geocodificador.
 
-### `FTCityPicker` (extensão)
+### `FTCitySelector` (composto)
 
-Novas props/emits, todas opcionais e retrocompatíveis:
-- `withGeolocation?: boolean` (default `false`) — renderiza o botão "detectar minha
-  localização" (`i-lucide-locate-fixed`).
-- `detecting?: boolean` — estado de loading do botão.
-- `geoError?: string` — mensagem de erro exibida abaixo do campo.
-- `emit('detect')` — disparado ao clicar no botão de geolocalização.
-
-O componente permanece responsável apenas pela apresentação; o wiring é externo.
+Props opcionais: `label`, `placeholder`, `testId`. Renderiza `FTCityPicker` com
+`with-geolocation`, `v-model:city/state`, `:detecting`, `:geo-error` e `@detect`.
 
 ## Visual
 
-- Tipografia `font-display`; bolha de gradiente violeta (consistente com o header e
-  `FTGradientBubbles`).
+- Tipografia `font-display`; bolha de gradiente violeta no header do catálogo.
 - Campos `rounded-2xl` via `useFTProfileEditFieldUi`.
 - `UInputMenu` com ícone líder `i-lucide-map-pin` (selecionado) / `i-lucide-search`
   (busca), listbox virtualizado; botão de detecção `i-lucide-locate-fixed`.
@@ -110,23 +110,24 @@ O componente permanece responsável apenas pela apresentação; o wiring é exte
 
 | Arquivo | Cenários |
 |---------|----------|
-| `useLocalStorage.spec.ts` | default quando vazio; leitura de valor existente; escrita reativa; SSR/no-window retorna default; exceção tratada; round-trip JSON |
-| `useGeoLocation.spec.ts` | detect sucesso (resolver); `permission-denied`; `unsupported`; `manual` (sem resolver); `selectByName`; `clear`; persistência em localStorage |
-| `useFTCitySelector.spec.ts` | select atualiza filtro `city`; detect atualiza filtro; restauração na montagem; clear remove filtro |
-| `FTCityPicker.spec.ts` (estender) | render do botão quando `withGeolocation`; emit `detect`; estado `detecting`; exibição de `geoError`; comportamentos existentes |
-| `FTCityPicker.stories.ts` (novo) | `Default`, `Selected`, `WithGeolocation`, `Detecting` |
+| `useLocalStorage.spec.ts` | default quando vazio; leitura existente; escrita reativa; round-trip JSON; remoção em `null`; JSON corrompido; SSR/no-window; falha de escrita tratada |
+| `useGeoLocation.spec.ts` | detect sucesso (resolver); `permission-denied`; `position-unavailable`; `manual`; `unsupported`; `selectByName` + persistência; `clear`; restauração do localStorage |
+| `useFTCitySelector.spec.ts` | select atualiza filtro `city`; clear remove filtro; detect aplica cidade; restauração na montagem; erro localizado quando não suportado |
+| `FTCitySelector.spec.ts` | render do picker com geo; label/placeholder padrão e custom; erro de geo localizado após detect falho |
+| `FTCityPicker.spec.ts` | comportamentos existentes (mantidos verdes) |
 
-Mocks: `navigator.geolocation` e `resolver` injetável tornam tudo offline-testável.
+Cobertura via `@vitest/coverage-v8` (`npm run test:coverage`), thresholds 80% nos arquivos
+novos. Mocks: `navigator.geolocation`, `useTrainerFilters` (global) e `useFTBrazilianCities`.
 
-## Docs to update
+## Docs updated
 
-- `docs/specs/especificacao-componentes-ft.md` — inventário + nota sobre `composables/core/`
-  e o padrão de geolocalização.
-- `docs/specs/estrutura-pastas.md` — registrar `app/composables/core/`.
-- Sincronização `.pen` do `FTCityPicker` conforme §9 da especificação de componentes.
+- `docs/specs/especificacao-componentes-ft.md` — `FTCitySelector` no inventário;
+  `composables/core/` e padrão de geolocalização.
+- `docs/specs/estrutura-pastas.md` — registro de `app/composables/core/`.
 
 ## Out of scope / YAGNI
 
-- Filtro por `city + state` combinado (o `ListQuery` só tem `city`; mantém-se string única).
+- Filtro por `city + state` combinado (o `ListQuery` só tem `city`).
 - Reverse-geocoding embarcado com coordenadas no dataset (resolver permanece plugável).
+- Resolver de API ao vivo embarcado por padrão.
 - Múltiplas cidades selecionadas simultaneamente.

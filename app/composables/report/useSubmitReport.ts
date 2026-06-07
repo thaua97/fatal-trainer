@@ -1,5 +1,7 @@
 import type { CreateReportRequest, CreateReportResponse } from '#shared/types/api'
 import type { ReportValidationErrors } from '#shared/domain/report/entities/report'
+import { extractApiErrorMessage, extractApiErrors } from '~/services/api/extract-api-errors'
+import { reportsService } from '~/services/report/reports.service'
 
 export function useSubmitReport() {
   const pending = ref(false)
@@ -15,28 +17,13 @@ export function useSubmitReport() {
     submitted.value = false
 
     try {
-      const response = await $fetch<CreateReportResponse>('/api/reports', {
-        method: 'POST',
-        body: payload,
-      })
-
+      const response = await reportsService.create(payload)
       lastResponse.value = response
       submitted.value = true
       return true
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'data' in err) {
-        const data = (err as {
-          data?: { message?: string, errors?: ReportValidationErrors }
-        }).data
-
-        if (data?.errors) {
-          fieldErrors.value = data.errors
-        }
-
-        error.value = data?.message ?? 'submitFailed'
-      } else {
-        error.value = 'submitFailed'
-      }
+      fieldErrors.value = extractApiErrors<ReportValidationErrors>(err)
+      error.value = extractApiErrorMessage(err)
       return false
     } finally {
       pending.value = false

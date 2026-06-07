@@ -1,8 +1,8 @@
 {
   "header": {
     "navLabel": "Main navigation",
-    "about": "About",
     "trainers": "Trainers",
+    "favorites": "Favorites",
     "report": "Report",
     "myProfile": "My profile",
     "userMenu": "Account menu",

@@ -1,5 +1,7 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
+import { extractApiErrorMessage, extractApiErrors } from '~/services/api/extract-api-errors'
+import { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
 
 export function useUpdateTrainerProfile() {
   const pending = ref(false)
@@ -14,22 +16,12 @@ export function useUpdateTrainerProfile() {
     success.value = false
 
     try {
-      const response = await $fetch<{ trainer: PersonalTrainer }>('/api/personal-trainers/me', {
-        method: 'PATCH',
-        body: payload,
-      })
+      const response = await trainerProfileService.update(payload)
       success.value = true
       return response.trainer
     } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'data' in err) {
-        const data = (err as { data?: { message?: string, errors?: Record<string, string> } }).data
-        if (data?.errors) {
-          fieldErrors.value = data.errors
-        }
-        error.value = data?.message ?? 'submitFailed'
-      } else {
-        error.value = 'submitFailed'
-      }
+      fieldErrors.value = extractApiErrors<Record<string, string>>(err)
+      error.value = extractApiErrorMessage(err)
       return null
     } finally {
       pending.value = false

@@ -11,7 +11,9 @@ const props = withDefaults(defineProps<{
 const trainerRef = toRef(props, 'trainer')
 const {
   gallery,
+  displayGallery,
   photoUrl,
+  displayPhotoUrl,
   canUpload,
   uploadPending,
   deletePending,
@@ -78,8 +80,8 @@ function openFilePicker() {
       data-testid="trainer-gallery-grid"
     >
       <div
-        v-for="(image, index) in gallery"
-        :key="`${image}-${index}`"
+        v-for="(image, index) in displayGallery"
+        :key="`${gallery[index]}-${index}`"
         class="group relative overflow-hidden bg-slate-50"
         :class="variant === 'profile' ? 'aspect-square rounded-lg' : 'aspect-[4/3] rounded-2xl border border-slate-100'"
       >
@@ -100,14 +102,14 @@ function openFilePicker() {
           class="absolute inset-0 flex items-end justify-between gap-2 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
         >
           <UButton
-            v-if="photoUrl !== image"
+            v-if="photoUrl !== gallery[index]"
             size="xs"
             color="neutral"
             variant="solid"
             class="rounded-full"
             :loading="coverPending"
             data-testid="trainer-gallery-set-cover"
-            @click="setCover(image)"
+            @click="setCover(gallery[index]!)"
           >
             {{ t('dashboard.gallery.setCover') }}
           </UButton>

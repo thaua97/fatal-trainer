@@ -1,0 +1,13 @@
+{
+  "cityFilter": {
+    "label": "Cidade",
+    "placeholder": "Buscar cidade...",
+    "detect": "Usar minha localização",
+    "errors": {
+      "unsupported": "Geolocalização não é suportada neste navegador.",
+      "permissionDenied": "Permissão de localização negada. Digite sua cidade.",
+      "positionUnavailable": "Não foi possível obter sua localização. Tente novamente.",
+      "manual": "Não encontramos sua cidade automaticamente. Digite o nome."
+    }
+  }
+}

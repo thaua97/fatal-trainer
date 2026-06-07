@@ -6,6 +6,7 @@ export interface PaginatedTrainersResponse {
   total: number
   page: number
   pageSize: number
+  hasMore?: boolean
 }
 
 export interface TrainerDetailResponse {
@@ -91,4 +92,12 @@ export interface UpdateTrainerProfileRequest {
 export interface UploadGalleryResponse {
   url: string
   gallery: string[]
+}
+
+export interface BookmakersSyncRequest {
+  trainerIds: string[]
+}
+
+export interface BookmakersSyncResponse {
+  synced: number
 }

@@ -14,6 +14,7 @@ export function mockTrainer(overrides: Partial<PersonalTrainer> = {}): PersonalT
     modalities: ['presencial', 'online'],
     specialties: ['Funcional'],
     distanceKm: 2.3,
+    contactPhone: '11999998888',
     ...overrides,
   }
 }
