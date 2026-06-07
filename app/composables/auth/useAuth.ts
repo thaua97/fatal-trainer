@@ -42,6 +42,7 @@ export function useAuth() {
     try {
       const response = await authService.login(payload)
       user.value = response.user
+      initialized.value = true
       welcomePending.value = true
       const { syncFromLocalStorage } = useTrainerBookmakers()
       await syncFromLocalStorage().catch(() => {})
@@ -60,6 +61,7 @@ export function useAuth() {
     try {
       const response = await authService.register(payload)
       user.value = response.user
+      initialized.value = true
       welcomePending.value = true
       const { syncFromLocalStorage } = useTrainerBookmakers()
       await syncFromLocalStorage().catch(() => {})

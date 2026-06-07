@@ -4,7 +4,10 @@ import type { FTLocaleCode } from '#shared/types/locale'
 
 const { t } = useI18n()
 const { homeTo, isNavActive, onHomeClick } = useFTAppHeader()
-const { isAuthenticated } = useAuth()
+const { isAuthenticated, initialized } = useAuth()
+
+const showUserMenu = computed(() => initialized.value && isAuthenticated.value)
+const showGuestActions = computed(() => initialized.value && !isAuthenticated.value)
 const { localeItems, currentLocale, switchLocale } = useFTLocaleSwitcher()
 
 function localeMenuLabel(code: FTLocaleCode) {
@@ -20,8 +23,19 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
     { label: t('header.report'), icon: 'i-lucide-flag', to: '/denuncia' },
   ]
 
-  if (isAuthenticated.value) {
+  if (showUserMenu.value) {
     return [navSection]
+  }
+
+  if (!initialized.value) {
+    return [
+      navSection,
+      localeItems.value.map(item => ({
+        label: localeMenuLabel(item.code as FTLocaleCode),
+        icon: item.code === currentLocale.value ? 'i-lucide-check' : undefined,
+        onSelect: () => switchLocale(item.code as FTLocaleCode),
+      })),
+    ]
   }
 
   const authSection: DropdownMenuItem[] = [
@@ -58,7 +72,7 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
         </NuxtLink>
 
         <div class="flex items-center gap-2">
-          <FTAppHeaderUserMenu v-if="isAuthenticated" />
+          <FTAppHeaderUserMenu v-if="showUserMenu" />
 
           <UDropdownMenu
             :items="mobileMenuItems"
@@ -122,8 +136,8 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
         </nav>
 
         <div class="flex items-center gap-2">
-          <FTAppHeaderUserMenu v-if="isAuthenticated" />
-          <template v-else>
+          <FTAppHeaderUserMenu v-if="showUserMenu" />
+          <template v-else-if="showGuestActions">
             <UButton
               to="/registro"
               variant="ghost"
@@ -144,8 +158,8 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
             >
               {{ t('header.login') }}
             </UButton>
-            <FTLocaleSwitcher />
           </template>
+          <FTLocaleSwitcher v-if="!showUserMenu" />
         </div>
       </div>
     </div>
