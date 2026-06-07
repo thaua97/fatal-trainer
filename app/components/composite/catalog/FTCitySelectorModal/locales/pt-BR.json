@@ -1,0 +1,11 @@
+{
+  "cityModal": {
+    "eyebrow": "Perto de você",
+    "title": "Encontre personais na sua cidade",
+    "subtitle": "Busque pela cidade ou use sua localização. Você pode alterar isso depois nos filtros.",
+    "label": "Sua cidade",
+    "placeholder": "Digite ou busque sua cidade…",
+    "skipAll": "Ver personais de todo o Brasil",
+    "awaitingCity": "Selecione uma cidade para ver quem está disponível na sua região."
+  }
+}

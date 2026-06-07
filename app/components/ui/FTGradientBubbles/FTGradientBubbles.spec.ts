@@ -6,6 +6,6 @@ import FTGradientBubbles from './FTGradientBubbles.vue'
 describe('FTGradientBubbles', () => {
   it('renders', () => {
     const wrapper = mountFT(FTGradientBubbles, { props: {} })
-    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.find('[data-testid="gradient-bubbles"]').exists()).toBe(true)
   })
 })
