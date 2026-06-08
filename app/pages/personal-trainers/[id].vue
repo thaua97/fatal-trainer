@@ -5,7 +5,7 @@ const { t } = useI18n()
 const route = useRoute()
 const id = computed(() => route.params.id as string)
 
-const { trainer, pending, error } = useTrainerProfile(id)
+const { trainer, pending, error, refresh } = useTrainerProfile(id)
 
 const meta = computed(() =>
   trainer.value ? formatTrainerMeta(trainer.value) : null,
@@ -49,7 +49,10 @@ useSeoMeta({
     </FTErrorState>
 
     <article v-else-if="trainer">
-      <FTProfileHeader :trainer="trainer" />
+      <FTProfileHeader
+        :trainer="trainer"
+        @trainer-updated="refresh"
+      />
       <FTProfileCta :trainer="trainer" />
     </article>
   </div>

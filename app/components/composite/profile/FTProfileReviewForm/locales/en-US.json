@@ -1,0 +1,26 @@
+{
+  "reviewForm": {
+    "guestTitle": "Share your experience",
+    "guestDescription": "Sign in to review this personal trainer.",
+    "login": "Sign in",
+    "ratingLabel": "Your rating",
+    "commentLabel": "Your review",
+    "commentPlaceholder": "Tell us about your experience with this trainer...",
+    "submit": "Submit review",
+    "update": "Update review",
+    "successTitle": "Review submitted",
+    "successDescription": "Thank you for sharing your experience.",
+    "errors": {
+      "submitFailed": "Could not submit your review. Please try again.",
+      "rating": {
+        "required": "Select a rating.",
+        "invalid": "Rating must be between 0.5 and 5.0."
+      },
+      "comment": {
+        "required": "Write your review.",
+        "tooShort": "Review must be at least 10 characters.",
+        "tooLong": "Review must be at most 500 characters."
+      }
+    }
+  }
+}

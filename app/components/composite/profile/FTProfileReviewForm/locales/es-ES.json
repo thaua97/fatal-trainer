@@ -1,0 +1,26 @@
+{
+  "reviewForm": {
+    "guestTitle": "Comparte tu experiencia",
+    "guestDescription": "Inicia sesión para evaluar a este entrenador personal.",
+    "login": "Iniciar sesión",
+    "ratingLabel": "Tu puntuación",
+    "commentLabel": "Tu evaluación",
+    "commentPlaceholder": "Cuéntanos tu experiencia con este profesional...",
+    "submit": "Publicar evaluación",
+    "update": "Actualizar evaluación",
+    "successTitle": "Evaluación enviada",
+    "successDescription": "Gracias por compartir tu experiencia.",
+    "errors": {
+      "submitFailed": "No se pudo enviar tu evaluación. Inténtalo de nuevo.",
+      "rating": {
+        "required": "Selecciona una puntuación.",
+        "invalid": "La puntuación debe estar entre 0,5 y 5,0."
+      },
+      "comment": {
+        "required": "Escribe tu evaluación.",
+        "tooShort": "La evaluación debe tener al menos 10 caracteres.",
+        "tooLong": "La evaluación debe tener como máximo 500 caracteres."
+      }
+    }
+  }
+}

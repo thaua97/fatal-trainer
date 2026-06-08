@@ -8,6 +8,7 @@ const props = defineProps<{
 const trainerRef = toRef(props, 'trainer')
 const { specialtyLine, carouselCount } = useFTProfileHero(trainerRef)
 const trainerId = computed(() => props.trainer.id)
+const reportTo = computed(() => `/denuncia?trainer=${encodeURIComponent(props.trainer.id)}`)
 const { isFavorited, toggle, pending: favoritePending } = useFTFavoriteTrainer(trainerId)
 const {
   sessionServicePrice,
@@ -65,14 +66,17 @@ const promotionValidity = computed(() => {
         </FTIconButton>
         <div class="absolute right-4 top-4 flex gap-2">
           <FTIconButton
+            variant="whatsapp"
             :ariaLabel="$t('profile.message')"
             :disabled="!canContact"
             data-testid="profile-message-button"
             @click="openChat"
           >
-            <UIcon name="i-lucide-message-circle" class="size-5 text-slate-900" />
+            <UIcon name="i-lucide-message-circle" class="size-5" />
           </FTIconButton>
           <FTIconButton
+            variant="favorite"
+            :active="isFavorited"
             :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
             :aria-pressed="isFavorited"
             :disabled="favoritePending"
@@ -82,8 +86,16 @@ const promotionValidity = computed(() => {
             <UIcon
               name="i-lucide-heart"
               class="size-5 transition-colors duration-200"
-              :class="isFavorited ? 'fill-violet-600 text-violet-600' : 'text-slate-900'"
+              :class="isFavorited ? 'fill-current' : ''"
             />
+          </FTIconButton>
+          <FTIconButton
+            variant="report"
+            :to="reportTo"
+            :ariaLabel="$t('profile.report')"
+            data-testid="profile-report-button"
+          >
+            <UIcon name="i-lucide-flag" class="size-5" />
           </FTIconButton>
         </div>
         <div
@@ -127,31 +139,17 @@ const promotionValidity = computed(() => {
         >
           {{ specialtyLine }}
         </p>
-        <div class="mt-3 flex flex-col gap-0.5">
-          <FTPriceLabel
-            :price="sessionServicePrice"
-            :promo-price="sessionPromoPrice"
-            price-view="session"
-            show-discount
-            size="lg"
-          />
-          <FTPriceLabel
-            :price="monthlyServicePrice"
-            :promo-price="monthlyPromoPrice"
-            price-view="monthly"
-            show-discount
-            size="md"
+        <div class="mt-4">
+          <FTServicePricing
+            :session-price="sessionServicePrice"
+            :session-promo-price="sessionPromoPrice"
+            :monthly-price="monthlyServicePrice"
+            :monthly-promo-price="monthlyPromoPrice"
+            :discount-percent="discountPercent"
+            :promotion-label="hasPromotion ? promotionLabel : undefined"
+            :promotion-validity="hasPromotion ? promotionValidity : null"
           />
         </div>
-        <p
-          v-if="promotionLabel || promotionValidity"
-          class="mt-2 text-sm"
-          :class="$style.promoNote"
-        >
-          <span v-if="promotionLabel">{{ promotionLabel }}</span>
-          <span v-if="promotionLabel && promotionValidity"> · </span>
-          <span v-if="promotionValidity">{{ promotionValidity }}</span>
-        </p>
       </div>
     </div>
 
@@ -172,14 +170,17 @@ const promotionValidity = computed(() => {
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
           </FTIconButton>
           <FTIconButton
+            variant="whatsapp"
             :ariaLabel="$t('profile.message')"
             :disabled="!canContact"
             data-testid="profile-message-button"
             @click="openChat"
           >
-            <UIcon name="i-lucide-message-circle" class="size-5 text-slate-900" />
+            <UIcon name="i-lucide-message-circle" class="size-5" />
           </FTIconButton>
           <FTIconButton
+            variant="favorite"
+            :active="isFavorited"
             :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
             :aria-pressed="isFavorited"
             :disabled="favoritePending"
@@ -189,8 +190,16 @@ const promotionValidity = computed(() => {
             <UIcon
               name="i-lucide-heart"
               class="size-5 transition-colors duration-200"
-              :class="isFavorited ? 'fill-violet-600 text-violet-600' : 'text-slate-900'"
+              :class="isFavorited ? 'fill-current' : ''"
             />
+          </FTIconButton>
+          <FTIconButton
+            variant="report"
+            :to="reportTo"
+            :ariaLabel="$t('profile.report')"
+            data-testid="profile-report-button"
+          >
+            <UIcon name="i-lucide-flag" class="size-5" />
           </FTIconButton>
         </div>
         <div class="flex items-start justify-between gap-4">
@@ -220,31 +229,17 @@ const promotionValidity = computed(() => {
         >
           {{ specialtyLine }}
         </p>
-        <div class="mt-4 flex flex-col gap-0.5">
-          <FTPriceLabel
-            :price="sessionServicePrice"
-            :promo-price="sessionPromoPrice"
-            price-view="session"
-            show-discount
-            size="lg"
-          />
-          <FTPriceLabel
-            :price="monthlyServicePrice"
-            :promo-price="monthlyPromoPrice"
-            price-view="monthly"
-            show-discount
-            size="md"
+        <div class="mt-4">
+          <FTServicePricing
+            :session-price="sessionServicePrice"
+            :session-promo-price="sessionPromoPrice"
+            :monthly-price="monthlyServicePrice"
+            :monthly-promo-price="monthlyPromoPrice"
+            :discount-percent="discountPercent"
+            :promotion-label="hasPromotion ? promotionLabel : undefined"
+            :promotion-validity="hasPromotion ? promotionValidity : null"
           />
         </div>
-        <p
-          v-if="promotionLabel || promotionValidity"
-          class="mt-2 text-sm"
-          :class="$style.promoNote"
-        >
-          <span v-if="promotionLabel">{{ promotionLabel }}</span>
-          <span v-if="promotionLabel && promotionValidity"> · </span>
-          <span v-if="promotionValidity">{{ promotionValidity }}</span>
-        </p>
       </div>
     </header>
   </div>
@@ -254,9 +249,5 @@ const promotionValidity = computed(() => {
 .sheetTop {
   background: #fff;
   border-radius: 1.5rem 1.5rem 0 0;
-}
-
-.promoNote {
-  color: var(--ft-promo-strong);
 }
 </style>

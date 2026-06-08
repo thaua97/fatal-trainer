@@ -1,5 +1,7 @@
 {
   "profile": {
-    "reviews": "Valoraciones ({count})"
+    "reviews": "Valoraciones ({count})",
+    "reviewsEmptyTitle": "Aún no hay valoraciones",
+    "reviewsEmptyDescription": "Sé el primero en compartir tu experiencia con este entrenador."
   }
 }

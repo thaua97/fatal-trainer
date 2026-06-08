@@ -1,0 +1,9 @@
+{
+  "servicePricing": {
+    "sessionTitle": "Per session",
+    "sessionHint": "Single workout",
+    "monthlyTitle": "Per month",
+    "monthlyHint": "{count} sessions included",
+    "promotionNote": "Active promotion"
+  }
+}

@@ -1,72 +1,83 @@
-# Resumo da Branch — `refactor/trainer-list-by-city`
+# Resumo da Branch — `refactor/enhance-trainers-page`
 
 ## Informações gerais
 
 | Campo | Valor |
 |-------|-------|
-| **Branch** | `refactor/trainer-list-by-city` |
+| **Branch** | `refactor/enhance-trainers-page` |
 | **Repositório** | fatal-trainer (frontend Nuxt) |
-| **Base** | `dev` (merge PR #4 — auth, denúncia, admin) |
-| **Objetivo** | Segregar listagem de personais por cidade com modal de entrada e geolocalização offline |
+| **Base** | `dev` (merge PR #5 — segregação por cidade) |
+| **Objetivo** | Integrar o carrossel de destaque com o backend real, filtrar por cidade selecionada e melhorar os cards da listagem |
 
 ---
 
 ## Objetivo da branch
 
-Implementar a **segregação por cidade** no catálogo (`/personal-trainers`):
+Evoluir a página `/personal-trainers` com foco no carrossel e nos cards da listagem:
 
-1. Bloquear fetch da listagem até o usuário escolher uma cidade ou optar por ver todo o Brasil
-2. Exibir **modal de boas-vindas** centralizada para seleção inicial de cidade
-3. Substituir o input inline de cidade nos filtros por um **botão-gatilho** que reabre a modal
-4. Resolver coordenadas do navegador para a cidade brasileira mais próxima **sem API externa**
+1. Consumir `GET /personal-trainers/featured` + `GET /personal-trainers` (ordenado por rating) em paralelo
+2. Montar até 6 slides com destacados primeiro e preenchimento por melhores avaliados
+3. **Atualizar o carrossel quando a cidade selecionada mudar** (modal, filtros ou URL)
+4. Exibir títulos dinâmicos ("Em destaque" / "Recomendados") e ocultar a seção quando vazia ou em erro
+5. Mostrar **cidade** nos cards em vez de distância em km
+6. Estilizar badges de modalidade com tons distintos por tipo
 
 ---
 
 ## Principais entregas
 
-### Geolocalização offline (`feat(geo)`)
+### Carrossel integrado ao backend (`feat(catalog)`)
 
-- `shared/domain/geo/services/resolve-nearest-brazilian-city.ts` — algoritmo haversine sobre dataset de coordenadas
-- `shared/data/brazilian-cities-coords.json` — lat/lng das cidades brasileiras
-- `app/composables/core/createBrazilianGeoResolver.ts` — adapter plugável em `useGeoLocation`
-- `scripts/generate-city-coords.mjs` + script `pnpm generate:city-coords`
-- Spec: `docs/superpowers/specs/2026-06-07-geo-resolver-design.md`
+- `shared/domain/catalog/services/build-featured-carousel.ts` — `isRatedTrainer`, `buildFeaturedCarouselItems` (destacados → preenchimento → fallback)
+- `useFeaturedTrainers` — fetch paralelo, filtro de cidade, refetch ao mudar `city` na URL, guard contra respostas obsoletas
+- `useFTFeaturedTrainersCarousel` — loading, `shouldShow`, título dinâmico, respeita `useCatalogCityGate` (oculto enquanto aguarda cidade)
+- `FTFeaturedTrainersCarousel` — `FTSectionHeading` com título i18n; reseta slide ao trocar trainers
+- Spec: `docs/superpowers/specs/2026-06-07-featured-carousel-integration-design.md`
 
-### Gate de cidade no catálogo (`feat(catalog)`)
+**Comportamento por cenário**
 
-- `useCatalogCityGate` — estado compartilhado (`fetchEnabled`, `modalOpen`, `openModal`, `resolveWithAll`)
-- `usePersonalTrainers({ enabled })` — fetch condicional até decisão do usuário
-- `FTTrainerList` — empty state "Selecione uma cidade…" enquanto aguarda
-- Remoção do banner hero inline com seletor de cidade na página do catálogo
+| Cenário | Comportamento | Rótulo |
+|---------|---------------|--------|
+| ≥1 destacado | Destacados primeiro; completar até 6 com melhores avaliados | Em destaque |
+| 0 destacados, há avaliados | Só melhores avaliados (até 6) | Recomendados |
+| 0 destacados e 0 avaliados | Ocultar seção | — |
+| Erro de API | Ocultar seção | — |
+| Modal de cidade aberta | Ocultar seção | — |
 
-### Modal e filtro (`feat(catalog)`)
+**Filtro por cidade**
 
-- `FTCitySelectorModal` — modal centralizada (UModal) com card hero, gradientes e `FTCitySelector`
-- `FTCityFilterButton` — botão nos filtros (sidebar + drawer mobile) com mesmo visual do city picker; abre a modal
-- `FTGradientBubbles` — prop `scope="contained"` para efeitos dentro do card da modal
-- Correção de centralização: remoção de `relative` no `ui.content` do UModal (preserva `fixed` + translate)
+- Destacados: filtro client-side (`filterTrainers`) — endpoint `/featured` não aceita `city`
+- Recomendados: `GET /personal-trainers?city=...&sortBy=rating&sortOrder=desc`
+- "Ver todos": carrossel nacional (sem filtro de cidade)
 
-### Auth / header (`fix(auth)`)
+### Cards da listagem (`feat(catalog)`)
 
-- Plugin `auth.ts` (substitui `auth.client.ts`) — skip de `fetchMe` no SSR quando API é cross-origin (`useMockApi=false`)
-- `FTAppHeader` — evita flash login/guest antes da sessão ser restaurada (`initialized`)
+- `FTTrainerCard` — subtítulo mostra especialidade principal; metadados exibem cidade/UF em vez de distância
+- `FTDistanceLabel` — refatorado para exibir `cidade, UF` (sem km)
+
+### Badges de modalidade (`refactor(ui)`)
+
+- `FTModalityBadge` — substitui `UBadge` genérico por badges com gradiente por modalidade (presencial, online, híbrido)
 
 ---
 
-## Fluxo do usuário
+## Fluxo do carrossel
 
 ```mermaid
 flowchart TD
-  A[/personal-trainers] --> B{Cidade na URL?}
-  B -->|Sim| C[Listagem habilitada]
-  B -->|Não| D{Localização salva?}
-  D -->|Sim| E[Restaura cidade e habilita fetch]
-  D -->|Não| F[Modal aberta]
-  F --> G[Usuário seleciona cidade]
-  F --> H[Usuário pula: todo o Brasil]
-  G --> C
-  H --> C
-  I[Filtros: botão cidade] --> F
+  A[Página /personal-trainers] --> B{fetchEnabled?}
+  B -->|Não| C[Seção oculta]
+  B -->|Sim| D[Fetch paralelo]
+  D --> E[listFeatured]
+  D --> F[list rating + city?]
+  E --> G[filterTrainers featured por city]
+  F --> H[buildFeaturedCarouselItems]
+  G --> H
+  H --> I{mode}
+  I -->|featured| J[Título: Em destaque]
+  I -->|recommended| K[Título: Recomendados]
+  I -->|hidden| C
+  L[Cidade muda na URL] --> D
 ```
 
 ---
@@ -75,23 +86,25 @@ flowchart TD
 
 | Área | Arquivos |
 |------|----------|
-| Geo | `createBrazilianGeoResolver.ts`, `resolve-nearest-brazilian-city.ts`, `brazilian-cities-coords.json` |
-| Catalog gate | `useCatalogCityGate.ts` |
-| UI | `FTCitySelectorModal/`, `FTCityFilterButton/` |
-| Testes | `useCatalogCityGate.spec.ts`, `createBrazilianGeoResolver.spec.ts`, `resolve-nearest-brazilian-city.spec.ts` |
-| Storybook | `.storybook/mocks/useCatalogCityGate.ts` |
+| Domain | `build-featured-carousel.ts` |
+| Composables | alterações em `useFeaturedTrainers.ts`, `useFTFeaturedTrainersCarousel.ts` |
+| UI | `FTFeaturedTrainersCarousel.vue`, `FTTrainerCard.vue`, `FTDistanceLabel.vue`, `FTModalityBadge.vue` |
+| i18n | `catalog.featuredTitle`, `catalog.recommendedTitle` (pt-BR, en-US, es-ES) |
+| Testes | `build-featured-carousel.spec.ts`, `useFeaturedTrainers.spec.ts`, `useFTFeaturedTrainersCarousel.spec.ts` |
+| Docs | `2026-06-07-featured-carousel-integration-design.md` |
 
 ---
 
 ## Testes
 
 ```bash
-pnpm vitest run tests/unit/composables/useCatalogCityGate.spec.ts
-pnpm vitest run tests/unit/composables/usePersonalTrainers.spec.ts
-pnpm vitest run tests/unit/composables/useFTCitySelector.spec.ts
-pnpm vitest run tests/unit/composables/createBrazilianGeoResolver.spec.ts
-pnpm vitest run app/components/composite/catalog/FTCityFilterButton/
-pnpm vitest run app/components/composite/catalog/FTCitySelectorModal/
+pnpm vitest run tests/unit/domain/build-featured-carousel.spec.ts
+pnpm vitest run tests/unit/composables/useFeaturedTrainers.spec.ts
+pnpm vitest run tests/unit/composables/useFTFeaturedTrainersCarousel.spec.ts
+pnpm vitest run app/components/composite/catalog/FTFeaturedTrainersCarousel/
+pnpm vitest run app/components/composite/catalog/FTTrainerCard/
+pnpm vitest run app/components/ui/FTDistanceLabel/
+pnpm vitest run app/components/ui/FTModalityBadge/
 ```
 
 ---
@@ -112,23 +125,29 @@ NUXT_PUBLIC_API_BASE_URL=http://localhost:3333/api
 NUXT_PUBLIC_USE_MOCK_API=false
 ```
 
+**Smoke manual**
+
+1. Selecionar cidade → carrossel mostra trainers da região
+2. Trocar cidade nos filtros → carrossel atualiza
+3. "Ver todos" → carrossel nacional
+4. Cidade sem destacados/avaliados → seção oculta
+
 ---
 
 ## Commits desta branch
 
 | Commit | Descrição |
 |--------|-----------|
-| `feat(geo)` | Resolver de cidade por coordenadas + script de geração |
-| `feat(catalog)` | Gate de fetch + integração na listagem e toolbar |
-| `feat(catalog)` | Modal de cidade + botão nos filtros + gradient bubbles contained |
-| `fix(auth)` | Sessão no client com API cross-origin + header sem flash |
-| `docs` | Resumo da branch e specs atualizadas |
+| `675549a` | `feat(catalog)` — Integração do carrossel com backend, filtro por cidade, títulos dinâmicos e testes |
+| `e43f87e` | `refactor(ui)` — Badges de modalidade com tons por variante |
 
 ---
 
 ## Pendências / fora de escopo
 
-- Reverse geocoding via API externa (Nominatim etc.)
-- Filtro combinado `city + state` na URL
-- Múltiplas cidades simultâneas
-- Integração plena com `fatal-trainer-backend` PostgreSQL
+- Parâmetro `city` no endpoint `GET /personal-trainers/featured` (hoje filtro client-side)
+- Badge individual por slide para trainers de preenchimento
+- Novo endpoint backend combinado (featured + rated)
+- Sincronizar toggle de destaque do admin mock Nitro com JSON
+- Alterar landing page (`FTLandingTrainersSection`)
+- Correção do warning i18n `cityModal.awaitingCity` no locale `pt` (chave existe em `FTCitySelectorModal/locales`, mas não no bundle global)

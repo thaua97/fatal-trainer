@@ -37,7 +37,10 @@ export function useAuth() {
     }
   }
 
-  async function login(payload: LoginRequest): Promise<{ success: boolean, errors?: LoginValidationErrors }> {
+  async function login(
+    payload: LoginRequest,
+    redirectTo?: string | null,
+  ): Promise<{ success: boolean, errors?: LoginValidationErrors }> {
     pending.value = true
     try {
       const response = await authService.login(payload)
@@ -46,7 +49,9 @@ export function useAuth() {
       welcomePending.value = true
       const { syncFromLocalStorage } = useTrainerBookmakers()
       await syncFromLocalStorage().catch(() => {})
-      await navigateTo('/?welcome=1')
+
+      const destination = redirectTo?.startsWith('/') ? redirectTo : '/?welcome=1'
+      await navigateTo(destination)
       return { success: true }
     } catch (err: unknown) {
       const errors = extractApiErrors<LoginValidationErrors>(err)

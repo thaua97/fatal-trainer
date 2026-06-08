@@ -31,9 +31,14 @@ export function useTrainerProfile(id: MaybeRefOrGetter<string>) {
     fetchTrainer(id)
   }, { immediate: true })
 
+  async function refresh(): Promise<void> {
+    await fetchTrainer(trainerId.value)
+  }
+
   return {
     trainer: computed(() => trainer.value),
     pending,
     error,
+    refresh,
   }
 }

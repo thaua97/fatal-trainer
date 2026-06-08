@@ -344,6 +344,31 @@ export function setTrainerCoverPhoto(trainerId: string, imageUrl: string): Perso
   return updated
 }
 
+export function updateTrainerReviewAggregates(
+  trainerId: string,
+  rating: number | undefined,
+  reviewCount: number,
+): PersonalTrainer | undefined {
+  const trainers = loadTrainers()
+  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
+  if (index === -1) {
+    return undefined
+  }
+
+  const current = trainers[index]!
+  const updated: PersonalTrainer = {
+    ...current,
+    rating,
+    reviewCount,
+    reviews: undefined,
+  }
+
+  const next = [...trainers]
+  next[index] = updated
+  saveTrainers(next)
+  return updated
+}
+
 export function ensureTrainerUploadDir(trainerId: string): string {
   const dir = join(process.cwd(), 'public', 'uploads', 'trainers', trainerId)
   if (!existsSync(dir)) {

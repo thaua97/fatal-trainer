@@ -5,6 +5,10 @@ const props = defineProps<{
   trainer: PersonalTrainer
 }>()
 
+defineEmits<{
+  trainerUpdated: []
+}>()
+
 const trainerRef = toRef(props, 'trainer')
 const { hasGallery } = useFTProfileGallery(trainerRef)
 </script>
@@ -45,7 +49,10 @@ const { hasGallery } = useFTProfileGallery(trainerRef)
       </p>
     </FTProfileSection>
 
-    <FTProfileReviewList :trainer="trainer" />
+    <FTProfileReviewSection
+      :trainer="trainer"
+      @trainer-updated="$emit('trainerUpdated')"
+    />
 
     <FTProfileSection v-if="hasGallery">
       <FTProfileGallery :trainer="trainer" />

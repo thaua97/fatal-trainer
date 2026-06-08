@@ -1,0 +1,7 @@
+{
+  "reviewPagination": {
+    "empty": "No reviews",
+    "single": "1 review",
+    "summary": "Showing {start}–{end} of {total} reviews"
+  }
+}

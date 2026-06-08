@@ -11,9 +11,12 @@ export interface TrainerPromotion {
 }
 
 export interface TrainerReview {
+  id?: string
   author: string
   rating: number
   comment: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface PersonalTrainer {

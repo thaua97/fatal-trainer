@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { ref } from 'vue'
 import { mountFT } from '@tests/helpers/mount-ft'
 import FTProfileHero from './FTProfileHero.vue'
+import FTIconButton from '../../../ui/FTIconButton/FTIconButton.vue'
 import { mockPromoTrainer, mockTrainer } from '@tests/helpers/mock-trainer'
 
 const mockToggle = vi.fn()
@@ -38,8 +39,9 @@ describe('FTProfileHero', () => {
     expect(wrapper.text()).toContain('Ana Silva')
     expect(wrapper.text()).toMatch(/R\$\s*120,00/)
     expect(wrapper.text()).toMatch(/R\$\s*960,00/)
-    expect(wrapper.text()).toContain('por sessão')
-    expect(wrapper.text()).toContain('por mês')
+    expect(wrapper.text()).toContain('Por sessão')
+    expect(wrapper.text()).toContain('Por mês')
+    expect(wrapper.text()).toContain('8 sessões inclusas')
     expect(wrapper.find('[data-testid="promo-badge"]').exists()).toBe(false)
   })
 
@@ -110,5 +112,23 @@ describe('FTProfileHero', () => {
 
     await buttons[0]!.trigger('click')
     expect(mockToggle).toHaveBeenCalledOnce()
+  })
+
+  it('links report button to denuncia page with trainer pre-selected', () => {
+    const trainer = mockTrainer({ id: 'trainer-001' })
+    const wrapper = mountFT(FTProfileHero, {
+      props: { trainer },
+      global: {
+        stubs: {
+          FTRatingBadge: true,
+        },
+      },
+    })
+
+    const reportButtons = wrapper.findAllComponents(FTIconButton).filter(
+      (button) => typeof button.props('to') === 'string' && button.props('to').includes('denuncia'),
+    )
+    expect(reportButtons).toHaveLength(2)
+    expect(reportButtons[0]!.props('to')).toBe('/denuncia?trainer=trainer-001')
   })
 })
