@@ -4,7 +4,9 @@ Catálogo de personal trainers autônomos — Vue 3, Nuxt 4, TypeScript.
 
 Solução desenvolvida para o [desafio técnico Front-end da Atlas Technologies](docs/challenge.md): listagem de profissionais com busca, filtros, ordenação, carregamento incremental e perfil detalhado.
 
-> **Demo:** _link da solução publicada — a preencher_
+> **Demo (produção):** [https://fatal-trainer.vercel.app/](https://fatal-trainer.vercel.app/)
+>
+> **API (produção):** [https://fatal-trainer-backend.onrender.com/api](https://fatal-trainer-backend.onrender.com/api)
 >
 > **Vídeo de apresentação:** _link do vídeo (máx. 5 min) — a preencher_
 
@@ -124,6 +126,22 @@ pnpm dev
 ```
 
 Detalhes da integração: [`docs/specs/api-integration-frontend.md`](docs/specs/api-integration-frontend.md).
+
+### Produção (Vercel + Render)
+
+O front em produção consome a API hospedada no Render. Variáveis no painel da Vercel (build time):
+
+```env
+NUXT_PUBLIC_API_BASE_URL=https://fatal-trainer-backend.onrender.com/api
+NUXT_PUBLIC_ASSETS_BASE_URL=https://fatal-trainer-backend.onrender.com
+NUXT_PUBLIC_USE_MOCK_API=false
+```
+
+| Ambiente | URL |
+|----------|-----|
+| Front-end | [https://fatal-trainer.vercel.app/](https://fatal-trainer.vercel.app/) |
+| API REST | [https://fatal-trainer-backend.onrender.com/api](https://fatal-trainer-backend.onrender.com/api) |
+| Catálogo (exemplo) | [https://fatal-trainer-backend.onrender.com/api/personal-trainers?page=1&pageSize=5](https://fatal-trainer-backend.onrender.com/api/personal-trainers?page=1&pageSize=5) |
 
 ### Scripts disponíveis
 
