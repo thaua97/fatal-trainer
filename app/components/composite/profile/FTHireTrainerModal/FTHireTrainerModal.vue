@@ -11,7 +11,7 @@ const {
   modalOpen,
   showContactCta,
   showLoginCta,
-  loginPath,
+  loginRoute,
   canContact,
   handleContact,
 } = useProfileHireModal(trainerRef)
@@ -46,7 +46,7 @@ const {
 
       <UButton
         v-if="showLoginCta"
-        :to="loginPath"
+        :to="loginRoute"
         color="primary"
         variant="outline"
         class="w-full justify-center rounded-full px-5 py-2.5 text-sm font-bold lg:px-6 lg:py-3 lg:text-base"

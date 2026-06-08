@@ -23,7 +23,7 @@ const {
   mineReviewId,
   showFormFields,
   showGuestCta,
-  loginPath,
+  loginRoute,
   submitLabel,
   handleSubmit,
   startEditing,
@@ -74,7 +74,7 @@ defineExpose({
       </div>
 
       <UButton
-        :to="loginPath"
+        :to="loginRoute"
         color="primary"
         class="rounded-full px-6"
         data-testid="profile-review-login"

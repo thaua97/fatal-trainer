@@ -1,8 +1,10 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
   size?: 'sm' | 'md' | 'lg' | 'xl'
+  iconOnly?: boolean
 }>(), {
   size: 'md',
+  iconOnly: false,
 })
 
 const sizeClasses = {
@@ -37,7 +39,7 @@ const sizeClasses = {
       <rect x="15.5" y="7.5" width="3" height="9" rx="0.5" />
       <rect x="18.5" y="9.5" width="2" height="5" rx="0.5" />
     </svg>
-    <span>
+    <span v-if="!iconOnly">
       <span class="text-violet-600">Fatal</span><span class="text-slate-900">Trainer</span>
     </span>
   </span>

@@ -71,10 +71,13 @@ describe('useProfileHireModal', () => {
     expect(wrapper.vm.showLoginCta).toBe(false)
   })
 
-  it('builds login path with redirect', () => {
+  it('builds login route with redirect', () => {
     const wrapper = mountFT(TestHarness)
 
-    expect(wrapper.vm.loginPath).toContain('/login?redirect=')
+    expect(wrapper.vm.loginRoute).toEqual({
+      path: '/login',
+      query: { redirect: expect.any(String) },
+    })
   })
 
   it('opens WhatsApp and closes modal on handleContact when authenticated', async () => {
