@@ -4,6 +4,7 @@ defineProps<{
 }>()
 
 const { t } = useI18n()
+const { loginRoute, registerRoute } = useAuthRedirect()
 </script>
 
 <template>
@@ -42,7 +43,7 @@ const { t } = useI18n()
           <template v-if="variant === 'login'">
             {{ t('auth.login.noAccount') }}
             <NuxtLink
-              to="/registro"
+              :to="registerRoute"
               class="font-semibold text-violet-600 hover:text-violet-700"
               data-testid="auth-link-register"
             >
@@ -52,7 +53,7 @@ const { t } = useI18n()
           <template v-else>
             {{ t('auth.register.hasAccount') }}
             <NuxtLink
-              to="/login"
+              :to="loginRoute"
               class="font-semibold text-violet-600 hover:text-violet-700"
               data-testid="auth-link-login"
             >

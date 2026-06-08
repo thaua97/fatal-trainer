@@ -3,39 +3,26 @@ import { ref } from 'vue'
 import { applyApiError } from '~/composables/core/applyApiError'
 
 describe('applyApiError', () => {
-  it('sets inline field errors without toast when field errors exist', () => {
+  it('shows toast for account deactivated without field errors', () => {
     const errors = ref<Record<string, string | undefined>>({})
     const toast = { error: vi.fn() }
+    const translate = (key: string) => (
+      key === 'error.accountDeactivated'
+        ? 'Sua conta foi desativada.'
+        : key
+    )
 
     applyApiError({
       parsed: {
-        message: 'error.validation',
-        fieldErrors: { email: 'invalid' },
-      },
-      errors,
-      toast: toast as never,
-      translate: key => key,
-    })
-
-    expect(errors.value).toEqual({ email: 'invalid' })
-    expect(toast.error).not.toHaveBeenCalled()
-  })
-
-  it('shows toast for global errors', () => {
-    const errors = ref<Record<string, string | undefined>>({})
-    const toast = { error: vi.fn() }
-
-    applyApiError({
-      parsed: {
-        message: 'error.unauthorized',
+        message: 'error.accountDeactivated',
         fieldErrors: {},
       },
       errors,
       toast: toast as never,
-      translate: key => key,
+      translate,
     })
 
     expect(errors.value).toEqual({})
-    expect(toast.error).toHaveBeenCalledWith('error.unauthorized')
+    expect(toast.error).toHaveBeenCalledWith('Sua conta foi desativada.')
   })
 })

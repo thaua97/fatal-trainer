@@ -1,6 +1,7 @@
 import {
   isValidEmail,
   REPORT_DESCRIPTION_MIN_LENGTH,
+  REPORT_TYPE_OPTIONS,
 } from '../constants/report-options'
 import type {
   ReportPayload,
@@ -41,6 +42,8 @@ function startOfToday(): Date {
   return today
 }
 
+const VALID_REPORT_TYPES = new Set(REPORT_TYPE_OPTIONS.map(option => option.value))
+
 export function validateReport(
   payload: ReportPayload,
   options: { trainerExists?: boolean } = {},
@@ -49,6 +52,8 @@ export function validateReport(
 
   if (!payload.type) {
     errors.type = 'required'
+  } else if (!VALID_REPORT_TYPES.has(payload.type)) {
+    errors.type = 'invalid'
   }
 
   if (!payload.occurredAt.trim()) {

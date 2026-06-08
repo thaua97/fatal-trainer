@@ -41,10 +41,7 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
   const showFormFields = computed(() => showForm.value && (!hasExistingReview.value || isEditing.value))
   const showGuestCta = computed(() => initialized.value && !isAuthenticated.value)
   const mineReviewId = computed(() => mineReview.value?.id ?? null)
-  const loginPath = computed(() => {
-    const redirect = encodeURIComponent(route.fullPath)
-    return `/login?redirect=${redirect}`
-  })
+  const { loginRoute } = useAuthRedirect()
 
   const submitLabel = computed(() =>
     hasExistingReview.value ? t('reviewForm.update') : t('reviewForm.submit'),
@@ -165,7 +162,7 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     showForm,
     showFormFields,
     showGuestCta,
-    loginPath,
+    loginRoute,
     submitLabel,
     handleSubmit,
     resetSubmitted,

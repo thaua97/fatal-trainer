@@ -42,7 +42,10 @@ const navItems = [
           class="flex items-center gap-3 px-2 py-1"
           :class="collapsed ? 'justify-center' : ''"
         >
-          <FTLogo size="sm" />
+          <FTLogo
+            size="sm"
+            :icon-only="collapsed"
+          />
           <span
             v-if="!collapsed"
             class="font-display text-sm font-bold text-slate-900"

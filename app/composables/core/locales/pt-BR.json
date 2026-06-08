@@ -7,6 +7,7 @@
     "conflict": "Conflito ao salvar. Verifique os dados.",
     "internal": "Erro interno. Tente novamente.",
     "invalidCredentials": "E-mail ou senha incorretos.",
+    "accountDeactivated": "Sua conta foi desativada. Entre em contato com o suporte para mais informações.",
     "network": "Falha de conexão. Verifique sua internet."
   },
   "admin": {

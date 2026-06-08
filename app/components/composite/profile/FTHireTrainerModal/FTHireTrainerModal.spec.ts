@@ -15,7 +15,7 @@ vi.mock('~/composables/profile/useProfileHireModal', () => ({
     modalOpen: mockModalOpen,
     showContactCta: mockShowContactCta,
     showLoginCta: mockShowLoginCta,
-    loginPath: '/login?redirect=%2Fpersonal-trainers%2Ftrainer-001',
+    loginRoute: { path: '/login', query: { redirect: '/personal-trainers/trainer-001' } },
     canContact: mockCanContact,
     handleContact: mockHandleContact,
   }),

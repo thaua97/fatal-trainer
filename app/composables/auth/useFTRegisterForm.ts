@@ -37,6 +37,7 @@ export function useFTRegisterForm() {
   const route = useRoute()
   const toast = useFTToast()
   const { register, pending } = useAuth()
+  const { redirectTarget } = useAuthRedirect()
   const errorMessage = useFieldErrorTranslator('auth.errors')
 
   const form = reactive<RegisterPayload>({
@@ -65,7 +66,7 @@ export function useFTRegisterForm() {
       termsAccepted: form.termsAccepted,
     }
 
-    const result = await register(payload)
+    const result = await register(payload, redirectTarget.value)
     if (!result.success) {
       applyApiError({
         parsed: {

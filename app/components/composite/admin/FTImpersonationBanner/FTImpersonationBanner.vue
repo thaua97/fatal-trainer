@@ -15,7 +15,7 @@ async function handleExit() {
 <template>
   <div
     v-if="isActive"
-    class="fixed inset-x-0 top-0 z-[100] flex items-center justify-center gap-4 bg-violet-700 px-4 py-2.5 text-sm text-white shadow-lg"
+    class="relativeinset-x-0 top-0 flex items-center justify-center gap-4 bg-violet-700 px-4 py-2.5 text-sm text-white shadow-lg"
     data-testid="impersonation-banner"
   >
     <UIcon
