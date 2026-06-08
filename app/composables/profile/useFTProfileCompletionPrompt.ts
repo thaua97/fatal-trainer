@@ -1,6 +1,6 @@
 import { formatBrazilianPhoneForWhatsApp } from '#shared/utils/whatsapp'
 
-const HIDDEN_ROUTES = ['/painel/perfil', '/login', '/registro']
+const HIDDEN_ROUTES = ['/painel/perfil', '/login', '/registro', '/admin']
 
 export function useFTProfileCompletionPrompt() {
   const route = useRoute()
