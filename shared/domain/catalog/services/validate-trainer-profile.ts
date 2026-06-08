@@ -1,4 +1,6 @@
+import { BRAZILIAN_STATES } from '../constants/brazilian-states'
 import { CATALOG_MODALITIES, CATALOG_SPECIALTIES } from '../constants/catalog-options'
+import { isValidCrefFormat } from '../../../utils/format-cref'
 import type {
   TrainerInfoPayload,
   TrainerInfoValidationErrors,
@@ -6,11 +8,6 @@ import type {
   TrainerPromotionPayload,
   TrainerPromotionValidationErrors,
 } from '../entities/trainer-profile-payloads'
-
-const BRAZILIAN_STATES = new Set([
-  'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG',
-  'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
-])
 
 const PHONE_DIGITS_MIN = 10
 const PHONE_DIGITS_MAX = 11
@@ -95,6 +92,8 @@ export function validateTrainerInfo(
   const cref = payload.cref.trim()
   if (!cref) {
     errors.cref = 'required'
+  } else if (!isValidCrefFormat(cref)) {
+    errors.cref = 'invalid'
   }
 
   const availability = payload.availability.trim()

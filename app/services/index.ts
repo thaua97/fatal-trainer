@@ -5,4 +5,5 @@ export { personalTrainersService } from '~/services/catalog/personal-trainers.se
 export { favoritesService } from '~/services/catalog/favorites.service'
 export { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
 export { reportsService } from '~/services/report/reports.service'
+export { reviewsService } from '~/services/reviews/reviews.service'
 export { adminService } from '~/services/admin/admin.service'

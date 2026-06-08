@@ -19,7 +19,7 @@ const {
 
 const { t } = useI18n()
 
-const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
+const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFieldUi()
 </script>
 
 <template>
@@ -60,6 +60,7 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
             v-model="form.name"
             class="w-full"
             :ui="fieldUi"
+            :size="inputSize"
             data-testid="trainer-info-name"
           />
         </UFormField>
@@ -70,13 +71,10 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
           :error="fieldErrors.contactPhone"
           required
         >
-          <UInput
+          <FTPhoneInput
             v-model="form.contactPhone"
-            class="w-full"
-            type="tel"
             :placeholder="t('dashboard.info.placeholders.contactPhone')"
-            :ui="fieldUi"
-            data-testid="trainer-info-phone"
+            test-id="trainer-info-phone"
           />
         </UFormField>
 
@@ -93,6 +91,7 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
             min="1"
             step="1"
             :ui="fieldUi"
+            :size="inputSize"
             data-testid="trainer-info-price"
           />
         </UFormField>
@@ -107,6 +106,7 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
             v-model="form.profession"
             class="w-full"
             :ui="fieldUi"
+            :size="inputSize"
             data-testid="trainer-info-profession"
           />
         </UFormField>
@@ -122,7 +122,7 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
             v-model="form.description"
             class="w-full"
             :rows="4"
-            :ui="fieldUi"
+            :ui="textareaUi"
             data-testid="trainer-info-description"
           />
         </UFormField>
@@ -174,11 +174,9 @@ const { fieldUi, selectUi, inputNumberUi } = useFTProfileEditFieldUi()
           :error="fieldErrors.cref"
           required
         >
-          <UInput
+          <FTCrefInput
             v-model="form.cref"
-            class="w-full"
-            :ui="fieldUi"
-            data-testid="trainer-info-cref"
+            test-id="trainer-info-cref"
           />
         </UFormField>
 

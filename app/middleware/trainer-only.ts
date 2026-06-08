@@ -1,5 +1,7 @@
 export default defineNuxtRouteMiddleware(async () => {
   const { initialized, isAuthenticated, userRole, fetchMe } = useAuth()
+  const toast = useToast()
+  const { t } = useI18n()
 
   if (!initialized.value) {
     await fetchMe()
@@ -10,8 +12,6 @@ export default defineNuxtRouteMiddleware(async () => {
   }
 
   if (userRole.value !== 'personal-trainer') {
-    const toast = useToast()
-    const { t } = useI18n()
     toast.add({
       title: t('dashboard.errors.forbidden'),
       color: 'error',

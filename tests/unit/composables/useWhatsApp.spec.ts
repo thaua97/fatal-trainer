@@ -67,4 +67,24 @@ describe('useWhatsApp', () => {
 
     expect(window.open).not.toHaveBeenCalled()
   })
+
+  it('builds authenticated message when userName is provided', async () => {
+    const AuthenticatedHarness = defineComponent({
+      setup() {
+        const phone = ref<string | undefined>('11999998888')
+        const trainerName = ref('Ana Silva')
+        const userName = ref('João Aluno')
+        const { message } = useWhatsApp({ phone, trainerName, userName })
+
+        return { message, userName }
+      },
+      template: '<div />',
+    })
+
+    const wrapper = mountFT(AuthenticatedHarness)
+
+    expect(wrapper.vm.message).toBe(
+      'Olá Ana Silva, sou João Aluno. Vi seu perfil no Fatal Trainer e gostaria de agendar uma aula experimental',
+    )
+  })
 })

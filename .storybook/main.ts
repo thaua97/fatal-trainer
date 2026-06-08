@@ -27,6 +27,8 @@ const composableAliases = Object.fromEntries(
     [join(appDir, 'composables/components', `${name}.ts`), mockPath],
   ]).concat([
     [join(appDir, 'composables/catalog/useCatalogCityGate.ts'), composableMock('useCatalogCityGate')],
+    [join(appDir, 'composables/profile/useProfileHireModal.ts'), composableMock('useProfileHireModal')],
+    [join(appDir, 'composables/profile/useProfileGalleryViewer.ts'), composableMock('useProfileGalleryViewer')],
   ]),
 )
 

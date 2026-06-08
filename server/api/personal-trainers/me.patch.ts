@@ -7,7 +7,18 @@ import {
   updateTrainerPromotion,
 } from '../../services/trainer-repository'
 import { updateUserInStore } from '../../mocks/mock-user-store'
+import { computeFieldChanges } from '#shared/domain/admin/services/compute-field-changes'
+import { appendActivity } from '../../mocks/mock-user-activity-store'
 import { requireTrainerSession } from '../../utils/require-trainer-session'
+
+const TRAINER_INFO_FIELDS = [
+  'name', 'contactPhone', 'profession', 'description', 'specialties',
+  'modalities', 'city', 'state', 'servicePrice', 'cref', 'availability', 'experienceYears',
+]
+
+const PROMOTION_FIELDS = [
+  'active', 'discountPercent', 'label', 'startsAt', 'endsAt', 'maxRedemptions', 'promoPrice',
+]
 
 export default defineEventHandler(async (event) => {
   const user = requireTrainerSession(event)
@@ -55,6 +66,37 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    const beforeRecord: Record<string, unknown> = {
+      name: trainer.name,
+      contactPhone: trainer.contactPhone ?? '',
+      profession: trainer.profession,
+      description: trainer.description,
+      specialties: trainer.specialties ?? [],
+      modalities: trainer.modalities ?? [],
+      city: trainer.city ?? '',
+      state: trainer.state ?? '',
+      servicePrice: trainer.servicePrice,
+      cref: trainer.cref ?? '',
+      availability: trainer.availability ?? '',
+      experienceYears: trainer.experienceYears ?? 0,
+    }
+
+    const afterRecord: Record<string, unknown> = {
+      name: payload.name.trim(),
+      contactPhone: payload.contactPhone.trim(),
+      profession: payload.profession.trim(),
+      description: payload.description.trim(),
+      specialties: payload.specialties,
+      modalities: payload.modalities,
+      city: payload.city.trim(),
+      state: payload.state.trim().toUpperCase(),
+      servicePrice: payload.servicePrice,
+      cref: payload.cref.trim(),
+      availability: payload.availability.trim(),
+      experienceYears: payload.experienceYears,
+    }
+
+    const changes = computeFieldChanges(beforeRecord, afterRecord, TRAINER_INFO_FIELDS)
     const updated = updateTrainerInfo(trainer.id, payload)
     updateUserInStore(user.id, {
       phoneNumber: payload.contactPhone.trim(),
@@ -63,6 +105,18 @@ export default defineEventHandler(async (event) => {
       city: payload.city.trim(),
       state: payload.state.trim().toUpperCase(),
     })
+
+    if (changes.length > 0) {
+      appendActivity({
+        userId: user.id,
+        type: 'profile_info_edit',
+        title: 'Perfil editado',
+        actorId: user.id,
+        actorName: user.name,
+        actorRole: user.role,
+        changes,
+      })
+    }
 
     return { trainer: updated }
   }
@@ -94,7 +148,42 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    const promotion = trainer.promotion
+    const beforeRecord: Record<string, unknown> = {
+      active: Boolean(promotion),
+      discountPercent: promotion?.discountPercent ?? 0,
+      label: promotion?.label ?? '',
+      startsAt: promotion?.startsAt ?? '',
+      endsAt: promotion?.endsAt ?? '',
+      maxRedemptions: promotion?.maxRedemptions ?? null,
+      promoPrice: promotion?.promoPrice ?? trainer.servicePrice,
+    }
+
     const updated = updateTrainerPromotion(trainer.id, payload)
+
+    const afterRecord: Record<string, unknown> = {
+      active: payload.active,
+      discountPercent: payload.discountPercent,
+      label: payload.label.trim(),
+      startsAt: payload.startsAt,
+      endsAt: payload.endsAt,
+      maxRedemptions: payload.maxRedemptions,
+      promoPrice: updated.promotion?.promoPrice ?? trainer.servicePrice,
+    }
+
+    const changes = computeFieldChanges(beforeRecord, afterRecord, PROMOTION_FIELDS)
+    if (changes.length > 0) {
+      appendActivity({
+        userId: user.id,
+        type: 'profile_promotion_edit',
+        title: 'Promoção editada',
+        actorId: user.id,
+        actorName: user.name,
+        actorRole: user.role,
+        changes,
+      })
+    }
+
     return { trainer: updated }
   }
 

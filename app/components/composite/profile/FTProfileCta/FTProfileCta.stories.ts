@@ -9,7 +9,7 @@ const meta: Meta<typeof FTProfileCta> = {
   parameters: {
     docs: {
       description: {
-        component: 'CTA fixo mobile com preço promocional acima do botão de contratação.',
+        component: 'CTA fixo mobile com preço promocional acima do botão de contratação. Abre o modal de contratação ao clicar.',
       },
     },
   },

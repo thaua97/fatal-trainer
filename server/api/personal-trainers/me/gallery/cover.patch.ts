@@ -2,6 +2,7 @@ import {
   findTrainerByUserId,
   setTrainerCoverPhoto,
 } from '../../../../services/trainer-repository'
+import { appendActivity } from '../../../../mocks/mock-user-activity-store'
 import { requireTrainerSession } from '../../../../utils/require-trainer-session'
 
 export default defineEventHandler(async (event) => {
@@ -28,6 +29,19 @@ export default defineEventHandler(async (event) => {
 
   try {
     const updated = setTrainerCoverPhoto(trainer.id, url)
+
+    appendActivity({
+      userId: user.id,
+      type: 'profile_gallery_edit',
+      title: 'Foto de capa alterada',
+      actorId: user.id,
+      actorName: user.name,
+      actorRole: user.role,
+      changes: [
+        { field: 'photoUrl', label: 'Foto de capa', before: trainer.photoUrl, after: url },
+      ],
+    })
+
     return { trainer: updated }
   } catch {
     throw createError({

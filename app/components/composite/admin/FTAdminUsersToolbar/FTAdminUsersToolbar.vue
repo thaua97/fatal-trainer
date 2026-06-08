@@ -64,6 +64,8 @@ const activeFilterChips = computed(() => {
   }
   return chips
 })
+
+const { fieldUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>
@@ -77,7 +79,8 @@ const activeFilterChips = computed(() => {
         icon="i-lucide-search"
         placeholder="Buscar por nome ou e-mail..."
         class="min-w-[200px] flex-1"
-        :ui="{ base: 'rounded-2xl bg-white' }"
+        :ui="fieldUi"
+        :size="inputSize"
       />
 
       <div class="flex flex-wrap items-center gap-2">

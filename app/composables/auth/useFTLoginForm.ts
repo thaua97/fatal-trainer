@@ -10,6 +10,7 @@ function emptyForm(): LoginPayload {
 }
 
 export function useFTLoginForm() {
+  const route = useRoute()
   const { t } = useI18n()
   const toast = useToast()
   const { login, pending } = useAuth()
@@ -48,7 +49,7 @@ export function useFTLoginForm() {
       password: form.password,
     }
 
-    const result = await login(payload)
+    const result = await login(payload, typeof route.query.redirect === 'string' ? route.query.redirect : null)
     if (!result.success) {
       if (result.errors && Object.keys(result.errors).length > 0) {
         errors.value = result.errors

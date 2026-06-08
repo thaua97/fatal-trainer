@@ -11,7 +11,16 @@ const emit = defineEmits<{
   impersonate: [AdminUserListItem]
 }>()
 
+function viewProfile() {
+  navigateTo(`/admin/usuarios/${props.user.id}`)
+}
+
 const dropdownItems = computed(() => [[
+  {
+    label: 'Ver perfil',
+    icon: 'i-lucide-user',
+    onSelect: viewProfile,
+  },
   {
     label: 'Editar',
     icon: 'i-lucide-pencil',
@@ -31,6 +40,15 @@ const dropdownItems = computed(() => [[
     data-testid="admin-user-row-actions"
   >
     <div class="hidden items-center gap-2 lg:flex">
+      <UButton
+        variant="ghost"
+        color="neutral"
+        size="xs"
+        icon="i-lucide-user"
+        aria-label="Ver perfil"
+        :disabled="actionPending"
+        @click="viewProfile"
+      />
       <UButton
         variant="ghost"
         color="neutral"

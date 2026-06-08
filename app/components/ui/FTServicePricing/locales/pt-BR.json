@@ -1,0 +1,9 @@
+{
+  "servicePricing": {
+    "sessionTitle": "Por sessão",
+    "sessionHint": "Treino avulso",
+    "monthlyTitle": "Por mês",
+    "monthlyHint": "{count} sessões inclusas",
+    "promotionNote": "Promoção ativa"
+  }
+}

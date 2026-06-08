@@ -8,10 +8,7 @@ const {
   handleSubmit,
 } = useFTAdminLoginForm()
 
-const fieldUi = {
-  root: 'w-full',
-  base: 'w-full rounded-2xl bg-slate-50/80',
-}
+const { authFieldUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>
@@ -44,7 +41,8 @@ const fieldUi = {
           type="email"
           autocomplete="email"
           placeholder="admin@fataltrainer.com"
-          :ui="fieldUi"
+          :ui="authFieldUi"
+          :size="inputSize"
           data-testid="admin-login-email"
         />
       </UFormField>
@@ -61,7 +59,8 @@ const fieldUi = {
           :type="showPassword ? 'text' : 'password'"
           autocomplete="current-password"
           placeholder="••••••••"
-          :ui="fieldUi"
+          :ui="authFieldUi"
+          :size="inputSize"
           data-testid="admin-login-password"
         >
           <template #trailing>

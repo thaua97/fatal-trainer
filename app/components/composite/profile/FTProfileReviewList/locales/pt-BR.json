@@ -1,5 +1,8 @@
 {
   "profile": {
-    "reviews": "Avaliações ({count})"
+    "reviews": "Avaliações ({count})",
+    "reviewsEmptyTitle": "Nenhuma avaliação ainda",
+    "reviewsEmptyDescription": "Seja o primeiro a compartilhar sua experiência com este personal.",
+    "editReview": "Editar avaliação"
   }
 }

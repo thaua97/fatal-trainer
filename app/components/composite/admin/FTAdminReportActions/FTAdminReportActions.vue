@@ -62,23 +62,20 @@ function menuItems(reportId: string) {
       />
     </UDropdownMenu>
 
-    <UModal v-model:open="detailOpen">
-      <template #content>
-        <div class="p-6">
-          <h3 class="font-display text-lg font-bold text-slate-900">
-            Detalhe da denúncia
-          </h3>
-          <p class="mt-4 text-sm leading-relaxed text-slate-600">
-            {{ description }}
-          </p>
-          <UButton
-            class="mt-4 rounded-full"
-            @click="detailOpen = false"
-          >
-            Fechar
-          </UButton>
-        </div>
-      </template>
-    </UModal>
+    <FTModal
+      v-model:open="detailOpen"
+      variant="plain"
+      title="Detalhe da denúncia"
+    >
+      <p class="text-sm leading-relaxed text-slate-600">
+        {{ description }}
+      </p>
+      <UButton
+        class="mt-4 rounded-full"
+        @click="detailOpen = false"
+      >
+        Fechar
+      </UButton>
+    </FTModal>
   </div>
 </template>

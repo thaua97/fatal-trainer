@@ -1,0 +1,10 @@
+{
+  "hireModal": {
+    "tile": "You're almost there",
+    "title": "Ready to get moving?",
+    "subtitle": "Fatal Trainer does not tolerate abuse, hate speech, harassment, or any inappropriate conduct. Please keep all conversations respectful. If this happens, report it from the profile or use our support channel.",
+    "contact": "Get in touch",
+    "login": "Log in / Sign up",
+    "whatsappMessage": "Hi {trainerName}, I'm {userName}. I saw your profile on Fatal Trainer and would like to schedule a trial session"
+  }
+}

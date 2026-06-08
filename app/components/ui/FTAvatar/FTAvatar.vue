@@ -5,10 +5,11 @@ const props = withDefaults(
   defineProps<{
     name: string;
     src?: string;
-    size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero" | "fill";
+    size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "hero" | "fill";
     monochrome?: boolean;
   }>(),
   {
+    src: undefined,
     size: "md",
     monochrome: true,
   },
@@ -44,6 +45,8 @@ const sizeClass = computed(() => {
       return "size-[6.5rem] text-2xl rounded-2xl";
     case "xl":
       return "size-72 rounded-3xl text-4xl xl:size-80";
+    case "2xl":
+      return "size-90 rounded-4xl text-6xl";
     case "hero":
       return "h-80 w-full rounded-none text-5xl";
     case "fill":

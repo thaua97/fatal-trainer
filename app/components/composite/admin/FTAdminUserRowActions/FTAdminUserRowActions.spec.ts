@@ -17,5 +17,6 @@ describe('FTAdminUserRowActions', () => {
     const wrapper = mountFT(FTAdminUserRowActions, { props: { user } })
     expect(wrapper.find('[data-testid="admin-user-row-actions"]').exists()).toBe(true)
     expect(wrapper.text()).toContain('Acessar como')
+    expect(wrapper.find('[aria-label="Ver perfil"]').exists()).toBe(true)
   })
 })

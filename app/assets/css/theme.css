@@ -22,6 +22,20 @@
   --ft-promo-subtle: #dcfce7;
   --ft-promo-rgb: 22 163 74;
 
+  /* Ações de perfil */
+  --ft-action-whatsapp: #16a34a;
+  --ft-action-whatsapp-subtle: #dcfce7;
+  --ft-action-whatsapp-border: #bbf7d0;
+  --ft-action-favorite: #e11d48;
+  --ft-action-favorite-subtle: #ffe4e6;
+  --ft-action-favorite-border: #fecdd3;
+  --ft-action-favorite-active: #7c3aed;
+  --ft-action-favorite-active-subtle: #ede9fe;
+  --ft-action-favorite-active-border: #ddd6fe;
+  --ft-action-report: #d97706;
+  --ft-action-report-subtle: #fef3c7;
+  --ft-action-report-border: #fde68a;
+
   /* Admin — gradient orbs */
   --ft-admin-orb-violet-rgb: 167 139 250;
   --ft-admin-orb-sky-rgb: 125 211 252;

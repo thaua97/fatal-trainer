@@ -25,18 +25,7 @@ const {
 } = useFTTrainerPromotionForm(trainerRef)
 
 const { t } = useI18n()
-
-const { fieldUi: profileFieldUi, selectUi: profileSelectUi } = useFTProfileEditFieldUi()
-const fieldUi = computed(() =>
-  props.variant === 'profile'
-    ? profileFieldUi
-    : { base: 'w-full rounded-2xl' },
-)
-const selectUi = computed(() =>
-  props.variant === 'profile'
-    ? profileSelectUi
-    : { base: 'w-full rounded-2xl' },
-)
+const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>
@@ -187,6 +176,7 @@ const selectUi = computed(() =>
               type="number"
               min="1"
               :ui="fieldUi"
+              :size="inputSize"
               data-testid="trainer-promotion-max-redemptions"
             />
           </div>

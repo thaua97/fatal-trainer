@@ -1,0 +1,10 @@
+{
+  "hireModal": {
+    "tile": "Você está quase lá",
+    "title": "Bora colocar o corpo em movimento?",
+    "subtitle": "O Fatal Trainer não tolera abuso, discurso de ódio, assédio ou qualquer conduta inadequada. Mantenha o respeito em todas as conversas. Se algo assim acontecer, denuncie pelo botão no perfil ou acesse nosso canal de suporte.",
+    "contact": "Entrar em contato",
+    "login": "Fazer login/registro",
+    "whatsappMessage": "Olá {trainerName}, sou {userName}. Vi seu perfil no Fatal Trainer e gostaria de agendar uma aula experimental"
+  }
+}

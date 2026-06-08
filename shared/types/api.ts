@@ -101,3 +101,33 @@ export interface BookmakersSyncRequest {
 export interface BookmakersSyncResponse {
   synced: number
 }
+
+export interface TrainerReviewItem {
+  id: string
+  author: string
+  rating: number
+  comment: string
+  createdAt: string
+  updatedAt?: string
+}
+
+export interface PaginatedReviewsResponse {
+  items: TrainerReviewItem[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+export interface UpsertReviewRequest {
+  rating: number
+  comment: string
+}
+
+export interface UpsertReviewResponse {
+  review: TrainerReviewItem
+  created: boolean
+}
+
+export interface MyReviewResponse {
+  review: TrainerReviewItem | null
+}

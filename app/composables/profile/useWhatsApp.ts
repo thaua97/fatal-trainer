@@ -6,14 +6,22 @@ import {
 interface UseWhatsAppOptions {
   phone: MaybeRefOrGetter<string | undefined>
   trainerName: MaybeRefOrGetter<string>
+  userName?: MaybeRefOrGetter<string | undefined>
 }
 
-export function useWhatsApp({ phone, trainerName }: UseWhatsAppOptions) {
+export function useWhatsApp({ phone, trainerName, userName }: UseWhatsAppOptions) {
   const { t } = useI18n()
 
-  const message = computed(() =>
-    t('profile.whatsappMessage', { name: toValue(trainerName) }),
-  )
+  const message = computed(() => {
+    const trainer = toValue(trainerName)
+    const user = toValue(userName)
+
+    if (user) {
+      return t('hireModal.whatsappMessage', { trainerName: trainer, userName: user })
+    }
+
+    return t('profile.whatsappMessage', { name: trainer })
+  })
 
   const canContact = computed(
     () => formatBrazilianPhoneForWhatsApp(toValue(phone) ?? '') != null,

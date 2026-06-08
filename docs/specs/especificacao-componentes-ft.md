@@ -51,6 +51,7 @@ Qualquer componente novo ou alterado no projeto deve seguir esta especificação
 | `FTTrainerCardSkeleton` | Placeholder de skeleton |
 | `FTBackLink` | Navegação voltar |
 | `FTGradientBubbles` | Decoração de fundo |
+| `FTModal` | Modal padronizada (hero/plain) sobre `UModal` |
 
 ### 3.2 Compostos — `app/components/composite/`
 
@@ -193,7 +194,7 @@ Usar primitivos **`U*`** do Nuxt UI v3+ como base de **controles interativos** e
 | Seleção | `USelect`, `USelectMenu` | `<select>` custom com `div` |
 | Badge / chip | `UBadge` | `<span>` com fundo colorido |
 | Avatar | `UAvatar` (via `FTAvatar`) | `<img>` circular sem fallback |
-| Modal / drawer | `UModal`, `UDrawer`, `USlideover` | overlay manual com `div` fixo |
+| Modal / drawer | `UModal` (via `FTModal`), `UDrawer`, `USlideover` | overlay manual com `div` fixo |
 | Formulário | `UFormField` + campo `U*` | label solto sem associação |
 | Feedback | `UToast`, `UAlert`, `USkeleton` | spinner/texto ad hoc |
 
@@ -515,7 +516,7 @@ Não existe “só código” nem “só design” para componentes da bibliotec
 
 ### Primitivos (`ui/`)
 
-`FTActiveFilterChip`, `FTAvatar`, `FTBackLink`, `FTCityPicker`, `FTDistanceLabel`, `FTGradientBubbles`, `FTIconButton`, `FTLoadMoreSentinel`, `FTModalityBadge`, `FTPriceLabel`, `FTProfileSection`, `FTRatingBadge`, `FTResultsCounter`, `FTSearchInput`, `FTSectionHeading`, `FTStarRating`, `FTTrainerCardSkeleton`
+`FTActiveFilterChip`, `FTAvatar`, `FTBackLink`, `FTCityPicker`, `FTDistanceLabel`, `FTGradientBubbles`, `FTIconButton`, `FTLoadMoreSentinel`, `FTModal`, `FTModalityBadge`, `FTPriceLabel`, `FTProfileSection`, `FTRatingBadge`, `FTResultsCounter`, `FTSearchInput`, `FTSectionHeading`, `FTStarRating`, `FTTrainerCardSkeleton`
 
 ### Compostos (`composite/`)
 

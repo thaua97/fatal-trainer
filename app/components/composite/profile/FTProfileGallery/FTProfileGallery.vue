@@ -7,6 +7,7 @@ const props = defineProps<{
 
 const trainerRef = toRef(props, 'trainer')
 const { images, trainerName, hasGallery } = useFTProfileGallery(trainerRef)
+const { openAt } = useProfileGalleryViewer(trainerRef)
 </script>
 
 <template>
@@ -15,12 +16,22 @@ const { images, trainerName, hasGallery } = useFTProfileGallery(trainerRef)
     class="grid grid-cols-2 gap-2 sm:grid-cols-3"
     data-testid="trainer-gallery"
   >
-    <FTAvatar
+    <button
       v-for="(image, index) in images"
       :key="index"
-      :src="image"
-      :name="trainerName"
-      size="fill"
-    />
+      type="button"
+      class="group relative cursor-pointer overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+      :aria-label="$t('galleryViewer.viewPhoto', { index: index + 1, total: images.length, name: trainerName })"
+      :data-testid="`gallery-thumb-${index}`"
+      @click="openAt(index)"
+    >
+      <div class="transition-transform duration-300 group-hover:scale-[1.03]">
+        <FTAvatar
+          :src="image"
+          :name="trainerName"
+          size="fill"
+        />
+      </div>
+    </button>
   </div>
 </template>

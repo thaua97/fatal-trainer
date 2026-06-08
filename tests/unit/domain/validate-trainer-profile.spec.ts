@@ -49,6 +49,11 @@ describe('validateTrainerInfo', () => {
     expect(result.errors.contactPhone).toBe('invalid')
   })
 
+  it('validates cref format', () => {
+    const result = validateTrainerInfo(validInfo({ cref: 'wqweqweqw' }))
+    expect(result.errors.cref).toBe('invalid')
+  })
+
   it('requires specialties and modalities', () => {
     const result = validateTrainerInfo(validInfo({ specialties: [], modalities: [] }))
     expect(result.errors.specialties).toBe('required')

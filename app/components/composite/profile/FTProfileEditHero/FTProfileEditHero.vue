@@ -14,7 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const { professionUi, nameUi, selectUi } = useFTProfileEditFieldUi()
+const { professionUi, nameUi, selectUi, inputSize } = useFTFormFieldUi()
 
 const { modalityItems } = useFTTrainerFieldOptions()
 
@@ -101,6 +101,7 @@ function onPhotoSelected(event: Event) {
             class="w-full"
             :placeholder="t('dashboard.info.fields.profession')"
             :ui="professionUi"
+            :size="inputSize"
             data-testid="trainer-info-profession"
           />
         </UFormField>
@@ -115,6 +116,7 @@ function onPhotoSelected(event: Event) {
             class="w-full"
             :placeholder="t('dashboard.info.fields.name')"
             :ui="nameUi"
+            :size="inputSize"
             data-testid="trainer-info-name"
           />
         </UFormField>
@@ -193,6 +195,7 @@ function onPhotoSelected(event: Event) {
               class="w-full"
               :placeholder="t('dashboard.info.fields.profession')"
               :ui="professionUi"
+              :size="inputSize"
             />
           </UFormField>
 
@@ -206,6 +209,7 @@ function onPhotoSelected(event: Event) {
               class="w-full"
               :placeholder="t('dashboard.info.fields.name')"
               :ui="nameUi"
+              :size="inputSize"
             />
           </UFormField>
 

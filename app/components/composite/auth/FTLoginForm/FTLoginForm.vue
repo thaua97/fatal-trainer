@@ -11,10 +11,7 @@ const {
 
 const { t } = useI18n()
 
-const fieldUi = {
-  root: 'w-full',
-  base: 'w-full rounded-2xl bg-slate-50/80',
-}
+const { authFieldUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>
@@ -49,7 +46,8 @@ const fieldUi = {
           type="email"
           autocomplete="email"
           :placeholder="t('auth.placeholders.email')"
-          :ui="fieldUi"
+          :ui="authFieldUi"
+          :size="inputSize"
           data-testid="login-email-input"
         />
       </UFormField>
@@ -66,7 +64,8 @@ const fieldUi = {
           :type="showPassword ? 'text' : 'password'"
           autocomplete="current-password"
           :placeholder="t('auth.placeholders.password')"
-          :ui="fieldUi"
+          :ui="authFieldUi"
+          :size="inputSize"
           data-testid="login-password-input"
         >
           <template #trailing>

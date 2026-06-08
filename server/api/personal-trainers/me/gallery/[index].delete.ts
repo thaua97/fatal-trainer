@@ -2,6 +2,7 @@ import {
   findTrainerByUserId,
   removeGalleryImage,
 } from '../../../../services/trainer-repository'
+import { appendActivity } from '../../../../mocks/mock-user-activity-store'
 import { requireTrainerSession } from '../../../../utils/require-trainer-session'
 
 export default defineEventHandler(async (event) => {
@@ -27,7 +28,19 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    const removedUrl = trainer.gallery?.[imageIndex]
     const updated = removeGalleryImage(trainer.id, imageIndex)
+
+    appendActivity({
+      userId: user.id,
+      type: 'profile_gallery_edit',
+      title: 'Imagem removida da galeria',
+      actorId: user.id,
+      actorName: user.name,
+      actorRole: user.role,
+      metadata: { action: 'remove', index: String(imageIndex), url: removedUrl ?? '' },
+    })
+
     return { trainer: updated }
   } catch {
     throw createError({

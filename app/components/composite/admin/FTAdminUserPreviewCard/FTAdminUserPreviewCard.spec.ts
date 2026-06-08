@@ -26,5 +26,7 @@ describe('FTAdminUserPreviewCard', () => {
     })
     expect(wrapper.text()).toContain('Carlos Personal')
     expect(wrapper.text()).toContain('Pelotas, RS')
+    expect(wrapper.text()).toContain('R$')
+    expect(wrapper.text()).not.toContain('NaN')
   })
 })

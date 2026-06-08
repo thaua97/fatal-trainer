@@ -72,6 +72,10 @@ export function findUserByEmail(email: string): StoredUser | undefined {
   return [...users.values()].find(u => u.email.toLowerCase() === normalized)
 }
 
+export function findUserById(id: string): StoredUser | undefined {
+  return users.get(id)
+}
+
 export function getAllUsers(): StoredUser[] {
   return [...users.values()]
 }

@@ -6,6 +6,7 @@ import {
   ensureTrainerUploadDir,
   findTrainerByUserId,
 } from '../../../services/trainer-repository'
+import { appendActivity } from '../../../mocks/mock-user-activity-store'
 import { requireTrainerSession } from '../../../utils/require-trainer-session'
 
 const MAX_GALLERY_IMAGES = 12
@@ -73,6 +74,16 @@ export default defineEventHandler(async (event) => {
 
   const url = `/uploads/trainers/${trainer.id}/${filename}`
   const updated = addGalleryImage(trainer.id, url)
+
+  appendActivity({
+    userId: user.id,
+    type: 'profile_gallery_edit',
+    title: 'Imagem adicionada à galeria',
+    actorId: user.id,
+    actorName: user.name,
+    actorRole: user.role,
+    metadata: { action: 'add', url },
+  })
 
   return {
     url,
