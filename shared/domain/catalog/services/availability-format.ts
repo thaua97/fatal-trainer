@@ -127,65 +127,93 @@ export function serializeAvailability(parts: AvailabilityParts): string {
   return `${daySegment}, ${formatHour(parts.startTime)}–${formatHour(parts.endTime)}`
 }
 
-export function parseAvailability(value: string): AvailabilityParts {
-  const empty: AvailabilityParts = {
-    weekdays: [],
-    startTime: null,
-    endTime: null,
+function addWeekdaysFromText(dayPart: string, weekdays: Set<WeekdayKey>): void {
+  for (const token of dayPart.split('|').map(part => part.trim()).filter(Boolean)) {
+    for (const day of expandDayRange(token)) {
+      weekdays.add(day)
+    }
+  }
+}
+
+function parseTimeRange(timePart: string): { startTime: Time, endTime: Time } | null {
+  const [startToken, endToken] = timePart.split(/[–-]/).map(part => part.trim())
+  const startHour = parseHourToken(startToken ?? '')
+  const endHour = parseHourToken(endToken ?? '')
+
+  if (startHour == null || endHour == null) {
+    return null
   }
 
-  const trimmed = value.trim()
-  if (!trimmed) {
-    return empty
+  return {
+    startTime: new Time(startHour, 0),
+    endTime: new Time(endHour, 0),
   }
+}
 
+function parseAvailabilitySegments(
+  trimmed: string,
+  weekdays: Set<WeekdayKey>,
+): { startTime: Time | null, endTime: Time | null } {
+  let startTime: Time | null = null
+  let endTime: Time | null = null
   const segments = trimmed.split('|').map(segment => segment.trim()).filter(Boolean)
-  const weekdays = new Set<WeekdayKey>()
 
   for (const segment of segments) {
     const commaIndex = segment.lastIndexOf(',')
     const dayPart = commaIndex >= 0 ? segment.slice(0, commaIndex).trim() : segment
     const timePart = commaIndex >= 0 ? segment.slice(commaIndex + 1).trim() : ''
 
-    for (const token of dayPart.split('|').map(part => part.trim()).filter(Boolean)) {
-      for (const day of expandDayRange(token)) {
-        weekdays.add(day)
-      }
-    }
+    addWeekdaysFromText(dayPart, weekdays)
 
-    if (timePart && !empty.startTime) {
-      const [startToken, endToken] = timePart.split(/[–-]/).map(part => part.trim())
-      const startHour = parseHourToken(startToken ?? '')
-      const endHour = parseHourToken(endToken ?? '')
-
-      if (startHour != null && endHour != null) {
-        empty.startTime = new Time(startHour, 0)
-        empty.endTime = new Time(endHour, 0)
+    if (timePart && !startTime) {
+      const parsed = parseTimeRange(timePart)
+      if (parsed) {
+        startTime = parsed.startTime
+        endTime = parsed.endTime
       }
     }
   }
 
-  if (!empty.startTime) {
-    const timeMatch = /(\d{1,2})h\s*[–-]\s*(\d{1,2})h/.exec(trimmed)
-    if (timeMatch) {
-      empty.startTime = new Time(Number(timeMatch[1]), 0)
-      empty.endTime = new Time(Number(timeMatch[2]), 0)
-    }
+  return { startTime, endTime }
+}
+
+function parseFallbackAvailability(
+  trimmed: string,
+  weekdays: Set<WeekdayKey>,
+): { startTime: Time | null, endTime: Time | null } {
+  let startTime: Time | null = null
+  let endTime: Time | null = null
+
+  const timeMatch = /(\d{1,2})h\s*[–-]\s*(\d{1,2})h/.exec(trimmed)
+  if (timeMatch) {
+    startTime = new Time(Number(timeMatch[1]), 0)
+    endTime = new Time(Number(timeMatch[2]), 0)
   }
 
   if (!weekdays.size) {
     const dayMatch = /(Seg(?:–|-)Sex|Seg(?:–|-)Sáb|Ter(?:–|-)Qui)/.exec(trimmed)
     if (dayMatch) {
-      for (const day of expandDayRange(dayMatch[1]!)) {
-        weekdays.add(day)
-      }
+      addWeekdaysFromText(dayMatch[1]!, weekdays)
     }
   }
 
+  return { startTime, endTime }
+}
+
+export function parseAvailability(value: string): AvailabilityParts {
+  const trimmed = value.trim()
+  if (!trimmed) {
+    return { weekdays: [], startTime: null, endTime: null }
+  }
+
+  const weekdays = new Set<WeekdayKey>()
+  const parsed = parseAvailabilitySegments(trimmed, weekdays)
+  const fallback = parseFallbackAvailability(trimmed, weekdays)
+
   return {
     weekdays: WEEKDAY_ORDER.filter(day => weekdays.has(day)),
-    startTime: empty.startTime,
-    endTime: empty.endTime,
+    startTime: parsed.startTime ?? fallback.startTime,
+    endTime: parsed.endTime ?? fallback.endTime,
   }
 }
 

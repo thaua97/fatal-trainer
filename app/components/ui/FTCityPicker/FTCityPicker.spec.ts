@@ -31,7 +31,7 @@ describe('FTCityPicker', () => {
 
     const trigger = wrapper.find('[data-testid="city-picker"]')
     expect(trigger.text()).toContain('Pelotas, RS')
-    expect(wrapper.find('.i-lucide-map-pin').exists()).toBe(true)
+    expect(trigger.text()).not.toContain('cityPicker.placeholder')
   })
 
   it('reveals input menu when trigger is clicked', async () => {

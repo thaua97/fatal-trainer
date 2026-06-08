@@ -1,14 +1,17 @@
 import { defineComponent } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { mountFT } from '@tests/helpers/mount-ft'
 import { useAuth } from '~/composables/auth/useAuth'
 
-const authService = {
-  getMe: vi.fn(),
-  login: vi.fn(),
-  register: vi.fn(),
-  logout: vi.fn(),
-}
+const { authService } = vi.hoisted(() => ({
+  authService: {
+    getMe: vi.fn(),
+    login: vi.fn(),
+    register: vi.fn(),
+    logout: vi.fn(),
+  },
+}))
 
 vi.mock('~/services/auth/auth.service', () => ({
   authService,
@@ -20,7 +23,11 @@ vi.mock('~/composables/catalog/useTrainerBookmakers', () => ({
   }),
 }))
 
-const navigateTo = vi.fn()
+const { navigateTo } = vi.hoisted(() => ({
+  navigateTo: vi.fn().mockResolvedValue(undefined),
+}))
+
+mockNuxtImport('navigateTo', () => navigateTo)
 
 const TestHarness = defineComponent({
   setup() {
@@ -35,8 +42,7 @@ describe('useAuth', () => {
     authService.login.mockReset()
     authService.logout.mockReset()
     navigateTo.mockReset()
-
-    vi.stubGlobal('navigateTo', navigateTo)
+    navigateTo.mockResolvedValue(undefined)
 
     useState('auth-user', () => null)
     useState('auth-pending', () => false)

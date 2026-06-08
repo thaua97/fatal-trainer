@@ -5,6 +5,8 @@ withDefaults(defineProps<{
   bordered?: boolean
 }>(), {
   bordered: true,
+  title: undefined,
+  testId: undefined,
 })
 </script>
 

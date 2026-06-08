@@ -5,6 +5,7 @@ const props = withDefaults(defineProps<{
   testId?: string
 }>(), {
   variant: 'generic',
+  testId: undefined,
 })
 
 const icon = computed(() => {

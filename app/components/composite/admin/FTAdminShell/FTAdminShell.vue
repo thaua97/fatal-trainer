@@ -65,7 +65,7 @@ const navItems = [
             :class="[
               collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5',
               route.path.startsWith(item.to)
-                ? 'bg-gradient-to-r from-violet-600 to-violet-500 text-white shadow-sm'
+                ? 'bg-linear-to-r from-violet-600 to-violet-500 text-white shadow-sm'
                 : 'text-slate-600 hover:bg-slate-100',
             ]"
             :title="collapsed ? item.label : undefined"

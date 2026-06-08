@@ -41,4 +41,23 @@ describe('useFTTimePicker', () => {
     expect(timeFromHour(15).hour).toBe(15)
     expect(timeFromHour(15).minute).toBe(0)
   })
+
+  it('disables end hours less than or equal to start', async () => {
+    const model = ref<{ start: Time, end: Time } | null>({
+      start: new Time(11, 0),
+      end: new Time(18, 0),
+    })
+
+    const { isEndHourDisabled, selectStart, endTime } = useFTTimePicker(model)
+
+    expect(isEndHourDisabled(10)).toBe(true)
+    expect(isEndHourDisabled(11)).toBe(true)
+    expect(isEndHourDisabled(12)).toBe(false)
+
+    selectStart(20)
+    await nextTick()
+
+    expect(endTime.value).toBeNull()
+    expect(model.value).toBeNull()
+  })
 })

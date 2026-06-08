@@ -40,9 +40,11 @@ export function useTrainerReviews(trainerId: MaybeRefOrGetter<string>) {
     }
   }
 
-  watch([id, page], () => {
-    fetchReviews()
-  }, { immediate: true })
+  if (import.meta.client) {
+    watch([id, page], () => {
+      fetchReviews()
+    }, { immediate: true })
+  }
 
   function refresh() {
     page.value = 1

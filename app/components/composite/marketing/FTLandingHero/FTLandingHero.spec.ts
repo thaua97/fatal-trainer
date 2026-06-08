@@ -9,5 +9,6 @@ describe('FTLandingHero', () => {
     expect(wrapper.find('[data-testid="landing-hero"]').exists()).toBe(true)
     expect(wrapper.find('#landing-hero-title').exists()).toBe(true)
     expect(wrapper.find('[data-testid="landing-hero-cta-primary"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="landing-hero-cta-secondary"]').attributes('href')).toBe('/registro?role=personal-trainer')
   })
 })

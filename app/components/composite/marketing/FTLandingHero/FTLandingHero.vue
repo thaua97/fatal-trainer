@@ -4,12 +4,12 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
 
 <template>
   <section
-    class="relative overflow-hidden rounded-3xl lg:rounded-[2rem]"
+    class="relative overflow-hidden rounded-3xl lg:rounded-4xl"
     aria-labelledby="landing-hero-title"
     data-testid="landing-hero"
   >
     <div
-      class="grid min-h-[28rem] items-stretch lg:min-h-[32rem] lg:grid-cols-[1.1fr_0.9fr]"
+      class="grid min-h-112 items-stretch lg:min-h-128 lg:grid-cols-[1.1fr_0.9fr]"
       style="
         background: linear-gradient(
           105deg,
@@ -19,7 +19,7 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
       "
     >
       <div
-        class="flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-14 lg:py-16"
+        class="flex flex-col justify-start px-5 py-8 text-left sm:px-10 sm:py-10 sm:text-left lg:px-14 lg:py-16"
       >
         <p
           class="text-xs font-semibold uppercase tracking-[0.25em] text-white/80"
@@ -33,24 +33,26 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
           {{ $t("landing.hero.title") }}
         </h1>
         <p
-          class="mt-5 max-w-lg text-base leading-relaxed text-white/90 lg:text-lg"
+          class="mx-auto mt-5 max-w-lg text-base leading-relaxed text-white/90 sm:mx-0 lg:text-lg"
         >
           {{ $t("landing.hero.subtitle") }}
         </p>
-        <div class="mt-8 flex flex-wrap items-center gap-3">
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <UButton
             to="/personal-trainers"
             size="lg"
-            class="rounded-full bg-white px-8 font-semibold text-violet-700 hover:bg-violet-50"
+            block
+            class="rounded-full bg-white px-8 font-semibold text-violet-700 hover:bg-violet-50 sm:w-auto! sm:justify-start"
             data-testid="landing-hero-cta-primary"
           >
             {{ $t("landing.hero.ctaPrimary") }}
           </UButton>
           <UButton
-            to="/registro"
+            to="/registro?role=personal-trainer"
             size="lg"
             variant="outline"
-            class="rounded-full border-white/70 bg-white/10 px-8 font-semibold text-white backdrop-blur-sm hover:bg-white/20"
+            block
+            class="rounded-full border-white/70 bg-white/10 px-8 font-semibold text-white backdrop-blur-sm hover:bg-white/20 sm:w-auto! sm:justify-start"
             data-testid="landing-hero-cta-secondary"
           >
             {{ $t("landing.hero.ctaSecondary") }}
@@ -58,7 +60,7 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
         </div>
       </div>
 
-      <div class="relative hidden min-h-[20rem] lg:block">
+      <div class="relative hidden min-h-80 lg:block">
         <img
           :src="heroRunnerImage"
           :alt="$t('landing.hero.imageAlt')"
@@ -66,7 +68,7 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
           width="900"
           height="700"
           loading="eager"
-        />
+        >
       </div>
     </div>
   </section>

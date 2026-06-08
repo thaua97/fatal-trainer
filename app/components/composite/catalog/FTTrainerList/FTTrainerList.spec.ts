@@ -3,25 +3,49 @@ import { ref } from 'vue'
 import { mountFT } from '@tests/helpers/mount-ft'
 import FTTrainerList from './FTTrainerList.vue'
 
-const mockUseFTTrainerList = vi.fn()
-const mockUseFTTrainerListPreview = vi.fn()
-const mockUseFTTrainerListFavorites = vi.fn()
-
-vi.mock('../../../../composables/components/useFTTrainerList', () => ({
-  useFTTrainerList: () => mockUseFTTrainerList(),
+const {
+  mockUseFTTrainerList,
+  mockUseFTTrainerListPreview,
+  mockUseFTTrainerListFavorites,
+} = vi.hoisted(() => ({
+  mockUseFTTrainerList: vi.fn(),
+  mockUseFTTrainerListPreview: vi.fn(),
+  mockUseFTTrainerListFavorites: vi.fn(),
 }))
 
-vi.mock('../../../../composables/components/useFTTrainerListPreview', () => ({
+vi.mock('~/composables/components/useFTTrainerList', () => ({
+  useFTTrainerList: mockUseFTTrainerList,
+}))
+
+vi.mock('~/composables/components/useFTTrainerListPreview', () => ({
   useFTTrainerListPreview: (limit: number) => mockUseFTTrainerListPreview(limit),
 }))
 
-vi.mock('../../../../composables/components/useFTTrainerListFavorites', () => ({
+vi.mock('~/composables/components/useFTTrainerListFavorites', () => ({
   useFTTrainerListFavorites: () => mockUseFTTrainerListFavorites(),
 }))
+
+function createFullListMock(overrides: Record<string, unknown> = {}) {
+  return {
+    trainers: ref([]),
+    isLoading: ref(false),
+    isEmpty: ref(false),
+    hasMore: ref(false),
+    isLoadingMore: ref(false),
+    loadMore: vi.fn(),
+    clearFilters: vi.fn(),
+    isAwaitingCity: ref(false),
+    hasFetchError: ref(false),
+    errorMessage: ref(null),
+    refresh: vi.fn(),
+    ...overrides,
+  }
+}
 
 describe('FTTrainerList', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockUseFTTrainerList.mockReturnValue(createFullListMock())
     mockUseFTTrainerListPreview.mockReturnValue({
       trainers: ref([]),
       isLoading: ref(false),
@@ -38,15 +62,9 @@ describe('FTTrainerList', () => {
   })
 
   it('shows skeletons while loading', () => {
-    mockUseFTTrainerList.mockReturnValue({
-      trainers: ref([]),
+    mockUseFTTrainerList.mockReturnValue(createFullListMock({
       isLoading: ref(true),
-      isEmpty: ref(false),
-      hasMore: ref(false),
-      isLoadingMore: ref(false),
-      loadMore: vi.fn(),
-      clearFilters: vi.fn(),
-    })
+    }))
 
     const wrapper = mountFT(FTTrainerList, {
       global: {
@@ -65,15 +83,9 @@ describe('FTTrainerList', () => {
   })
 
   it('shows empty state when loaded with no trainers', () => {
-    mockUseFTTrainerList.mockReturnValue({
-      trainers: ref([]),
-      isLoading: ref(false),
+    mockUseFTTrainerList.mockReturnValue(createFullListMock({
       isEmpty: ref(true),
-      hasMore: ref(false),
-      isLoadingMore: ref(false),
-      loadMore: vi.fn(),
-      clearFilters: vi.fn(),
-    })
+    }))
 
     const wrapper = mountFT(FTTrainerList, {
       global: {
@@ -91,15 +103,9 @@ describe('FTTrainerList', () => {
   })
 
   it('shows trainer cards when loaded with results', () => {
-    mockUseFTTrainerList.mockReturnValue({
+    mockUseFTTrainerList.mockReturnValue(createFullListMock({
       trainers: ref([{ id: '1', name: 'Ana' }]),
-      isLoading: ref(false),
-      isEmpty: ref(false),
-      hasMore: ref(false),
-      isLoadingMore: ref(false),
-      loadMore: vi.fn(),
-      clearFilters: vi.fn(),
-    })
+    }))
 
     const wrapper = mountFT(FTTrainerList, {
       global: {
@@ -118,18 +124,14 @@ describe('FTTrainerList', () => {
     expect(wrapper.find('[data-testid="trainer-list-end"]').exists()).toBe(true)
   })
 
-  it('shows load more button when more trainers are available', () => {
+  it('shows load more button when more trainers are available', async () => {
     const loadMore = vi.fn()
 
-    mockUseFTTrainerList.mockReturnValue({
+    mockUseFTTrainerList.mockReturnValue(createFullListMock({
       trainers: ref([{ id: '1', name: 'Ana' }]),
-      isLoading: ref(false),
-      isEmpty: ref(false),
       hasMore: ref(true),
-      isLoadingMore: ref(false),
       loadMore,
-      clearFilters: vi.fn(),
-    })
+    }))
 
     const wrapper = mountFT(FTTrainerList, {
       global: {
@@ -152,15 +154,11 @@ describe('FTTrainerList', () => {
   })
 
   it('shows loading sentinel while loading more trainers', () => {
-    mockUseFTTrainerList.mockReturnValue({
+    mockUseFTTrainerList.mockReturnValue(createFullListMock({
       trainers: ref([{ id: '1', name: 'Ana' }]),
-      isLoading: ref(false),
-      isEmpty: ref(false),
       hasMore: ref(true),
       isLoadingMore: ref(true),
-      loadMore: vi.fn(),
-      clearFilters: vi.fn(),
-    })
+    }))
 
     const wrapper = mountFT(FTTrainerList, {
       global: {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AdminUserNote, AdminUserNotesResponse } from '#shared/types/admin'
+import type { AdminUserNotesResponse } from '#shared/types/admin'
 
 defineProps<{
   notes?: AdminUserNotesResponse | null

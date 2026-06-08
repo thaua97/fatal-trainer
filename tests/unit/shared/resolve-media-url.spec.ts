@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { getAssetsBaseUrl, resolveMediaUrl } from './resolve-media-url'
+import { getAssetsBaseUrl, resolveMediaUrl } from '#shared/utils/resolve-media-url'
 
 describe('resolveMediaUrl', () => {
   it('returns absolute URLs unchanged', () => {

@@ -8,7 +8,12 @@ const { isAuthenticated, initialized } = useAuth()
 
 const showUserMenu = computed(() => initialized.value && isAuthenticated.value)
 const showGuestActions = computed(() => initialized.value && !isAuthenticated.value)
+const authReady = ref(false)
 const { localeItems, currentLocale, switchLocale } = useFTLocaleSwitcher()
+
+onMounted(() => {
+  authReady.value = true
+})
 
 function localeMenuLabel(code: FTLocaleCode) {
   if (code === 'pt-BR') return t('locale.pt-BR')
@@ -22,17 +27,6 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
     { label: t('header.favorites'), icon: 'i-lucide-heart', to: '/personal-trainers/favoritos' },
     { label: t('header.report'), icon: 'i-lucide-flag', to: '/denuncia' },
   ]
-
-  if (!initialized.value) {
-    return [
-      navSection,
-      localeItems.value.map(item => ({
-        label: localeMenuLabel(item.code as FTLocaleCode),
-        icon: item.code === currentLocale.value ? 'i-lucide-check' : undefined,
-        onSelect: () => switchLocale(item.code as FTLocaleCode),
-      })),
-    ]
-  }
 
   const authSection: DropdownMenuItem[] = [
     { label: t('header.register'), icon: 'i-lucide-user-plus', to: '/registro' },
@@ -67,14 +61,17 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
           <FTLogo size="xl" />
         </NuxtLink>
 
-        <div class="flex items-center gap-4">
+        <div
+          v-if="authReady"
+          class="flex items-center gap-4"
+        >
           <FTAppHeaderUserMenu
             v-if="showUserMenu"
             compact
           />
 
           <UDropdownMenu
-            v-else
+            v-else-if="showGuestActions"
             :items="mobileMenuItems"
             :content="{ align: 'end', side: 'bottom', sideOffset: 8 }"
             :ui="{ content: 'min-w-52' }"
@@ -135,7 +132,10 @@ const mobileMenuItems = computed<DropdownMenuItem[][]>(() => {
           </NuxtLink>
         </nav>
 
-        <div class="flex items-center gap-4">
+        <div
+          v-if="authReady"
+          class="flex items-center gap-4"
+        >
           <FTAppHeaderUserMenu v-if="showUserMenu" />
           <template v-else-if="showGuestActions">
             <UButton

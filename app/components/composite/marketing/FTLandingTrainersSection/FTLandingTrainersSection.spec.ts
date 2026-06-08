@@ -8,6 +8,11 @@ describe('FTLandingTrainersSection', () => {
       global: {
         stubs: {
           FTTrainerList: { template: '<div data-testid="trainer-list-stub" />' },
+          UButton: {
+            props: ['to'],
+            template: '<a :href="to" v-bind="$attrs"><slot /></a>',
+          },
+          UIcon: { template: '<span />' },
         },
       },
     })

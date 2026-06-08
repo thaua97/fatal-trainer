@@ -27,7 +27,7 @@ const {
       v-model:sort-by="sortBy"
       v-model:sort-order="sortOrder"
       v-model:filter-open="filterOpen"
-      :query="query"
+      v-model:query="query"
       :active-filter-count="activeFilterCount"
       @clear-filters="clearFilters"
       @open-create="openCreate"

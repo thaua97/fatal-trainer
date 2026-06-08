@@ -14,4 +14,13 @@ describe('FTPhoneInput', () => {
     await input.setValue('11999998888')
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['(11) 99999-8888'])
   })
+
+  it('rejects non-digit characters on input', async () => {
+    const wrapper = mountFT(FTPhoneInput, { props: { modelValue: '(53) 9679-0' } })
+    const input = wrapper.find('input')
+    await input.setValue('(53) 9679-0gggggggg')
+    const emitted = wrapper.emitted('update:modelValue')
+    expect(emitted?.at(-1)).toEqual(['(53) 9679-0'])
+    expect((input.element as HTMLInputElement).value).toBe('(53) 9679-0')
+  })
 })

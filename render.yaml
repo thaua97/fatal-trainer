@@ -1,0 +1,45 @@
+#################################################################
+# Fatal Trainer Front — Render Blueprint
+#
+# Pré-requisito: API já deployada via fatal-trainer-backend/render.yaml
+#   (serviço "fatal-trainer-api" deve existir no mesmo workspace Render)
+#
+# Deploy:
+#   1. Push para o branch conectado ao GitHub
+#   2. Render Dashboard → New Blueprint → selecione o repositório
+#   3. Em "Blueprint file path", informe: fatal-trainer/render.yaml
+#   4. Confirme o Web Service
+#
+# Validar:
+#   https://fatal-trainer.onrender.com/personal-trainers
+#
+# Notes:
+#   - NUXT_PUBLIC_* é definido em build time a partir da URL da API
+#   - API_HOST referencia RENDER_EXTERNAL_URL do serviço fatal-trainer-api
+#################################################################
+
+services:
+  - type: web
+    name: fatal-trainer
+    runtime: node
+    plan: free
+    rootDir: fatal-trainer
+    buildFilter:
+      paths:
+        - fatal-trainer/**
+    buildCommand: >-
+      pnpm install --frozen-lockfile &&
+      NUXT_PUBLIC_API_BASE_URL="${API_HOST}/api"
+      NUXT_PUBLIC_ASSETS_BASE_URL="${API_HOST}"
+      NUXT_PUBLIC_USE_MOCK_API=false
+      pnpm build
+    startCommand: node .output/server/index.mjs
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: API_HOST
+        fromService:
+          type: web
+          name: fatal-trainer-api
+          envVarKey: RENDER_EXTERNAL_URL

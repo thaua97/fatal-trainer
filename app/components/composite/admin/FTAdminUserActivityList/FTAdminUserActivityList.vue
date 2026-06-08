@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AdminUserActivityItem, AdminUserActivityListResponse, AdminUserActivityType } from '#shared/types/admin'
+import type { AdminUserActivityListResponse, AdminUserActivityType } from '#shared/types/admin'
 
 const props = defineProps<{
   data?: AdminUserActivityListResponse | null

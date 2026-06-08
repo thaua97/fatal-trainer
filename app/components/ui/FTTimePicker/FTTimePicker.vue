@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   testId: 'time-picker',
   disabled: false,
+  placeholder: undefined,
 })
 
 const model = defineModel<TimeRangeValue | null>()
@@ -27,6 +28,7 @@ const {
   selectEnd,
   isStartSelected,
   isEndSelected,
+  isEndHourDisabled,
 } = useFTTimePicker(model)
 
 const startOpen = ref(false)
@@ -52,9 +54,11 @@ const triggerClass = [
 ].join(' ')
 
 const hourButtonBase = [
-  'rounded-xl px-2 py-2 text-sm font-semibold tabular-nums transition-colors',
+  'w-full whitespace-nowrap rounded-xl px-2 py-2 text-center text-sm font-semibold tabular-nums transition-colors',
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/30',
 ].join(' ')
+
+const hourPanelClass = 'w-[min(100vw-2rem,18rem)] p-3 sm:w-[min(calc(100vw-2rem),26rem)]'
 </script>
 
 <template>
@@ -97,7 +101,7 @@ const hourButtonBase = [
 
           <template #content>
             <div
-              class="w-[min(100vw-2rem,18rem)] p-3"
+              :class="hourPanelClass"
               role="listbox"
               :aria-label="t('timePicker.ariaLabelStart')"
               :data-testid="`${testId}-start-panel`"
@@ -170,7 +174,7 @@ const hourButtonBase = [
 
           <template #content>
             <div
-              class="w-[min(100vw-2rem,18rem)] p-3"
+              :class="hourPanelClass"
               role="listbox"
               :aria-label="t('timePicker.ariaLabelEnd')"
               :data-testid="`${testId}-end-panel`"
@@ -181,13 +185,17 @@ const hourButtonBase = [
                   :key="`end-${hour}`"
                   type="button"
                   role="option"
+                  :disabled="isEndHourDisabled(hour)"
                   :aria-selected="isEndSelected(hour)"
+                  :aria-disabled="isEndHourDisabled(hour)"
                   :aria-label="t('timePicker.selectHour', { hour: formatHourChip(hour) })"
                   :class="[
                     hourButtonBase,
                     isEndSelected(hour)
                       ? 'bg-violet-600 text-white shadow-sm'
-                      : 'border border-slate-100 bg-white text-slate-700 hover:border-violet-200 hover:bg-violet-50',
+                      : isEndHourDisabled(hour)
+                        ? 'cursor-not-allowed border border-slate-100 bg-slate-50 text-slate-300'
+                        : 'border border-slate-100 bg-white text-slate-700 hover:border-violet-200 hover:bg-violet-50',
                   ]"
                   @click="onSelectEnd(hour)"
                 >

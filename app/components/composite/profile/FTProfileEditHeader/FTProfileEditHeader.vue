@@ -30,6 +30,8 @@ const fieldErrors = computed(() => ({
   state: errorMessage('state', errors.value.state),
   description: errorMessage('description', errors.value.description),
   specialties: errorMessage('specialties', errors.value.specialties),
+  modalities: errorMessage('modalities', errors.value.modalities),
+  servicePrice: errorMessage('servicePrice', errors.value.servicePrice),
   cref: errorMessage('cref', errors.value.cref),
   availability: errorMessage('availability', errors.value.availability),
   experienceYears: errorMessage('experienceYears', errors.value.experienceYears),
@@ -52,16 +54,16 @@ async function handleHeroPhotoChange(event: Event) {
       @submit.prevent="handleInfoSubmit"
     >
       <FTProfileEditHero
+        v-model:form="form"
         :trainer="trainer"
-        :form="form"
         :field-errors="fieldErrors"
         :photo-upload-pending="uploadPending"
         @change-photo="handleHeroPhotoChange"
       />
 
       <FTProfileEditLocationRow
+        v-model:form="form"
         :trainer="trainer"
-        :form="form"
         :field-errors="fieldErrors"
       />
 
@@ -70,6 +72,7 @@ async function handleHeroPhotoChange(event: Event) {
           class="w-full"
           :label="t('dashboard.info.fields.description')"
           :hint="t('dashboard.info.hints.description')"
+          :error="fieldErrors.description"
         >
           <UTextarea
             v-model="form.description"
@@ -86,6 +89,7 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.specialties')"
+          :error="fieldErrors.specialties"
         >
           <USelect
             v-model="form.specialties"
@@ -103,6 +107,7 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.cref')"
+          :error="fieldErrors.cref"
         >
           <FTCrefInput
             v-model="form.cref"
@@ -115,6 +120,7 @@ async function handleHeroPhotoChange(event: Event) {
       <FTProfileSection :title="t('dashboard.edit.availabilityTitle')">
         <FTAvailabilityPicker
           v-model="form.availability"
+          :error="fieldErrors.availability"
         />
       </FTProfileSection>
 
@@ -122,6 +128,7 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.experienceYears')"
+          :error="fieldErrors.experienceYears"
         >
           <UInputNumber
             v-model="form.experienceYears"

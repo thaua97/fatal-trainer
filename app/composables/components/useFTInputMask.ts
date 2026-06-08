@@ -16,6 +16,9 @@ export function useFTInputMask(
     const target = event.target as HTMLInputElement
     const formatted = formatter(target.value)
     displayValue.value = formatted
+    if (target.value !== formatted) {
+      target.value = formatted
+    }
     emit(formatted)
   }
 

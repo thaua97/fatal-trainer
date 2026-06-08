@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<{
   discountPercent: null,
   promotionLabel: undefined,
   promotionValidity: null,
+  sessionPromoPrice: undefined,
+  monthlyPromoPrice: undefined,
 })
 
 const { locale, t } = useI18n()

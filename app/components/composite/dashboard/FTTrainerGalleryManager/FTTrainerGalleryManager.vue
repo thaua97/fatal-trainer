@@ -13,7 +13,6 @@ const {
   gallery,
   displayGallery,
   photoUrl,
-  displayPhotoUrl,
   canUpload,
   uploadPending,
   deletePending,
@@ -61,7 +60,7 @@ function openFilePicker() {
         v-for="(image, index) in displayGallery"
         :key="`${gallery[index]}-${index}`"
         class="group relative overflow-hidden bg-slate-50"
-        :class="variant === 'profile' ? 'aspect-square rounded-lg' : 'aspect-[4/3] rounded-2xl border border-slate-100'"
+        :class="variant === 'profile' ? 'aspect-square rounded-lg' : 'aspect-4/3 rounded-2xl border border-slate-100'"
       >
         <img
           v-if="variant === 'profile'"
@@ -77,7 +76,7 @@ function openFilePicker() {
         >
 
         <div
-          class="absolute inset-0 flex items-end justify-between gap-2 bg-gradient-to-t from-slate-900/70 via-slate-900/20 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+          class="absolute inset-0 flex items-end justify-between gap-2 bg-linear-to-t from-slate-900/70 via-slate-900/20 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
         >
           <UButton
             v-if="photoUrl !== gallery[index]"

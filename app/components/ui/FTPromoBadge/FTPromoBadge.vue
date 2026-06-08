@@ -5,6 +5,8 @@ const props = withDefaults(defineProps<{
   size?: 'sm' | 'md'
 }>(), {
   size: 'md',
+  label: undefined,
+  percent: undefined,
 })
 
 const displayLabel = computed(() => {
