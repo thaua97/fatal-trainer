@@ -1,5 +1,5 @@
 import { REPORT_TYPE_OPTIONS } from '#shared/domain/report/constants/report-options'
-import type { ReportField, ReportPayload, ReportValidationErrors } from '#shared/domain/report/entities/report'
+import type { ReportPayload, ReportValidationErrors } from '#shared/domain/report/entities/report'
 import { validateReport } from '#shared/domain/report/services/validate-report'
 import type { CreateReportRequest } from '#shared/types/api'
 import { applyApiError } from '~/composables/core/applyApiError'

@@ -42,6 +42,6 @@ const { t } = useI18n()
       width="900"
       height="700"
       loading="lazy"
-    />
+    >
   </aside>
 </template>

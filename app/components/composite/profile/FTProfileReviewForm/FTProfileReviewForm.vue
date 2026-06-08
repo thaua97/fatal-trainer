@@ -21,7 +21,6 @@ const {
   loadingMine,
   isEditing,
   mineReviewId,
-  showForm,
   showFormFields,
   showGuestCta,
   loginPath,

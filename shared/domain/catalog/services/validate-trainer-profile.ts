@@ -28,63 +28,107 @@ function isValidDateString(value: string): boolean {
   return !Number.isNaN(date.getTime())
 }
 
+function validateRequiredText(
+  value: string,
+  minLength = 1,
+): 'required' | 'tooShort' | undefined {
+  const trimmed = value.trim()
+  if (!trimmed) {
+    return 'required'
+  }
+
+  if (trimmed.length < minLength) {
+    return 'tooShort'
+  }
+
+  return undefined
+}
+
+function validateContactPhone(phone: string): TrainerInfoValidationErrors['contactPhone'] {
+  const trimmed = phone.trim()
+  if (!trimmed) {
+    return 'required'
+  }
+
+  const digits = countPhoneDigits(trimmed)
+  if (digits < PHONE_DIGITS_MIN || digits > PHONE_DIGITS_MAX) {
+    return 'invalid'
+  }
+
+  return undefined
+}
+
+function validateCatalogOptions<T extends string>(
+  values: string[],
+  allowed: readonly T[],
+): 'required' | 'invalid' | undefined {
+  if (!values.length) {
+    return 'required'
+  }
+
+  if (values.some(value => !allowed.includes(value as T))) {
+    return 'invalid'
+  }
+
+  return undefined
+}
+
+function validateTrainerLocation(
+  city: string,
+  state: string,
+): Pick<TrainerInfoValidationErrors, 'city' | 'state'> {
+  const errors: Pick<TrainerInfoValidationErrors, 'city' | 'state'> = {}
+  const trimmedCity = city.trim()
+
+  if (!trimmedCity) {
+    errors.city = 'required'
+  }
+
+  const normalizedState = state.trim().toUpperCase()
+  if (!normalizedState) {
+    errors.state = 'required'
+  } else if (!BRAZILIAN_STATES.has(normalizedState)) {
+    errors.state = 'invalid'
+  }
+
+  return errors
+}
+
 export function validateTrainerInfo(
   payload: TrainerInfoPayload,
 ): TrainerProfileValidationResult<TrainerInfoValidationErrors> {
   const errors: TrainerInfoValidationErrors = {}
 
-  const name = payload.name.trim()
-  if (!name) {
-    errors.name = 'required'
-  } else if (name.length < 2) {
-    errors.name = 'tooShort'
+  const nameError = validateRequiredText(payload.name, 2)
+  if (nameError) {
+    errors.name = nameError
   }
 
-  const contactPhone = payload.contactPhone.trim()
-  if (!contactPhone) {
-    errors.contactPhone = 'required'
-  } else {
-    const digits = countPhoneDigits(contactPhone)
-    if (digits < PHONE_DIGITS_MIN || digits > PHONE_DIGITS_MAX) {
-      errors.contactPhone = 'invalid'
-    }
+  const contactPhoneError = validateContactPhone(payload.contactPhone)
+  if (contactPhoneError) {
+    errors.contactPhone = contactPhoneError
   }
 
-  const profession = payload.profession.trim()
-  if (!profession) {
+  if (!payload.profession.trim()) {
     errors.profession = 'required'
   }
 
-  const description = payload.description.trim()
-  if (!description) {
-    errors.description = 'required'
-  } else if (description.length < 20) {
-    errors.description = 'tooShort'
+  const descriptionError = validateRequiredText(payload.description, 20)
+  if (descriptionError) {
+    errors.description = descriptionError
   }
 
-  if (!payload.specialties.length) {
-    errors.specialties = 'required'
-  } else if (payload.specialties.some(s => !CATALOG_SPECIALTIES.includes(s as typeof CATALOG_SPECIALTIES[number]))) {
-    errors.specialties = 'invalid'
+  const specialtiesError = validateCatalogOptions(payload.specialties, CATALOG_SPECIALTIES)
+  if (specialtiesError) {
+    errors.specialties = specialtiesError
   }
 
-  if (!payload.modalities.length) {
-    errors.modalities = 'required'
-  } else if (payload.modalities.some(m => !CATALOG_MODALITIES.includes(m))) {
-    errors.modalities = 'invalid'
+  const modalitiesError = validateCatalogOptions(payload.modalities, CATALOG_MODALITIES)
+  if (modalitiesError) {
+    errors.modalities = modalitiesError
   }
 
-  const city = payload.city.trim()
-  if (!city) {
-    errors.city = 'required'
-  }
-
-  const state = payload.state.trim().toUpperCase()
-  if (!state) {
-    errors.state = 'required'
-  } else if (!BRAZILIAN_STATES.has(state)) {
-    errors.state = 'invalid'
-  }
+  Object.assign(errors, validateTrainerLocation(payload.city, payload.state))
 
   if (!Number.isFinite(payload.servicePrice) || payload.servicePrice <= 0) {
     errors.servicePrice = 'invalid'
@@ -97,8 +141,7 @@ export function validateTrainerInfo(
     errors.cref = 'invalid'
   }
 
-  const availability = payload.availability.trim()
-  if (!availability) {
+  if (!payload.availability.trim()) {
     errors.availability = 'required'
   }
 
@@ -110,6 +153,41 @@ export function validateTrainerInfo(
     valid: Object.keys(errors).length === 0,
     errors,
   }
+}
+
+function validatePromotionDates(
+  startsAt: string,
+  endsAt: string,
+): Pick<TrainerPromotionValidationErrors, 'startsAt' | 'endsAt'> {
+  const errors: Pick<TrainerPromotionValidationErrors, 'startsAt' | 'endsAt'> = {}
+  const startsAtValid = Boolean(startsAt && isValidDateString(startsAt))
+  const endsAtValid = Boolean(endsAt && isValidDateString(endsAt))
+
+  if (!startsAtValid) {
+    errors.startsAt = 'invalid'
+  }
+
+  if (!endsAtValid) {
+    errors.endsAt = 'invalid'
+  } else if (startsAtValid && endsAt < startsAt) {
+    errors.endsAt = 'beforeStart'
+  }
+
+  return errors
+}
+
+function validateMaxRedemptions(
+  maxRedemptions: number | null | undefined,
+): TrainerPromotionValidationErrors['maxRedemptions'] {
+  if (maxRedemptions == null) {
+    return undefined
+  }
+
+  if (!Number.isFinite(maxRedemptions) || maxRedemptions < 1) {
+    return 'invalid'
+  }
+
+  return undefined
 }
 
 export function validateTrainerPromotion(
@@ -138,20 +216,11 @@ export function validateTrainerPromotion(
     errors.label = 'required'
   }
 
-  if (!payload.startsAt || !isValidDateString(payload.startsAt)) {
-    errors.startsAt = 'invalid'
-  }
+  Object.assign(errors, validatePromotionDates(payload.startsAt, payload.endsAt))
 
-  if (!payload.endsAt || !isValidDateString(payload.endsAt)) {
-    errors.endsAt = 'invalid'
-  } else if (payload.startsAt && isValidDateString(payload.startsAt) && payload.endsAt < payload.startsAt) {
-    errors.endsAt = 'beforeStart'
-  }
-
-  if (payload.maxRedemptions != null) {
-    if (!Number.isFinite(payload.maxRedemptions) || payload.maxRedemptions < 1) {
-      errors.maxRedemptions = 'invalid'
-    }
+  const maxRedemptionsError = validateMaxRedemptions(payload.maxRedemptions)
+  if (maxRedemptionsError) {
+    errors.maxRedemptions = maxRedemptionsError
   }
 
   return {

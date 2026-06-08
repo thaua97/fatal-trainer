@@ -17,7 +17,10 @@ const defaultStubs = {
     props: ['to'],
   },
   UIcon: { template: '<span class="u-icon-stub" />' },
-  UButton: { template: '<button><slot /></button>' },
+  UButton: {
+    props: ['to'],
+    template: '<a v-if="to" :href="typeof to === \'string\' ? to : \'#\'" v-bind="$attrs"><slot /></a><button v-else v-bind="$attrs"><slot /></button>',
+  },
   UInput: { template: '<input />' },
   USelect: { template: '<select />' },
   UFormField: { template: '<div><slot /></div>' },

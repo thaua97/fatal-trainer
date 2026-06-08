@@ -1,5 +1,3 @@
-import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type {
@@ -13,55 +11,9 @@ import { computeDiscountPercent, computePromoPrice } from '#shared/domain/catalo
 import { filterTrainers } from '#shared/domain/catalog/services/filter-trainers'
 import { sortTrainers } from '#shared/domain/catalog/services/sort-trainers'
 import type { PaginatedTrainersResponse } from '#shared/types/api'
-import { generateMockTrainers } from '../mocks/trainer-factory'
 import { getMockAvatarUrl } from '../mocks/mock-photos'
-
-const TRAINERS_FILE = join(process.cwd(), 'server/data/personal-trainers.json')
-
-let cachedTrainers: PersonalTrainer[] | null = null
-let persistedToDisk = false
-
-function loadTrainersFromFile(): PersonalTrainer[] {
-  if (!existsSync(TRAINERS_FILE)) {
-    return []
-  }
-
-  const raw = readFileSync(TRAINERS_FILE, 'utf-8')
-  return JSON.parse(raw) as PersonalTrainer[]
-}
-
-function loadTrainers(): PersonalTrainer[] {
-  if (cachedTrainers) {
-    return cachedTrainers
-  }
-
-  const fromFile = loadTrainersFromFile()
-
-  if (fromFile.length > 0) {
-    cachedTrainers = fromFile
-    persistedToDisk = true
-    return cachedTrainers
-  }
-
-  if (import.meta.dev || import.meta.env.VITEST) {
-    cachedTrainers = generateMockTrainers(36)
-    return cachedTrainers
-  }
-
-  cachedTrainers = []
-  return cachedTrainers
-}
-
-function saveTrainers(trainers: PersonalTrainer[]): void {
-  if (!persistedToDisk && cachedTrainers && cachedTrainers.length > 0) {
-    writeFileSync(TRAINERS_FILE, `${JSON.stringify(cachedTrainers, null, 2)}\n`, 'utf-8')
-    persistedToDisk = true
-  }
-
-  writeFileSync(TRAINERS_FILE, `${JSON.stringify(trainers, null, 2)}\n`, 'utf-8')
-  cachedTrainers = trainers
-  persistedToDisk = true
-}
+import { loadTrainers, resetTrainerCacheForTests, saveTrainers } from './trainer-repository-storage'
+import { mutateTrainer } from './trainer-repository-mutations'
 
 function padTrainerId(index: number): string {
   return `trainer-${String(index + 1).padStart(3, '0')}`
@@ -208,16 +160,27 @@ function buildPromotionFromTemplateActivation(
   )
 }
 
-export function updateTrainerInfo(trainerId: string, payload: TrainerInfoPayload): PersonalTrainer {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
-
-  if (index === -1) {
-    throw new Error('Trainer not found')
+function refreshPromotionPricing(
+  current: PersonalTrainer,
+  servicePrice: number,
+): PersonalTrainer['promotion'] | undefined {
+  if (!current.promotion) {
+    return undefined
   }
 
-  const current = trainers[index]!
-  const updated: PersonalTrainer = {
+  const percent = current.promotion.discountPercent
+    ?? computeDiscountPercent(current.servicePrice, current.promotion.promoPrice)
+    ?? 15
+
+  return {
+    ...current.promotion,
+    discountPercent: percent,
+    promoPrice: computePromoPrice(servicePrice, percent),
+  }
+}
+
+export function updateTrainerInfo(trainerId: string, payload: TrainerInfoPayload): PersonalTrainer {
+  return mutateTrainer(trainerId, (current) => ({
     ...current,
     name: payload.name.trim(),
     contactPhone: payload.contactPhone.trim(),
@@ -231,177 +194,30 @@ export function updateTrainerInfo(trainerId: string, payload: TrainerInfoPayload
     cref: payload.cref.trim(),
     availability: payload.availability.trim(),
     experienceYears: payload.experienceYears,
-    promotion: current.promotion
-      ? (() => {
-          const percent = current.promotion.discountPercent
-            ?? computeDiscountPercent(current.servicePrice, current.promotion.promoPrice)
-            ?? 15
-          return {
-            ...current.promotion,
-            discountPercent: percent,
-            promoPrice: computePromoPrice(payload.servicePrice, percent),
-          }
-        })()
-      : undefined,
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
+    promotion: refreshPromotionPricing(current, payload.servicePrice),
+  }))
 }
 
 export function updateTrainerPromotion(
   trainerId: string,
   payload: TrainerPromotionActivationPayload,
 ): PersonalTrainer {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
-
-  if (index === -1) {
-    throw new Error('Trainer not found')
-  }
-
-  const current = trainers[index]!
-  const updated: PersonalTrainer = {
+  return mutateTrainer(trainerId, (current) => ({
     ...current,
     promotion: buildPromotionFromTemplateActivation(
       payload,
       current.servicePrice,
       current.promotion,
     ),
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
+  }))
 }
 
-export function addGalleryImage(trainerId: string, imageUrl: string): PersonalTrainer {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
+export {
+  addGalleryImage,
+  ensureTrainerUploadDir,
+  removeGalleryImage,
+  setTrainerCoverPhoto,
+  updateTrainerReviewAggregates,
+} from './trainer-gallery-repository'
 
-  if (index === -1) {
-    throw new Error('Trainer not found')
-  }
-
-  const current = trainers[index]!
-  const gallery = [...(current.gallery ?? []), imageUrl]
-  const photoUrl = current.photoUrl || imageUrl
-
-  const updated: PersonalTrainer = {
-    ...current,
-    gallery,
-    photoUrl,
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
-}
-
-export function removeGalleryImage(trainerId: string, imageIndex: number): PersonalTrainer {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
-
-  if (index === -1) {
-    throw new Error('Trainer not found')
-  }
-
-  const current = trainers[index]!
-  const gallery = [...(current.gallery ?? [])]
-
-  if (imageIndex < 0 || imageIndex >= gallery.length) {
-    throw new Error('Image not found')
-  }
-
-  const [removedUrl] = gallery.splice(imageIndex, 1)
-
-  if (removedUrl?.startsWith('/uploads/')) {
-    const filePath = join(process.cwd(), 'public', removedUrl)
-    if (existsSync(filePath)) {
-      unlinkSync(filePath)
-    }
-  }
-
-  const photoUrl = current.photoUrl === removedUrl
-    ? (gallery[0] ?? getMockAvatarUrl(index))
-    : current.photoUrl
-
-  const updated: PersonalTrainer = {
-    ...current,
-    gallery,
-    photoUrl,
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
-}
-
-export function setTrainerCoverPhoto(trainerId: string, imageUrl: string): PersonalTrainer {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
-
-  if (index === -1) {
-    throw new Error('Trainer not found')
-  }
-
-  const current = trainers[index]!
-  const gallery = current.gallery ?? []
-
-  if (!gallery.includes(imageUrl)) {
-    throw new Error('Image not in gallery')
-  }
-
-  const updated: PersonalTrainer = {
-    ...current,
-    photoUrl: imageUrl,
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
-}
-
-export function updateTrainerReviewAggregates(
-  trainerId: string,
-  rating: number | undefined,
-  reviewCount: number,
-): PersonalTrainer | undefined {
-  const trainers = loadTrainers()
-  const index = trainers.findIndex((trainer) => trainer.id === trainerId)
-  if (index === -1) {
-    return undefined
-  }
-
-  const current = trainers[index]!
-  const updated: PersonalTrainer = {
-    ...current,
-    rating,
-    reviewCount,
-    reviews: undefined,
-  }
-
-  const next = [...trainers]
-  next[index] = updated
-  saveTrainers(next)
-  return updated
-}
-
-export function ensureTrainerUploadDir(trainerId: string): string {
-  const dir = join(process.cwd(), 'public', 'uploads', 'trainers', trainerId)
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true })
-  }
-  return dir
-}
-
-export function resetTrainerCacheForTests(): void {
-  cachedTrainers = null
-  persistedToDisk = false
-}
+export { resetTrainerCacheForTests }

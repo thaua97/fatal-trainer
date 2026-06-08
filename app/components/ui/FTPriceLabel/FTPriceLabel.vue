@@ -10,6 +10,8 @@ const props = withDefaults(defineProps<{
   size: 'md',
   showDiscount: false,
   priceView: 'session',
+  originalPrice: undefined,
+  promoPrice: undefined,
 })
 
 const priceSizeClass = computed(() => {

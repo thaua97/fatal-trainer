@@ -2,9 +2,10 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { TrainerInfoPayload } from '#shared/domain/catalog/entities/trainer-profile-payloads'
 
+const form = defineModel<TrainerInfoPayload>('form', { required: true })
+
 defineProps<{
   trainer: PersonalTrainer
-  form: TrainerInfoPayload
   fieldErrors: Partial<Record<string, string | undefined>>
 }>()
 

@@ -18,7 +18,7 @@ export function applyApiError<T extends Record<string, string | undefined>>({
   errors,
   toast,
   translate,
-  translator,
+  translator: _translator,
   fallbackKey = 'toast.errors.generic',
 }: ApplyApiErrorOptions<T>) {
   const fieldEntries = Object.entries(parsed.fieldErrors).filter(([, code]) => Boolean(code))

@@ -4,6 +4,8 @@ import { mount } from '@vue/test-utils'
 import FTFeaturedTrainersCarousel from './FTFeaturedTrainersCarousel.vue'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 
+import { useFTFeaturedTrainersCarousel } from '../../../../composables/components/useFTFeaturedTrainersCarousel'
+
 const mockTrainers: PersonalTrainer[] = [
   {
     id: 'trainer-001',
@@ -50,8 +52,6 @@ const carouselStubs = {
 vi.mock('../../../../composables/components/useFTFeaturedTrainersCarousel', () => ({
   useFTFeaturedTrainersCarousel: vi.fn(),
 }))
-
-import { useFTFeaturedTrainersCarousel } from '../../../../composables/components/useFTFeaturedTrainersCarousel'
 
 const mockedUseCarousel = vi.mocked(useFTFeaturedTrainersCarousel)
 

@@ -19,6 +19,55 @@
     "userProfile": {
       "backToList": "Voltar à lista"
     },
+    "users": {
+      "toolbar": {
+        "searchPlaceholder": "Buscar por nome ou e-mail...",
+        "filters": "Filtros",
+        "sort": "Ordenar",
+        "newUser": "Novo usuário",
+        "clearFilters": "Limpar filtros",
+        "clearAll": "Limpar tudo",
+        "roleLabel": "Papel",
+        "statusLabel": "Status",
+        "roleAll": "Todos",
+        "statusAll": "Todos",
+        "statusActive": "Ativos",
+        "statusInactive": "Inativos",
+        "viewTable": "Visualização em tabela",
+        "viewList": "Visualização em lista",
+        "sortNameAsc": "Nome A–Z",
+        "sortNameDesc": "Nome Z–A",
+        "sortNewest": "Mais recentes",
+        "sortOldest": "Mais antigos",
+        "sortRoleAsc": "Papel A–Z"
+      }
+    },
+    "promotions": {
+      "toolbar": {
+        "searchPlaceholder": "Buscar por nome ou label...",
+        "filters": "Filtros",
+        "sort": "Ordenar",
+        "newPromotion": "Nova promoção",
+        "clearFilters": "Limpar filtros",
+        "clearAll": "Limpar tudo",
+        "enabledLabel": "Habilitada",
+        "periodLabel": "Período",
+        "enabledAll": "Todas",
+        "enabledActive": "Habilitadas",
+        "enabledInactive": "Desabilitadas",
+        "periodAll": "Todos",
+        "periodActive": "Em vigor",
+        "periodUpcoming": "Agendadas",
+        "periodExpired": "Expiradas",
+        "chipEnabled": "Habilitadas",
+        "chipDisabled": "Desabilitadas",
+        "sortNameAsc": "Nome A–Z",
+        "sortNameDesc": "Nome Z–A",
+        "sortNewest": "Mais recentes",
+        "sortStartsAsc": "Início mais cedo",
+        "sortDiscountDesc": "Maior desconto"
+      }
+    },
     "errors": {
       "submitFailed": "Não foi possível concluir a ação.",
       "loadFailed": "Não foi possível carregar os dados.",

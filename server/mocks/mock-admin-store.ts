@@ -1,15 +1,11 @@
 import type { AuthUser, StoredUser, UserRole } from '#shared/domain/auth/entities/user'
 import type {
-  AdminReportListItem,
-  AdminReportListResponse,
   AdminUserDetail,
   AdminUserListItem,
   AdminUserListResponse,
-  AdminReportsQuery,
   AdminUsersQuery,
   AdminRecentAccessItem,
   CreateAdminUserRequest,
-  ReportStatus,
   UpdateAdminUserRequest,
 } from '#shared/types/admin'
 import { randomUUID } from 'node:crypto'
@@ -31,16 +27,23 @@ import {
   getAdminBackupToken,
   type AdminSession,
 } from './mock-user-store'
-import { deleteTrainerByUserId, findTrainerById, findTrainerByUserId } from '../services/trainer-repository'
+import { deleteTrainerByUserId, findTrainerByUserId } from '../services/trainer-repository'
 import { appendActivity, countUserActivity, deleteUserActivity } from './mock-user-activity-store'
 import { countUserNotes, deleteUserNotes } from './mock-user-notes-store'
 
 const featuredTrainers = new Map<string, boolean>()
 
-interface StoredReport extends AdminReportListItem {}
-
-const reports: StoredReport[] = []
 const impersonationLogs: AdminRecentAccessItem[] = []
+
+function firstDefined<T>(...values: (T | undefined | null)[]): T | undefined {
+  for (const value of values) {
+    if (value != null) {
+      return value
+    }
+  }
+
+  return undefined
+}
 
 function toAdminUser(user: StoredUser): AdminUserListItem {
   const trainer = findTrainerByUserId(user.id)
@@ -50,15 +53,15 @@ function toAdminUser(user: StoredUser): AdminUserListItem {
     name: user.name,
     email: user.email,
     role: user.role,
-    phoneNumber: user.phoneNumber ?? trainer?.contactPhone,
-    avatarUrl: user.avatarUrl ?? trainer?.photoUrl,
-    city: user.city ?? trainer?.city,
-    state: user.state ?? trainer?.state,
+    phoneNumber: firstDefined(user.phoneNumber, trainer?.contactPhone),
+    avatarUrl: firstDefined(user.avatarUrl, trainer?.photoUrl),
+    city: firstDefined(user.city, trainer?.city),
+    state: firstDefined(user.state, trainer?.state),
     availability: trainer?.availability,
     servicePrice: trainer?.servicePrice,
     promoPrice: trainer?.promotion?.promoPrice,
     isActive: user.isActive,
-    featured: featuredTrainers.get(user.id) ?? trainer?.featured ?? false,
+    featured: firstDefined(featuredTrainers.get(user.id), trainer?.featured, false),
     trainerId: trainer?.id,
     createdAt: user.createdAt ?? new Date().toISOString(),
   }
@@ -233,84 +236,11 @@ export function exitImpersonation(event: Parameters<typeof setSessionCookie>[0])
   return false
 }
 
-export function listAdminReports(query: AdminReportsQuery): AdminReportListResponse {
-  const page = query.page ?? 1
-  const pageSize = query.pageSize ?? 20
-  let items = [...reports]
-
-  if (query.status) {
-    items = items.filter(r => r.status === query.status)
-  }
-
-  if (query.type) {
-    items = items.filter(r => r.type === query.type)
-  }
-
-  const total = items.length
-  const start = (page - 1) * pageSize
-
-  return {
-    items: items.slice(start, start + pageSize),
-    total,
-    page,
-    pageSize,
-    hasMore: page * pageSize < total,
-  }
-}
-
-export function updateReportStatus(
-  reportId: string,
-  status: ReportStatus,
-  adminId: string,
-): AdminReportListItem | null {
-  const report = reports.find(r => r.id === reportId)
-  if (!report) return null
-
-  report.status = status
-  if (status === 'resolved' || status === 'archived') {
-    report.resolvedAt = new Date().toISOString()
-    report.resolvedBy = adminId
-  } else {
-    report.resolvedAt = undefined
-    report.resolvedBy = undefined
-  }
-
-  return { ...report }
-}
-
-export function deactivateTrainerFromReport(
-  reportId: string,
-  adminId: string,
-): AdminReportListItem | null {
-  const report = reports.find(r => r.id === reportId)
-  if (!report) return null
-
-  const trainer = findTrainerByUserId(report.trainerId) ?? findTrainerById(report.trainerId)
-  const targetUserId = trainer?.userId ?? report.trainerId
-  const admin = findUserById(adminId)
-
-  updateUserInStore(targetUserId, { isActive: false })
-
-  appendActivity({
-    userId: targetUserId,
-    type: 'account_deactivated',
-    title: 'Conta desativada via denúncia',
-    actorId: adminId,
-    actorName: admin?.name,
-    actorRole: admin?.role,
-    metadata: { reportId },
-  })
-
-  return updateReportStatus(reportId, 'resolved', adminId)
-}
-
-export function addMockReport(report: Omit<StoredReport, 'id' | 'createdAt' | 'status'>): void {
-  reports.push({
-    ...report,
-    id: randomUUID(),
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-  })
-}
+export {
+  addMockReport,
+  deactivateTrainerFromReport,
+  listAdminReports,
+  updateReportStatus,
+} from './mock-admin-reports'
 
 export { setSessionCookie, clearSessionCookie, getSessionUser, getSessionTokenFromEvent }

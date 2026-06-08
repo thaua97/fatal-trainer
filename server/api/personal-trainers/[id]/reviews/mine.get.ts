@@ -1,6 +1,4 @@
 import { throwNotFound, throwValidationError } from '../../../../utils/api-error'
-import { validateReview } from '#shared/domain/review/services/validate-review'
-import type { UpsertReviewRequest } from '#shared/types/api'
 import { findMyTrainerReview } from '../../../../mocks/mock-reviews-store'
 import { findTrainerById } from '../../../../services/trainer-repository'
 import { requireUserSession } from '../../../../utils/require-user-session'

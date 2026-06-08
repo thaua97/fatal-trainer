@@ -17,6 +17,11 @@ const props = withDefaults(defineProps<{
 }>(), {
   testId: 'city-picker',
   disabled: false,
+  error: undefined,
+  label: undefined,
+  placeholder: undefined,
+  ariaLabel: undefined,
+  geoError: undefined,
 })
 
 const emit = defineEmits<{
@@ -32,144 +37,34 @@ const fieldPlaceholder = computed(
 const fieldError = computed(() => props.error || props.geoError)
 const { searchTerm, filteredItems, loading, cities } = useFTBrazilianCities()
 
-const selectedValue = ref<string | undefined>()
+const disabledRef = toRef(props, 'disabled')
 const isEditing = ref(false)
-const menuOpen = ref(false)
-const inputMenuRef = ref<{ $el: HTMLElement } | null>(null)
 
-function formatSelectedCityLabel(item: BrazilianCity): string {
-  return `${item.city}, ${item.state}`
-}
-
-const displayValue = computed(() => {
-  if (!city.value || !state.value) {
-    return ''
-  }
-
-  const item = findCityItem(city.value, state.value)
-  return item ? formatSelectedCityLabel(item) : `${city.value}, ${state.value}`
+const {
+  selectedValue,
+  displayValue,
+  triggerIcon,
+  syncSearchTermFromSelection,
+  onSelect,
+} = useFTCityPickerSelection({
+  city,
+  state,
+  cities,
+  searchTerm,
+  isEditing,
 })
 
-const triggerIcon = computed(() =>
-  displayValue.value ? 'i-lucide-map-pin' : 'i-lucide-search',
-)
-
-function findCityItem(nextCity: string, nextState: string): BrazilianCity | undefined {
-  const normalizedState = nextState.trim().toUpperCase()
-  return cities.value.find(item =>
-    item.city === nextCity && item.state === normalizedState,
-  )
-}
-
-function syncSearchTermFromSelection() {
-  if (!city.value || !state.value) {
-    searchTerm.value = ''
-    selectedValue.value = undefined
-    return
-  }
-
-  const item = findCityItem(city.value, state.value)
-  if (item) {
-    selectedValue.value = item.value
-    searchTerm.value = formatSelectedCityLabel(item)
-  }
-}
-
-watch([city, state, cities], ([nextCity, nextState]) => {
-  if (!nextCity || !nextState) {
-    selectedValue.value = undefined
-    if (!isEditing.value) {
-      searchTerm.value = ''
-    }
-    return
-  }
-
-  const item = findCityItem(nextCity, nextState)
-  if (item) {
-    selectedValue.value = item.value
-    if (!isEditing.value) {
-      searchTerm.value = formatSelectedCityLabel(item)
-    }
-  }
-}, { immediate: true })
-
-function onSelect(value: string | undefined) {
-  if (!value) {
-    city.value = ''
-    state.value = ''
-    stopEditing()
-    return
-  }
-
-  const item = cities.value.find(cityItem => cityItem.value === value)
-  if (!item) {
-    return
-  }
-
-  city.value = item.city
-  state.value = item.state
-  searchTerm.value = formatSelectedCityLabel(item)
-  stopEditing()
-}
-
-watch(searchTerm, (value) => {
-  if (!isEditing.value) {
-    return
-  }
-
-  if (!value.trim()) {
-    selectedValue.value = undefined
-    city.value = ''
-    state.value = ''
-    return
-  }
-
-  if (!selectedValue.value) {
-    return
-  }
-
-  const item = cities.value.find(cityItem => cityItem.value === selectedValue.value)
-  if (item && formatSelectedCityLabel(item) !== value) {
-    selectedValue.value = undefined
-    city.value = ''
-    state.value = ''
-  }
+const {
+  menuOpen,
+  inputMenuRef,
+  startEditing,
+  stopEditing,
+  onMenuOpenChange,
+} = useFTCityPickerMenu({
+  disabled: disabledRef,
+  isEditing,
+  syncSearchTermFromSelection,
 })
-
-function focusInputMenu() {
-  nextTick(() => {
-    inputMenuRef.value?.$el.querySelector('input')?.focus()
-  })
-}
-
-function startEditing() {
-  if (props.disabled) {
-    return
-  }
-
-  isEditing.value = true
-  menuOpen.value = true
-  syncSearchTermFromSelection()
-  focusInputMenu()
-}
-
-function stopEditing() {
-  isEditing.value = false
-  menuOpen.value = false
-  syncSearchTermFromSelection()
-}
-
-function onMenuOpenChange(open: boolean) {
-  menuOpen.value = open
-
-  if (!open) {
-    window.setTimeout(() => {
-      if (!menuOpen.value) {
-        stopEditing()
-      }
-    }, 150)
-  }
-}
 
 function onDetectClick(event: Event) {
   event.stopPropagation()
@@ -309,7 +204,7 @@ const geoButtonClass = [
       :aria-label="ariaLabel ?? t('cityPicker.ariaLabel')"
       :data-testid="testId"
       :ui="inputMenuUi"
-      @update:model-value="onSelect"
+      @update:model-value="onSelect($event, stopEditing)"
       @update:open="onMenuOpenChange"
     >
         <template #leading>
@@ -332,10 +227,6 @@ const geoButtonClass = [
             <span class="truncate">{{ (item as BrazilianCity).city }}</span>
             <span class="shrink-0 text-slate-400">- {{ (item as BrazilianCity).state }}</span>
           </span>
-        </template>
-
-        <template #empty>
-          {{ t('cityPicker.empty') }}
         </template>
 
         <template
@@ -362,11 +253,11 @@ const geoButtonClass = [
             />
           </button>
         </template>
-      </UInputMenu>
+    </UInputMenu>
 
     <p
       v-if="fieldError"
-      class="text-sm text-red-600"
+      class="text-xs text-red-500"
       role="alert"
     >
       {{ fieldError }}

@@ -2,44 +2,32 @@ import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-t
 import { trainerProfileService } from '~/services/dashboard/trainer-profile.service'
 
 export function useMyTrainerProfile() {
-  const trainer = useState<PersonalTrainer | null>('my-trainer-profile', () => null)
-  const created = useState('my-trainer-profile-created', () => false)
-  const pending = useState('my-trainer-profile-pending', () => false)
-  const error = useState<Error | null>('my-trainer-profile-error', () => null)
-  const hydrated = useState('my-trainer-profile-hydrated', () => false)
   const { setUserAvatarUrl } = useAuth()
 
-  async function fetchMyProfile(): Promise<void> {
-    pending.value = true
-    error.value = null
+  const { data, pending, error, refresh } = useAsyncData(
+    'my-trainer-profile-response',
+    () => trainerProfileService.getMe(),
+    { server: false },
+  )
 
-    try {
-      const response = await trainerProfileService.getMe()
-      trainer.value = response.trainer
-      created.value = response.created
-      hydrated.value = true
-    } catch (err: unknown) {
-      error.value = err instanceof Error ? err : new Error('fetchFailed')
-    } finally {
-      pending.value = false
-    }
-  }
-
-  if (!hydrated.value && !pending.value) {
-    fetchMyProfile()
-  }
+  const trainer = computed(() => data.value?.trainer ?? null)
+  const created = computed(() => data.value?.created ?? false)
 
   function setTrainer(next: PersonalTrainer) {
-    trainer.value = next
+    if (data.value) {
+      data.value = { ...data.value, trainer: next }
+    } else {
+      data.value = { trainer: next, created: true }
+    }
     setUserAvatarUrl(next.photoUrl || undefined)
   }
 
   return {
-    trainer: computed(() => trainer.value),
-    created: computed(() => created.value),
+    trainer,
+    created,
     pending,
     error,
-    refresh: fetchMyProfile,
+    refresh,
     setTrainer,
   }
 }

@@ -62,6 +62,7 @@ export function useFTTrainerListFavorites() {
       loaded.value = true
     } catch (err: unknown) {
       error.value = err instanceof Error ? err : new Error('fetchFailed')
+      loaded.value = true
     } finally {
       pending.value = false
     }
@@ -90,19 +91,8 @@ export function useFTTrainerListFavorites() {
   })
 
   const trainers = computed(() => accumulatedTrainers.value)
-  const total = computed(() => meta.value.total)
   const hasMore = computed(() => isAuthenticated.value && meta.value.hasMore)
   const isLoadingMore = computed(() => pending.value && query.value.page > 1)
-
-  const status = computed(() => {
-    if (pending.value) {
-      return 'pending'
-    }
-    if (error.value) {
-      return 'error'
-    }
-    return 'success'
-  })
 
   const isLoading = computed(() => {
     if (!initialized.value) {
@@ -117,7 +107,7 @@ export function useFTTrainerListFavorites() {
       return false
     }
 
-    return pending.value || status.value === 'pending' || !loaded.value
+    return pending.value || (!loaded.value && !error.value)
   })
 
   const isEmpty = computed(() => {

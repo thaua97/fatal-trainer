@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   testId: 'phone-input',
+  placeholder: undefined,
 })
 
 const emit = defineEmits<{

@@ -56,6 +56,7 @@
       },
       "errors": {
         "submitFailed": "Could not save. Please try again.",
+        "validationFailed": "Fix the highlighted fields before saving.",
         "name": {
           "required": "Enter your name.",
           "tooShort": "Name is too short."

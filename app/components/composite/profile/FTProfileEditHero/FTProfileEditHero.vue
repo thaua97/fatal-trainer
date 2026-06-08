@@ -2,9 +2,10 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { TrainerInfoPayload, TrainerInfoValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
 
+const form = defineModel<TrainerInfoPayload>('form', { required: true })
+
 const props = defineProps<{
   trainer: PersonalTrainer
-  form: TrainerInfoPayload
   fieldErrors: Partial<Record<keyof TrainerInfoValidationErrors, string | undefined>>
   photoUploadPending?: boolean
 }>()
@@ -20,7 +21,7 @@ const { modalityItems } = useFTTrainerFieldOptions()
 
 const previewTrainer = computed(() => ({
   ...props.trainer,
-  name: props.form.name || props.trainer.name,
+  name: form.value.name || props.trainer.name,
   photoUrl: props.trainer.photoUrl,
 }))
 
@@ -76,7 +77,7 @@ function onPhotoSelected(event: Event) {
         <FTIconButton
           to="/"
           class="absolute left-4 top-4"
-          :ariaLabel="t('dashboard.edit.back')"
+          :aria-label="t('dashboard.edit.back')"
         >
           <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
         </FTIconButton>
@@ -84,7 +85,7 @@ function onPhotoSelected(event: Event) {
           v-if="trainer.id"
           :to="`/personal-trainers/${trainer.id}`"
           class="absolute right-4 top-4"
-          :ariaLabel="t('dashboard.edit.viewPublic')"
+          :aria-label="t('dashboard.edit.viewPublic')"
         >
           <UIcon name="i-lucide-external-link" class="size-5 text-slate-900" />
         </FTIconButton>
@@ -171,14 +172,14 @@ function onPhotoSelected(event: Event) {
         <div class="mb-1 flex gap-2">
           <FTIconButton
             to="/"
-            :ariaLabel="t('dashboard.edit.back')"
+            :aria-label="t('dashboard.edit.back')"
           >
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
           </FTIconButton>
           <FTIconButton
             v-if="trainer.id"
             :to="`/personal-trainers/${trainer.id}`"
-            :ariaLabel="t('dashboard.edit.viewPublic')"
+            :aria-label="t('dashboard.edit.viewPublic')"
           >
             <UIcon name="i-lucide-external-link" class="size-5 text-slate-900" />
           </FTIconButton>

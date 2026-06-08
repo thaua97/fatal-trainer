@@ -10,6 +10,7 @@ import { adminService } from '~/services/admin/admin.service'
 export function useAdminUsers() {
   const { t } = useI18n()
   const toast = useFTToast()
+  const { startImpersonation } = useImpersonation()
 
   const query = reactive<AdminUsersQuery>({
     page: 1,
@@ -46,11 +47,13 @@ export function useAdminUsers() {
     },
   )
 
-  watch(
-    () => [query.page, query.pageSize, query.search, query.role, query.isActive] as const,
-    () => refresh(),
-    { immediate: true },
-  )
+  if (import.meta.client) {
+    watch(
+      () => [query.page, query.pageSize, query.search, query.role, query.isActive] as const,
+      () => refresh(),
+      { immediate: true },
+    )
+  }
 
   const { showError } = useAdminApiError()
 
@@ -104,14 +107,7 @@ export function useAdminUsers() {
 
   async function impersonate(id: string): Promise<AuthUser> {
     try {
-      const response = await adminService.impersonateAdminUser(id)
-      toast.info(t('toast.admin.impersonationStarted'))
-      const { fetchMe } = useAuth()
-      const { fetchAdminMe } = useAdminAuth()
-      await fetchMe()
-      await fetchAdminMe()
-      await navigateTo('/')
-      return response.user
+      return await startImpersonation(id)
     } catch (err) {
       showError(err)
       throw err

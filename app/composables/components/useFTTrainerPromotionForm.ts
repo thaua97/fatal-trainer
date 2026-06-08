@@ -1,5 +1,5 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { TrainerPromotionField, TrainerPromotionPayload, TrainerPromotionValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
+import type { TrainerPromotionPayload, TrainerPromotionValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
 import { PROMOTION_LABELS } from '#shared/domain/catalog/constants/catalog-options'
 import { computePromoPrice, getDiscountPercent } from '#shared/domain/catalog/services/trainer-pricing'
 import { validateTrainerPromotion } from '#shared/domain/catalog/services/validate-trainer-profile'
@@ -44,11 +44,21 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
   const form = reactive<TrainerPromotionPayload>(emptyForm())
   const errors = ref<TrainerPromotionValidationErrors>({})
   const unlimitedRedemptions = ref(true)
+  const hydratedTrainerId = ref<string | null>(null)
+
+  function syncFormFromTrainer(value: PersonalTrainer) {
+    Object.assign(form, trainerToPromotionForm(value))
+    unlimitedRedemptions.value = form.maxRedemptions == null
+  }
 
   watch(trainer, (value) => {
-    if (value) {
-      Object.assign(form, trainerToPromotionForm(value))
-      unlimitedRedemptions.value = form.maxRedemptions == null
+    if (!value) {
+      return
+    }
+
+    if (hydratedTrainerId.value !== value.id) {
+      syncFormFromTrainer(value)
+      hydratedTrainerId.value = value.id
     }
   }, { immediate: true })
 
@@ -115,6 +125,8 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
     const updated = await update(payload)
     if (updated) {
       setTrainer(updated)
+      syncFormFromTrainer(updated)
+      hydratedTrainerId.value = updated.id
       toast.success(t('dashboard.promotion.success'))
       return
     }

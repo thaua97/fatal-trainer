@@ -103,6 +103,14 @@ describe('FTAppHeader', () => {
     expect(wrapper.find('[data-testid="app-header-menu"]').exists()).toBe(true)
   })
 
+  it('hides mobile menu trigger while session is loading', async () => {
+    authState.initialized.value = false
+
+    const wrapper = await mountHeader()
+    expect(wrapper.find('[data-testid="app-header-menu"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="app-header-user-menu"]').exists()).toBe(false)
+  })
+
   it('hides mobile menu trigger when authenticated', async () => {
     authState.initialized.value = true
     authState.user.value = {

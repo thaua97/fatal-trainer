@@ -1,5 +1,4 @@
-import type { ListQuery, SortBy, SortOrder } from '#shared/domain/catalog/value-objects/list-query'
-import { DEFAULT_LIST_QUERY } from '#shared/domain/catalog/value-objects/list-query'
+import type { ListQuery } from '#shared/domain/catalog/value-objects/list-query'
 import { parseListQuery } from '#shared/domain/catalog/value-objects/parse-list-query'
 import { findAllTrainers } from '../services/trainer-repository'
 

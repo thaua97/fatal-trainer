@@ -1,5 +1,5 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { TrainerInfoField, TrainerInfoPayload, TrainerInfoValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
+import type { TrainerInfoPayload, TrainerInfoValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
 import { validateTrainerInfo } from '#shared/domain/catalog/services/validate-trainer-profile'
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
 import { applyApiError } from '~/composables/core/applyApiError'
@@ -48,10 +48,20 @@ export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
 
   const form = reactive<TrainerInfoPayload>(emptyForm())
   const errors = ref<TrainerInfoValidationErrors>({})
+  const hydratedTrainerId = ref<string | null>(null)
+
+  function syncFormFromTrainer(value: PersonalTrainer) {
+    Object.assign(form, trainerToForm(value))
+  }
 
   watch(trainer, (value) => {
-    if (value) {
-      Object.assign(form, trainerToForm(value))
+    if (!value) {
+      return
+    }
+
+    if (hydratedTrainerId.value !== value.id) {
+      syncFormFromTrainer(value)
+      hydratedTrainerId.value = value.id
     }
   }, { immediate: true })
 
@@ -64,6 +74,7 @@ export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
     const validation = validateTrainerInfo(form)
     if (!validation.valid) {
       errors.value = validation.errors
+      toast.error(t('dashboard.info.errors.validationFailed'))
       return
     }
 
@@ -88,6 +99,8 @@ export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
     const updated = await update(payload)
     if (updated) {
       setTrainer(updated)
+      syncFormFromTrainer(updated)
+      hydratedTrainerId.value = updated.id
       toast.success(t('dashboard.info.success'))
       return
     }
