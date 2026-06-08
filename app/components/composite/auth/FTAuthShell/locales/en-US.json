@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "brand": {
+      "eyebrow": "Fatal Trainer",
+      "loginTitle": "Find the ideal trainer for you",
+      "loginSubtitle": "Sign in to your account and continue your training journey with verified professionals.",
+      "registerTitle": "Start your fitness journey today",
+      "registerSubtitle": "Sign up as a student or personal trainer and join our community.",
+      "imageAlt": "Athlete in motion"
+    },
+    "roles": {
+      "label": "Account type",
+      "student": "Student",
+      "personalTrainer": "Trainer"
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account to continue",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password",
+      "forgotPasswordToast": "Password recovery coming soon.",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Sign up",
+      "demoHint": "Demo accounts: aluno{'@'}fataltrainer.com / personal{'@'}fataltrainer.com — password: 123456"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Choose how you want to sign up",
+      "name": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "terms": "I agree to the terms of use",
+      "submit": "Create account",
+      "submitting": "Creating account...",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "social": {
+      "divider": "or continue with",
+      "comingSoon": "Soon"
+    },
+    "placeholders": {
+      "email": "you{'@'}email.com",
+      "password": "Your password",
+      "name": "Your full name"
+    },
+    "errors": {
+      "submitFailed": "Could not complete the operation. Please try again.",
+      "email": {
+        "required": "Enter your email.",
+        "invalid": "Enter a valid email.",
+        "invalidCredentials": "Incorrect email or password.",
+        "alreadyRegistered": "This email is already registered.",
+        "alreadyExists": "This email is already registered."
+      },
+      "password": {
+        "required": "Enter your password.",
+        "tooShort": "Password must be at least 6 characters."
+      },
+      "confirmPassword": {
+        "required": "Confirm your password.",
+        "mismatch": "Passwords do not match."
+      },
+      "name": {
+        "required": "Enter your name.",
+        "tooShort": "Name must be at least 2 characters."
+      },
+      "role": {
+        "required": "Select an account type."
+      },
+      "termsAccepted": {
+        "required": "You must accept the terms of use."
+      }
+    },
+    "header": {
+      "welcome": "Welcome, {name}!",
+      "roleStudent": "Student",
+      "rolePersonal": "Trainer",
+      "logout": "Sign out"
+    }
+  }
+}

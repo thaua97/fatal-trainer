@@ -1,0 +1,10 @@
+{
+  "profile": {
+    "message": "Send message",
+    "favorite": "Favorite",
+    "unfavorite": "Remove from favorites",
+    "report": "Report",
+    "promotionValidUntil": "Valid until {date}",
+    "whatsappMessage": "Hi {name}, I saw your profile on Fatal Trainer and would like to schedule a trial session"
+  }
+}

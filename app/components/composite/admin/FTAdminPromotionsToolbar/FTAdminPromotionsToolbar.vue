@@ -1,0 +1,202 @@
+<script setup lang="ts">
+import type { AdminPromotionsQuery } from '#shared/types/admin'
+import type {
+  AdminPromotionsSortBy,
+  AdminPromotionsSortOrder,
+} from '~/composables/admin/useFTAdminPromotionsPage'
+
+const sortBy = defineModel<AdminPromotionsSortBy>('sortBy', { required: true })
+const sortOrder = defineModel<AdminPromotionsSortOrder>('sortOrder', { required: true })
+const filterOpen = defineModel<boolean>('filterOpen', { default: false })
+
+const props = defineProps<{
+  query: AdminPromotionsQuery
+  activeFilterCount: number
+}>()
+
+const emit = defineEmits<{
+  clearFilters: []
+  openCreate: []
+}>()
+
+const sortItems = [
+  { label: 'Nome A–Z', sortBy: 'name' as const, sortOrder: 'asc' as const },
+  { label: 'Nome Z–A', sortBy: 'name' as const, sortOrder: 'desc' as const },
+  { label: 'Mais recentes', sortBy: 'createdAt' as const, sortOrder: 'desc' as const },
+  { label: 'Início mais cedo', sortBy: 'startsAt' as const, sortOrder: 'asc' as const },
+  { label: 'Maior desconto', sortBy: 'discountPercent' as const, sortOrder: 'desc' as const },
+]
+
+const currentSortLabel = computed(() => {
+  const match = sortItems.find(
+    item => item.sortBy === sortBy.value && item.sortOrder === sortOrder.value,
+  )
+  return match?.label ?? 'Ordenar'
+})
+
+function applySort(item: typeof sortItems[number]) {
+  sortBy.value = item.sortBy
+  sortOrder.value = item.sortOrder
+}
+
+const activeFilterChips = computed(() => {
+  const chips: { key: string, label: string, clear: () => void }[] = []
+
+  if (props.query.isActive !== undefined) {
+    chips.push({
+      key: 'enabled',
+      label: props.query.isActive ? 'Habilitadas' : 'Desabilitadas',
+      clear: () => { props.query.isActive = undefined },
+    })
+  }
+
+  if (props.query.status) {
+    const labels = {
+      active: 'Em vigor',
+      upcoming: 'Agendadas',
+      expired: 'Expiradas',
+    } as const
+    chips.push({
+      key: 'status',
+      label: labels[props.query.status],
+      clear: () => { props.query.status = undefined },
+    })
+  }
+
+  return chips
+})
+
+const { fieldUi, inputSize } = useFTFormFieldUi()
+</script>
+
+<template>
+  <div
+    class="mb-4 space-y-3"
+    data-testid="admin-promotions-toolbar"
+  >
+    <div class="flex flex-wrap items-center gap-2">
+      <UInput
+        v-model="query.search"
+        icon="i-lucide-search"
+        placeholder="Buscar por nome ou label..."
+        class="min-w-[200px] flex-1"
+        :ui="fieldUi"
+        :size="inputSize"
+      />
+
+      <div class="flex flex-wrap items-center gap-2">
+        <UPopover v-model:open="filterOpen">
+          <UButton
+            variant="outline"
+            color="neutral"
+            size="sm"
+            icon="i-lucide-sliders-horizontal"
+            class="rounded-full"
+          >
+            Filtros
+            <UBadge
+              v-if="activeFilterCount"
+              :label="String(activeFilterCount)"
+              color="primary"
+              size="xs"
+              class="ml-1"
+            />
+          </UButton>
+          <template #content>
+            <div class="w-64 space-y-4 p-4">
+              <div>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-500">Habilitada</label>
+                <USelect
+                  v-model="query.isActive"
+                  :items="[
+                    { label: 'Todas', value: undefined },
+                    { label: 'Habilitadas', value: true },
+                    { label: 'Desabilitadas', value: false },
+                  ]"
+                  placeholder="Habilitada"
+                />
+              </div>
+              <div>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-500">Período</label>
+                <USelect
+                  v-model="query.status"
+                  :items="[
+                    { label: 'Todos', value: undefined },
+                    { label: 'Em vigor', value: 'active' },
+                    { label: 'Agendadas', value: 'upcoming' },
+                    { label: 'Expiradas', value: 'expired' },
+                  ]"
+                  placeholder="Período"
+                />
+              </div>
+              <UButton
+                v-if="activeFilterCount"
+                variant="ghost"
+                color="neutral"
+                size="sm"
+                class="w-full"
+                @click="emit('clearFilters')"
+              >
+                Limpar filtros
+              </UButton>
+            </div>
+          </template>
+        </UPopover>
+
+        <UDropdownMenu
+          :items="[sortItems.map(item => ({
+            label: item.label,
+            onSelect: () => applySort(item),
+          }))]"
+        >
+          <UButton
+            variant="outline"
+            color="neutral"
+            size="sm"
+            icon="i-lucide-arrow-up-down"
+            trailing-icon="i-lucide-chevron-down"
+            class="rounded-full"
+          >
+            {{ currentSortLabel }}
+          </UButton>
+        </UDropdownMenu>
+
+        <UButton
+          color="primary"
+          icon="i-lucide-plus"
+          class="rounded-full"
+          @click="emit('openCreate')"
+        >
+          Nova promoção
+        </UButton>
+      </div>
+    </div>
+
+    <div
+      v-if="activeFilterChips.length"
+      class="flex flex-wrap items-center gap-2"
+    >
+      <UBadge
+        v-for="chip in activeFilterChips"
+        :key="chip.key"
+        color="primary"
+        variant="soft"
+        class="cursor-pointer gap-1"
+        @click="chip.clear()"
+      >
+        {{ chip.label }}
+        <UIcon
+          name="i-lucide-x"
+          class="size-3"
+        />
+      </UBadge>
+      <button
+        type="button"
+        class="text-xs font-medium text-slate-500 hover:text-slate-700"
+        @click="emit('clearFilters')"
+      >
+        Limpar tudo
+      </button>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,37 @@
+import { defineVitestConfig } from '@nuxt/test-utils/config'
+
+export default defineVitestConfig({
+  test: {
+    environment: 'nuxt',
+    environmentOptions: {
+      nuxt: {
+        domEnvironment: 'happy-dom',
+      },
+    },
+    server: {
+      deps: {
+        inline: ['entities', '@vue/compiler-core', '@vue/compiler-dom', '@vue/compiler-sfc'],
+      },
+    },
+    setupFiles: ['./tests/setup.ts'],
+    include: [
+      'tests/unit/**/*.spec.ts',
+      'app/components/**/*.spec.ts',
+    ],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: [
+        'app/composables/core/**',
+        'app/composables/components/useFTCitySelector.ts',
+        'app/components/composite/catalog/FTCitySelector/**',
+      ],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
+  },
+})

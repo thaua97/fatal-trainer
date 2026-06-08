@@ -1,0 +1,122 @@
+:root {
+  /* Fatal Trainer — design tokens */
+  --ft-primary: #7c3aed;
+  --ft-primary-hover: #6d28d9;
+  --ft-primary-subtle: #ede9fe;
+  --ft-primary-rgb: 124 58 237;
+  --ft-primary-foreground: #fff;
+  --ft-surface-search: rgb(241 245 249);
+
+  /* Landing page */
+  --ft-landing-bg: #ffffff;
+  --ft-landing-surface: #f5f3ff;
+  --ft-landing-surface-muted: #ede9fe;
+  --ft-landing-gradient-from: #5b21b6;
+  --ft-landing-gradient-to: #00aeff4d;
+  --ft-landing-accent-lime: #ffffff;
+  --ft-landing-accent-orange: #fb923c;
+
+  /* Promoções */
+  --ft-promo: #16a34a;
+  --ft-promo-strong: #15803d;
+  --ft-promo-subtle: #dcfce7;
+  --ft-promo-rgb: 22 163 74;
+
+  /* Ações de perfil */
+  --ft-action-whatsapp: #16a34a;
+  --ft-action-whatsapp-subtle: #dcfce7;
+  --ft-action-whatsapp-border: #bbf7d0;
+  --ft-action-favorite: #e11d48;
+  --ft-action-favorite-subtle: #ffe4e6;
+  --ft-action-favorite-border: #fecdd3;
+  --ft-action-favorite-active: #7c3aed;
+  --ft-action-favorite-active-subtle: #ede9fe;
+  --ft-action-favorite-active-border: #ddd6fe;
+  --ft-action-report: #d97706;
+  --ft-action-report-subtle: #fef3c7;
+  --ft-action-report-border: #fde68a;
+
+  /* Admin — gradient orbs */
+  --ft-admin-orb-violet-rgb: 167 139 250;
+  --ft-admin-orb-sky-rgb: 125 211 252;
+  --ft-admin-orb-peach-rgb: 253 186 116;
+
+  /* Admin — role badges */
+  --ft-admin-badge-admin-from-rgb: 237 233 254;
+  --ft-admin-badge-admin-to-rgb: 221 214 254;
+  --ft-admin-badge-admin-text: #5b21b6;
+  --ft-admin-badge-student-from-rgb: 224 242 254;
+  --ft-admin-badge-student-to-rgb: 186 230 253;
+  --ft-admin-badge-student-text: #0369a1;
+  --ft-admin-badge-trainer-from-rgb: 255 237 213;
+  --ft-admin-badge-trainer-to-rgb: 254 215 170;
+  --ft-admin-badge-trainer-text: #c2410c;
+
+  /* Admin — user status badges */
+  --ft-admin-badge-active-from-rgb: 209 250 229;
+  --ft-admin-badge-active-to-rgb: 167 243 208;
+  --ft-admin-badge-active-text: #047857;
+  --ft-admin-badge-inactive-from-rgb: 255 228 230;
+  --ft-admin-badge-inactive-to-rgb: 254 205 211;
+  --ft-admin-badge-inactive-text: #be123c;
+
+  /* Admin — report status badges */
+  --ft-admin-badge-pending-from-rgb: 254 243 199;
+  --ft-admin-badge-pending-to-rgb: 253 230 138;
+  --ft-admin-badge-pending-text: #b45309;
+  --ft-admin-badge-review-from-rgb: 219 234 254;
+  --ft-admin-badge-review-to-rgb: 191 219 254;
+  --ft-admin-badge-review-text: #1d4ed8;
+  --ft-admin-badge-resolved-from-rgb: 209 250 229;
+  --ft-admin-badge-resolved-to-rgb: 167 243 208;
+  --ft-admin-badge-resolved-text: #047857;
+  --ft-admin-badge-archived-from-rgb: 241 245 249;
+  --ft-admin-badge-archived-to-rgb: 226 232 240;
+  --ft-admin-badge-archived-text: #475569;
+
+  /* Nuxt UI — escala primary alinhada ao violet-600 do projeto */
+  --ui-color-primary-50: #f5f3ff;
+  --ui-color-primary-100: #ede9fe;
+  --ui-color-primary-200: #ddd6fe;
+  --ui-color-primary-300: #c4b5fd;
+  --ui-color-primary-400: #a78bfa;
+  --ui-color-primary-500: #8b5cf6;
+  --ui-color-primary-600: #7c3aed;
+  --ui-color-primary-700: #6d28d9;
+  --ui-color-primary-800: #5b21b6;
+  --ui-color-primary-900: #4c1d95;
+  --ui-color-primary-950: #2e1065;
+}
+
+:root,
+.light {
+  --ui-primary: var(--ft-primary);
+
+  --ui-bg: #ffffff;
+  --ui-bg-muted: #f8fafc;
+  --ui-bg-elevated: #f1f5f9;
+  --ui-bg-accented: #e2e8f0;
+  --ui-bg-inverted: #0f172a;
+
+  --ui-text-dimmed: #94a3b8;
+  --ui-text-muted: #64748b;
+  --ui-text-toned: #475569;
+  --ui-text: #334155;
+  --ui-text-highlighted: #0f172a;
+  --ui-text-inverted: var(--ft-primary-foreground);
+
+  --ui-border: #e2e8f0;
+  --ui-border-muted: #e2e8f0;
+  --ui-border-accented: #cbd5e1;
+  --ui-border-inverted: #0f172a;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  background-color: #fff;
+  color: var(--ui-text-highlighted);
+}
+
+.font-display {
+  font-family: 'Syne', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}

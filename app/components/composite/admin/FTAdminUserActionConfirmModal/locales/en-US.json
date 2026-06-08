@@ -1,0 +1,36 @@
+{
+  "adminUserActionConfirm": {
+    "tile": "Admin",
+    "cancel": "Cancel",
+    "deactivate": {
+      "title": "Deactivate {name}?",
+      "subtitle": "The user will no longer be able to access the platform until reactivated.",
+      "confirm": "Deactivate user"
+    },
+    "activate": {
+      "title": "Reactivate {name}?",
+      "subtitle": "The user will regain access to the platform.",
+      "confirm": "Reactivate user"
+    },
+    "feature": {
+      "title": "Feature {name}?",
+      "subtitle": "This trainer will appear in the platform featured carousel.",
+      "confirm": "Feature trainer"
+    },
+    "unfeature": {
+      "title": "Remove feature from {name}?",
+      "subtitle": "This trainer will no longer appear in the featured carousel.",
+      "confirm": "Remove feature"
+    },
+    "impersonate": {
+      "title": "Access as {name}?",
+      "subtitle": "You will see the platform as this user. Use the top banner to return to your admin account.",
+      "confirm": "Access as user"
+    },
+    "delete": {
+      "title": "Permanently delete {name}?",
+      "subtitle": "This action is irreversible. All user data will be removed from the system.",
+      "confirm": "Delete user"
+    }
+  }
+}

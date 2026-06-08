@@ -1,0 +1,10 @@
+{
+  "seo": {
+    "errorTitle": "Error — Fatal Trainer"
+  },
+  "error": {
+    "code": "Error {code}",
+    "unexpected": "Ocurrió un error inesperado.",
+    "backHome": "Volver al inicio"
+  }
+}

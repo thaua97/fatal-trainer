@@ -1,0 +1,14 @@
+{
+  "header": {
+    "navLabel": "Navegação principal",
+    "trainers": "Personais",
+    "favorites": "Favoritos",
+    "report": "Denúncia",
+    "myProfile": "Meu perfil",
+    "userMenu": "Menu da conta",
+    "language": "Idioma",
+    "register": "Registro",
+    "login": "Login",
+    "menu": "Abrir menu"
+  }
+}

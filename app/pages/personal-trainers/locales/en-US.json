@@ -1,0 +1,38 @@
+{
+  "seo": {
+    "profileFallbackTitle": "Profile — Fatal Trainer",
+    "profileFallbackDescription": "Personal trainer profile",
+    "catalogTitle": "Fatal Trainer — Explore trainers",
+    "catalogDescription": "Catalog of independent personal trainers. Compare specialties, prices, and reviews.",
+    "favoritesTitle": "Fatal Trainer — Favorites",
+    "favoritesDescription": "Your saved personal trainers to compare and hire later."
+  },
+  "profile": {
+    "notFound": "Personal trainer not found.",
+    "backToList": "Back to listing",
+    "promotionValidUntil": "Valid until {date}"
+  },
+  "catalog": {
+    "featuredAriaLabel": "Featured trainers",
+    "featuredTitle": "Featured",
+    "recommendedTitle": "Recommended",
+    "exploreTitle": "Explore trainers",
+    "country": "Brazil",
+    "applyFilters": "Apply filters",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "onPromotionOnly": "On promotion only",
+    "priceViewTitle": "Price view",
+    "priceViewSession": "Per session",
+    "priceViewMonthly": "Monthly"
+  },
+  "favorites": {
+    "eyebrow": "Your list",
+    "title": "Favorites",
+    "subtitle": "Trainers you saved to review and hire whenever you want.",
+    "count": "{count} favorite | {count} favorites",
+    "emptyTitle": "No favorites yet",
+    "emptyDescription": "Tap the heart on a trainer profile to save them here.",
+    "exploreCta": "Explore trainers"
+  }
+}

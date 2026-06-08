@@ -1,0 +1,27 @@
+{
+  "reviewForm": {
+    "guestTitle": "Compartilhe sua experiência",
+    "guestDescription": "Faça login para avaliar este personal trainer.",
+    "login": "Realizar login",
+    "ratingLabel": "Sua nota",
+    "commentLabel": "Sua avaliação",
+    "commentPlaceholder": "Conte como foi sua experiência com este profissional...",
+    "submit": "Publicar avaliação",
+    "update": "Atualizar avaliação",
+    "cancel": "Cancelar",
+    "successTitle": "Avaliação enviada",
+    "successDescription": "Obrigado por compartilhar sua experiência.",
+    "errors": {
+      "submitFailed": "Não foi possível enviar sua avaliação. Tente novamente.",
+      "rating": {
+        "required": "Selecione uma nota.",
+        "invalid": "A nota deve ser entre 0,5 e 5,0."
+      },
+      "comment": {
+        "required": "Escreva sua avaliação.",
+        "tooShort": "A avaliação deve ter pelo menos 10 caracteres.",
+        "tooLong": "A avaliação deve ter no máximo 500 caracteres."
+      }
+    }
+  }
+}

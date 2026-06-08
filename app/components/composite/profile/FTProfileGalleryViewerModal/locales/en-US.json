@@ -1,0 +1,10 @@
+{
+  "galleryViewer": {
+    "viewPhoto": "View photo {index} of {total} by {name}",
+    "photoOf": "Photo {index} of {total} by {name}",
+    "counter": "{current} / {total}",
+    "prev": "Previous photo",
+    "next": "Next photo",
+    "close": "Close viewer"
+  }
+}

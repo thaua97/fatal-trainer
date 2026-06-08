@@ -1,0 +1,168 @@
+{
+  "seo": {
+    "title": "Meu Perfil — Fatal Trainer",
+    "description": "Gerencie suas informações, galeria de fotos e promoções no Fatal Trainer."
+  },
+  "dashboard": {
+    "edit": {
+      "back": "Voltar",
+      "viewPublic": "Ver perfil público",
+      "changePhoto": "Alterar foto",
+      "uploadingPhoto": "Enviando...",
+      "locationTitle": "Detalhes da localização",
+      "availabilityTitle": "Disponibilidade",
+      "experienceTitle": "Experiência",
+      "crefPlaceholder": "CREF 000000-G/UF",
+      "pricingTitle": "Valor do atendimento",
+      "pricingSessionHint": "Este é o preço cobrado por sessão individual.",
+      "pricingMonthlyHint": "Estimativa mensal com base em {sessions} sessões por mês. O valor salvo continua sendo por sessão."
+    },
+    "errors": {
+      "forbidden": "Apenas personal trainers podem acessar esta página."
+    },
+    "tabs": {
+      "info": "Informações",
+      "gallery": "Galeria",
+      "promotion": "Promoções"
+    },
+    "info": {
+      "success": "Informações salvas com sucesso.",
+      "submit": "Salvar informações",
+      "submitting": "Salvando...",
+      "fields": {
+        "name": "Nome",
+        "contactPhone": "Telefone para contato",
+        "profession": "Profissão / título",
+        "description": "Sobre você",
+        "specialties": "Especialidades",
+        "modalities": "Modalidades de atendimento",
+        "city": "Cidade",
+        "state": "Estado (UF)",
+        "servicePrice": "Preço por sessão (R$)",
+        "cref": "CREF",
+        "availability": "Disponibilidade",
+        "availabilityDays": "Dias da semana",
+        "availabilityHours": "Horário de atendimento",
+        "experienceYears": "Anos de experiência"
+      },
+      "placeholders": {
+        "contactPhone": "(11) 99999-9999",
+        "citySearch": "Buscar cidade...",
+        "state": "SP",
+        "availability": "Seg–Sex, 7h–20h"
+      },
+      "hints": {
+        "description": "Mínimo de 20 caracteres. Conte sua abordagem e diferenciais."
+      },
+      "errors": {
+        "submitFailed": "Não foi possível salvar. Tente novamente.",
+        "name": {
+          "required": "Informe seu nome.",
+          "tooShort": "Nome muito curto."
+        },
+        "contactPhone": {
+          "required": "Informe um telefone para contato.",
+          "invalid": "Telefone inválido."
+        },
+        "profession": {
+          "required": "Informe sua profissão ou título."
+        },
+        "description": {
+          "required": "Escreva uma descrição.",
+          "tooShort": "Descrição muito curta (mín. 20 caracteres)."
+        },
+        "specialties": {
+          "required": "Selecione ao menos uma especialidade.",
+          "invalid": "Especialidade inválida."
+        },
+        "modalities": {
+          "required": "Selecione ao menos uma modalidade.",
+          "invalid": "Modalidade inválida."
+        },
+        "city": {
+          "required": "Informe a cidade."
+        },
+        "state": {
+          "required": "Informe o estado.",
+          "invalid": "UF inválida."
+        },
+        "servicePrice": {
+          "invalid": "Informe um preço válido."
+        },
+        "cref": {
+          "required": "Informe seu CREF.",
+          "invalid": "Informe um CREF válido (ex.: 123456-G/SP)."
+        },
+        "availability": {
+          "required": "Informe sua disponibilidade."
+        },
+        "experienceYears": {
+          "invalid": "Informe anos de experiência válidos."
+        }
+      }
+    },
+    "gallery": {
+      "success": "Galeria atualizada.",
+      "emptyTitle": "Nenhuma foto na galeria",
+      "emptyDescription": "Envie fotos do seu trabalho para destacar seu perfil no catálogo.",
+      "upload": "Enviar foto",
+      "limitReached": "Limite de fotos atingido",
+      "uploadHint": "JPG, PNG ou WebP. Máximo 5 MB por foto, até 12 imagens.",
+      "setCover": "Definir capa",
+      "coverBadge": "Capa",
+      "remove": "Remover foto",
+      "imageAlt": "Foto {index} da galeria",
+      "errors": {
+        "uploadFailed": "Falha no envio da foto.",
+        "deleteFailed": "Não foi possível remover a foto.",
+        "coverFailed": "Não foi possível definir a capa.",
+        "required": "Selecione um arquivo.",
+        "invalidType": "Formato não suportado.",
+        "tooLarge": "Arquivo muito grande (máx. 5 MB).",
+        "limit": "Limite de 12 fotos atingido."
+      }
+    },
+    "promotion": {
+      "success": "Promoção salva com sucesso.",
+      "submit": "Salvar promoção",
+      "submitting": "Salvando...",
+      "previewLabel": "Prévia no catálogo",
+      "redemptionsUnlimited": "{count} alunos já resgataram (ilimitado)",
+      "redemptionsLimited": "{count} de {max} alunos resgataram",
+      "fields": {
+        "active": "Promoção ativa",
+        "activeHint": "Exibir desconto no catálogo durante o período configurado",
+        "discountPercent": "Desconto (%)",
+        "label": "Rótulo da promoção",
+        "startsAt": "Início da visibilidade",
+        "endsAt": "Fim da visibilidade",
+        "maxRedemptions": "Limite de resgates",
+        "unlimitedRedemptions": "Resgates ilimitados"
+      },
+      "errors": {
+        "submitFailed": "Não foi possível salvar a promoção.",
+        "discountPercent": {
+          "invalid": "Desconto deve ser entre 5% e 80%."
+        },
+        "label": {
+          "required": "Selecione um rótulo."
+        },
+        "startsAt": {
+          "required": "Informe a data de início.",
+          "invalid": "Data de início inválida."
+        },
+        "endsAt": {
+          "required": "Informe a data de término.",
+          "invalid": "Data de término inválida.",
+          "beforeStart": "Deve ser após a data de início."
+        },
+        "maxRedemptions": {
+          "invalid": "Informe um limite válido (mín. 1)."
+        },
+        "active": {
+          "noServicePrice": "Defina um preço válido na aba Informações antes de ativar a promoção."
+        }
+      }
+    }
+  }
+}

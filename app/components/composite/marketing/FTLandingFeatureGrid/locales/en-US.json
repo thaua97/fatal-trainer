@@ -1,0 +1,21 @@
+{
+  "landing": {
+    "features": {
+      "verified": {
+        "title": "Verified professionals",
+        "description": "CREF credentials, real reviews, and complete profiles so you can confidently choose who guides your training.",
+        "cta": "Report an issue"
+      },
+      "modalities": {
+        "title": "Flexible modalities",
+        "description": "In-person, online, or hybrid — find the format that fits your routine and your goals.",
+        "cta": "Learn more"
+      },
+      "offer": {
+        "title": "Exclusive offer",
+        "description": "Featured trainers with special conditions. Discover who is near you right now.",
+        "cta": "Explore more"
+      }
+    }
+  }
+}

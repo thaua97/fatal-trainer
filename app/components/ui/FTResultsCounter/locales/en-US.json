@@ -1,0 +1,8 @@
+{
+  "results": {
+    "loading": "Loading...",
+    "trainer": "personal trainer",
+    "trainers": "personal trainers",
+    "filtered": "{count} of {total} {suffix}"
+  }
+}

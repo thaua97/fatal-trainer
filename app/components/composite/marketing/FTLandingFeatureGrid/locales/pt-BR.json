@@ -1,0 +1,21 @@
+{
+  "landing": {
+    "features": {
+      "verified": {
+        "title": "Profissionais verificados",
+        "description": "CREF, avaliações reais e perfis completos para você escolher com confiança quem vai conduzir seu treino.",
+        "cta": "Fazer denúncia"
+      },
+      "modalities": {
+        "title": "Modalidades flexíveis",
+        "description": "Presencial, online ou híbrido — encontre o formato que encaixa na sua rotina e no seu objetivo.",
+        "cta": "Saiba mais"
+      },
+      "offer": {
+        "title": "Oferta exclusiva",
+        "description": "Personais em destaque com condições especiais. Descubra quem está perto de você agora.",
+        "cta": "Explorar mais"
+      }
+    }
+  }
+}
