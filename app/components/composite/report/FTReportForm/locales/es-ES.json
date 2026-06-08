@@ -34,7 +34,8 @@
     },
     "errors": {
       "type": {
-        "required": "Seleccione el tipo de incidente."
+        "required": "Seleccione el tipo de incidente.",
+        "invalid": "Tipo de incidente inválido."
       },
       "occurredAt": {
         "required": "Indique la fecha del incidente.",
