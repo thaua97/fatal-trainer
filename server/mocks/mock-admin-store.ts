@@ -76,6 +76,27 @@ export function adminLogin(email: string, password: string): AuthUser | null {
   return authUser
 }
 
+function adminUserRoleSortPriority(role: UserRole): number {
+  if (role === 'personal-trainer') {
+    return 0
+  }
+
+  if (role === 'student') {
+    return 1
+  }
+
+  return 2
+}
+
+function compareAdminUsersByDefaultOrder(a: AdminUserListItem, b: AdminUserListItem): number {
+  const roleDiff = adminUserRoleSortPriority(a.role) - adminUserRoleSortPriority(b.role)
+  if (roleDiff !== 0) {
+    return roleDiff
+  }
+
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+}
+
 export function listAdminUsers(query: AdminUsersQuery): AdminUserListResponse {
   const page = query.page ?? 1
   const pageSize = query.pageSize ?? 20
@@ -95,6 +116,8 @@ export function listAdminUsers(query: AdminUsersQuery): AdminUserListResponse {
   if (query.isActive !== undefined) {
     items = items.filter(u => u.isActive === query.isActive)
   }
+
+  items.sort(compareAdminUsersByDefaultOrder)
 
   const total = items.length
   const start = (page - 1) * pageSize

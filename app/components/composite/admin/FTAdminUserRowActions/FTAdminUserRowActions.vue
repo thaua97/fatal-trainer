@@ -54,10 +54,10 @@ const dropdownItems = computed(() => {
 
 <template>
   <div
-    class="flex items-center justify-end gap-1"
+    class="flex w-full items-center justify-center gap-1"
     data-testid="admin-user-row-actions"
   >
-    <div class="hidden items-center gap-2 lg:flex">
+    <div class="hidden items-center justify-center gap-2 lg:flex">
       <UButton
         variant="ghost"
         color="neutral"

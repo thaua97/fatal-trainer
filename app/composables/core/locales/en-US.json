@@ -41,6 +41,9 @@
         "sortNewest": "Newest",
         "sortOldest": "Oldest",
         "sortRoleAsc": "Role A–Z"
+      },
+      "pagination": {
+        "perPage": "Per page"
       }
     },
     "promotions": {

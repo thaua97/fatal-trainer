@@ -14,7 +14,7 @@ export function useAdminUsers() {
 
   const query = reactive<AdminUsersQuery>({
     page: 1,
-    pageSize: 10,
+    pageSize: 20,
     search: '',
   })
 
@@ -27,7 +27,7 @@ export function useAdminUsers() {
     error.value = null
     try {
       data.value = await adminService.listAdminUsers({ ...query })
-      const maxPage = Math.max(1, Math.ceil((data.value.total || 0) / (data.value.pageSize || query.pageSize || 10)))
+      const maxPage = Math.max(1, Math.ceil((data.value.total || 0) / (data.value.pageSize || query.pageSize || 20)))
       if (query.page > maxPage) {
         query.page = maxPage
       }
@@ -42,6 +42,13 @@ export function useAdminUsers() {
 
   watch(
     () => [query.search, query.role, query.isActive] as const,
+    () => {
+      query.page = 1
+    },
+  )
+
+  watch(
+    () => query.pageSize,
     () => {
       query.page = 1
     },
