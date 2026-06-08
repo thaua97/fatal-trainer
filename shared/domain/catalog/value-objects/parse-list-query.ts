@@ -61,23 +61,65 @@ export function parseListQuery(queryParams: Record<string, string | string[] | u
   }
 }
 
+function setStringField(
+  result: Record<string, string | undefined>,
+  key: string,
+  value: string | undefined,
+): void {
+  if (value) {
+    result[key] = value
+  }
+}
+
+function setNumberField(
+  result: Record<string, string | undefined>,
+  key: string,
+  value: number | undefined,
+): void {
+  if (value != null) {
+    result[key] = String(value)
+  }
+}
+
+function setFieldWhenDifferent<T extends string | number>(
+  result: Record<string, string | undefined>,
+  key: string,
+  value: T | undefined,
+  defaultValue: T,
+): void {
+  if (value != null && value !== defaultValue) {
+    result[key] = String(value)
+  }
+}
+
 export function serializeListQueryToRoute(query: Partial<ListQuery>): Record<string, string | undefined> {
   const result: Record<string, string | undefined> = {}
 
-  if (query.search) result.search = query.search
-  if (query.specialties?.length) result.specialties = query.specialties.join(',')
-  if (query.modalities?.length) result.modalities = query.modalities.join(',')
-  if (query.minPrice != null) result.minPrice = String(query.minPrice)
-  if (query.maxPrice != null) result.maxPrice = String(query.maxPrice)
-  if (query.minRating != null) result.minRating = String(query.minRating)
-  if (query.city) result.city = query.city
-  if (query.maxDistanceKm != null) result.maxDistanceKm = String(query.maxDistanceKm)
-  if (query.onPromotion === true) result.onPromotion = 'true'
-  if (query.priceView && query.priceView !== DEFAULT_PRICE_VIEW) result.priceView = query.priceView
-  if (query.sortBy && query.sortBy !== DEFAULT_LIST_QUERY.sortBy) result.sortBy = query.sortBy
-  if (query.sortOrder && query.sortOrder !== DEFAULT_LIST_QUERY.sortOrder) result.sortOrder = query.sortOrder
-  if (query.page && query.page !== DEFAULT_LIST_QUERY.page) result.page = String(query.page)
-  if (query.pageSize && query.pageSize !== DEFAULT_LIST_QUERY.pageSize) result.pageSize = String(query.pageSize)
+  setStringField(result, 'search', query.search)
+  setStringField(result, 'city', query.city)
+
+  if (query.specialties?.length) {
+    result.specialties = query.specialties.join(',')
+  }
+
+  if (query.modalities?.length) {
+    result.modalities = query.modalities.join(',')
+  }
+
+  setNumberField(result, 'minPrice', query.minPrice)
+  setNumberField(result, 'maxPrice', query.maxPrice)
+  setNumberField(result, 'minRating', query.minRating)
+  setNumberField(result, 'maxDistanceKm', query.maxDistanceKm)
+
+  if (query.onPromotion === true) {
+    result.onPromotion = 'true'
+  }
+
+  setFieldWhenDifferent(result, 'priceView', query.priceView, DEFAULT_PRICE_VIEW)
+  setFieldWhenDifferent(result, 'sortBy', query.sortBy, DEFAULT_LIST_QUERY.sortBy)
+  setFieldWhenDifferent(result, 'sortOrder', query.sortOrder, DEFAULT_LIST_QUERY.sortOrder)
+  setFieldWhenDifferent(result, 'page', query.page, DEFAULT_LIST_QUERY.page)
+  setFieldWhenDifferent(result, 'pageSize', query.pageSize, DEFAULT_LIST_QUERY.pageSize)
 
   return result
 }

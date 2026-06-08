@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   testId: 'time-picker',
   disabled: false,
+  placeholder: undefined,
 })
 
 const model = defineModel<TimeRangeValue | null>()

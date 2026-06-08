@@ -73,7 +73,7 @@ const features = computed(() => [
         :to="feature.to"
         size="md"
         block
-        class="mt-6 rounded-full bg-white px-6 font-semibold text-violet-700 ring-1 ring-violet-200 hover:bg-violet-50 sm:!w-auto sm:justify-start"
+        class="mt-6 rounded-full bg-white px-6 font-semibold text-violet-700 ring-1 ring-violet-200 hover:bg-violet-50 sm:w-auto! sm:justify-start"
       >
         {{ t(feature.cta) }}
         <UIcon :name="feature.ctaIcon!" class="size-4" />
@@ -85,7 +85,7 @@ const features = computed(() => [
         variant="outline"
         size="md"
         block
-        class="mt-6 rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white hover:bg-white/15 sm:!w-auto sm:justify-start"
+        class="mt-6 rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white hover:bg-white/15 sm:w-auto! sm:justify-start"
       >
         {{ t(feature.cta) }}
         <UIcon :name="feature.ctaIcon!" class="size-4" />

@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   testId: 'cref-input',
+  placeholder: undefined,
 })
 
 const emit = defineEmits<{

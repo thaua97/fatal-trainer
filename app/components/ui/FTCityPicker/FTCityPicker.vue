@@ -17,6 +17,11 @@ const props = withDefaults(defineProps<{
 }>(), {
   testId: 'city-picker',
   disabled: false,
+  error: undefined,
+  label: undefined,
+  placeholder: undefined,
+  ariaLabel: undefined,
+  geoError: undefined,
 })
 
 const emit = defineEmits<{

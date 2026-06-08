@@ -4,6 +4,7 @@ const props = withDefaults(defineProps<{
   fallbackTo?: string
 }>(), {
   fallbackTo: '/personal-trainers',
+  label: undefined,
 })
 
 const { t } = useI18n()

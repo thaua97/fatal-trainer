@@ -67,6 +67,42 @@ function valuesEqual(before: unknown, after: unknown): boolean {
   return beforeFormatted === afterFormatted
 }
 
+function formatPriceValue(value: unknown, fallback: string | null): string | null {
+  return typeof value === 'number'
+    ? `R$ ${value.toFixed(2).replace('.', ',')}`
+    : fallback
+}
+
+function formatFieldPair(
+  field: string,
+  beforeValue: unknown,
+  afterValue: unknown,
+): { before: string | null, after: string | null } {
+  if (field === 'isActive' || field === 'featured' || field === 'active') {
+    return {
+      before: beforeValue ? 'Sim' : 'Não',
+      after: afterValue ? 'Sim' : 'Não',
+    }
+  }
+
+  let beforeFormatted = formatValue(beforeValue)
+  let afterFormatted = formatValue(afterValue)
+
+  if (field === 'role') {
+    beforeFormatted = ROLE_LABELS[String(beforeValue)] ?? beforeFormatted
+    afterFormatted = ROLE_LABELS[String(afterValue)] ?? afterFormatted
+  }
+
+  if (field === 'servicePrice' || field === 'promoPrice') {
+    return {
+      before: formatPriceValue(beforeValue, beforeFormatted),
+      after: formatPriceValue(afterValue, afterFormatted),
+    }
+  }
+
+  return { before: beforeFormatted, after: afterFormatted }
+}
+
 export function computeFieldChanges(
   before: Record<string, unknown>,
   after: Record<string, unknown>,
@@ -83,27 +119,11 @@ export function computeFieldChanges(
       continue
     }
 
-    let beforeFormatted = formatValue(beforeValue)
-    let afterFormatted = formatValue(afterValue)
-
-    if (field === 'isActive' || field === 'featured' || field === 'active') {
-      beforeFormatted = beforeValue ? 'Sim' : 'Não'
-      afterFormatted = afterValue ? 'Sim' : 'Não'
-    }
-
-    if (field === 'role') {
-      beforeFormatted = ROLE_LABELS[String(beforeValue)] ?? beforeFormatted
-      afterFormatted = ROLE_LABELS[String(afterValue)] ?? afterFormatted
-    }
-
-    if (field === 'servicePrice' || field === 'promoPrice') {
-      beforeFormatted = typeof beforeValue === 'number'
-        ? `R$ ${beforeValue.toFixed(2).replace('.', ',')}`
-        : beforeFormatted
-      afterFormatted = typeof afterValue === 'number'
-        ? `R$ ${afterValue.toFixed(2).replace('.', ',')}`
-        : afterFormatted
-    }
+    const { before: beforeFormatted, after: afterFormatted } = formatFieldPair(
+      field,
+      beforeValue,
+      afterValue,
+    )
 
     changes.push({
       field,

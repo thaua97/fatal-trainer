@@ -33,7 +33,7 @@ withDefaults(defineProps<{
         color="primary"
         variant="outline"
         block
-        class="shrink-0 rounded-full px-6 sm:!w-auto sm:justify-start"
+        class="shrink-0 rounded-full px-6 sm:w-auto! sm:justify-start"
         data-testid="landing-trainers-view-all"
       >
         {{ $t('landing.trainers.viewAll') }}

@@ -94,16 +94,6 @@ export function useFTTrainerListFavorites() {
   const hasMore = computed(() => isAuthenticated.value && meta.value.hasMore)
   const isLoadingMore = computed(() => pending.value && query.value.page > 1)
 
-  const status = computed(() => {
-    if (pending.value) {
-      return 'pending'
-    }
-    if (error.value) {
-      return 'error'
-    }
-    return 'success'
-  })
-
   const isLoading = computed(() => {
     if (!initialized.value) {
       return true

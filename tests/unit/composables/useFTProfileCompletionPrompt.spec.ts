@@ -1,10 +1,9 @@
 // @vitest-environment nuxt
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, defineComponent, ref } from 'vue'
-import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { mockNuxtImport, mountSuspended  } from '@nuxt/test-utils/runtime'
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { mockTrainer } from '@tests/helpers/mock-trainer'
 import { useFTProfileCompletionPrompt } from '~/composables/profile/useFTProfileCompletionPrompt'
 

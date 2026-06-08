@@ -60,7 +60,7 @@ const { shouldShow, showFab, minimize, expand } = useFTProfileCompletionPrompt()
       <button
         v-if="showFab"
         type="button"
-        class="ft-profile-prompt-fab ft-profile-prompt-pulse fixed bottom-6 end-6 z-40 inline-flex size-14 items-center justify-center rounded-full"
+        class="ft-profile-prompt-fab ft-profile-prompt-pulse fixed bottom-6 inset-e-6 z-40 inline-flex size-14 items-center justify-center rounded-full"
         :aria-label="t('profileCompletionPrompt.expand')"
         data-testid="profile-completion-prompt-fab"
         @click="expand"

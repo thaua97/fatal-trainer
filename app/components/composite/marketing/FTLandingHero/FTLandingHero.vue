@@ -42,7 +42,7 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
             to="/personal-trainers"
             size="lg"
             block
-            class="rounded-full bg-white px-8 font-semibold text-violet-700 hover:bg-violet-50 sm:!w-auto sm:justify-start"
+            class="rounded-full bg-white px-8 font-semibold text-violet-700 hover:bg-violet-50 sm:w-auto! sm:justify-start"
             data-testid="landing-hero-cta-primary"
           >
             {{ $t("landing.hero.ctaPrimary") }}
@@ -52,7 +52,7 @@ import heroRunnerImage from "~/assets/images/landing-hero-runner.webp";
             size="lg"
             variant="outline"
             block
-            class="rounded-full border-white/70 bg-white/10 px-8 font-semibold text-white backdrop-blur-sm hover:bg-white/20 sm:!w-auto sm:justify-start"
+            class="rounded-full border-white/70 bg-white/10 px-8 font-semibold text-white backdrop-blur-sm hover:bg-white/20 sm:w-auto! sm:justify-start"
             data-testid="landing-hero-cta-secondary"
           >
             {{ $t("landing.hero.ctaSecondary") }}

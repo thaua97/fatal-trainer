@@ -17,6 +17,12 @@ const props = withDefaults(defineProps<{
   dismissible: true,
   compactOnMobile: false,
   fullscreen: undefined,
+  tile: undefined,
+  title: undefined,
+  subtitle: undefined,
+  testId: undefined,
+  titleId: undefined,
+  ui: undefined,
 })
 
 const open = defineModel<boolean>('open', { default: false })
