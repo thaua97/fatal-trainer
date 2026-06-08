@@ -1,6 +1,9 @@
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { LoginRequest } from '#shared/types/api'
 import type {
+  AdminPromotionListResponse,
+  AdminPromotionsQuery,
+  AdminPromotionTemplateListItem,
   AdminReportListItem,
   AdminReportListResponse,
   AdminReportsQuery,
@@ -13,9 +16,11 @@ import type {
   AdminUserNote,
   AdminUserNotesResponse,
   AdminUsersQuery,
+  CreateAdminPromotionRequest,
   CreateAdminUserNoteRequest,
   CreateAdminUserRequest,
   ReportStatus,
+  UpdateAdminPromotionRequest,
   UpdateAdminUserRequest,
 } from '#shared/types/admin'
 import { apiFetch } from '~/services/api/create-api-client'
@@ -54,6 +59,10 @@ export async function updateAdminUser(
     method: 'PATCH',
     body: payload,
   })
+}
+
+export async function deleteAdminUser(id: string): Promise<void> {
+  await apiFetch(`/admin/users/${id}`, { method: 'DELETE' })
 }
 
 export async function toggleAdminUserFeatured(
@@ -121,6 +130,35 @@ export async function createAdminUserNote(
   })
 }
 
+export async function listAdminPromotions(
+  query: AdminPromotionsQuery,
+): Promise<AdminPromotionListResponse> {
+  return apiFetch('/admin/promotions', { query })
+}
+
+export async function createAdminPromotion(
+  payload: CreateAdminPromotionRequest,
+): Promise<{ promotion: AdminPromotionTemplateListItem }> {
+  return apiFetch('/admin/promotions', {
+    method: 'POST',
+    body: payload,
+  })
+}
+
+export async function updateAdminPromotion(
+  id: string,
+  payload: UpdateAdminPromotionRequest,
+): Promise<{ promotion: AdminPromotionTemplateListItem }> {
+  return apiFetch(`/admin/promotions/${id}`, {
+    method: 'PATCH',
+    body: payload,
+  })
+}
+
+export async function deleteAdminPromotion(id: string): Promise<void> {
+  await apiFetch(`/admin/promotions/${id}`, { method: 'DELETE' })
+}
+
 export const adminService = {
   adminLogin,
   getSessionUser,
@@ -128,6 +166,7 @@ export const adminService = {
   listAdminUsers,
   createAdminUser,
   updateAdminUser,
+  deleteAdminUser,
   toggleAdminUserFeatured,
   impersonateAdminUser,
   exitImpersonation,
@@ -139,4 +178,8 @@ export const adminService = {
   listAdminUserActivity,
   listAdminUserNotes,
   createAdminUserNote,
+  listAdminPromotions,
+  createAdminPromotion,
+  updateAdminPromotion,
+  deleteAdminPromotion,
 }

@@ -8,6 +8,7 @@ import {
 } from '../../mocks/mock-user-store'
 import { enrichAuthUser } from '../../utils/enrich-auth-user'
 import { appendActivity } from '../../mocks/mock-user-activity-store'
+import { throwConflict, throwValidationError } from '../../utils/api-error'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<RegisterRequest>(event)
@@ -22,27 +23,11 @@ export default defineEventHandler(async (event) => {
   })
 
   if (!validation.valid) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: {
-        message: 'Validation failed',
-        errors: validation.errors,
-      },
-    })
+    throwValidationError(validation.errors)
   }
 
   if (findUserByEmail(body.email)) {
-    throw createError({
-      statusCode: 409,
-      statusMessage: 'Email already registered',
-      data: {
-        message: 'Email already registered',
-        errors: {
-          email: 'alreadyRegistered',
-        },
-      },
-    })
+    throwConflict({ email: 'alreadyExists' })
   }
 
   const user = createUser({

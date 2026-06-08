@@ -16,6 +16,9 @@ export function useFTTrainerList() {
     hasMore,
     isLoadingMore,
     loadMore,
+    error,
+    errorMessage,
+    refresh,
   } = usePersonalTrainers({}, { enabled: fetchEnabled })
 
   watch(filters, (value) => {
@@ -34,7 +37,9 @@ export function useFTTrainerList() {
     return pending.value || status.value === 'pending' || data.value == null
   })
 
-  const isEmpty = computed(() => !isLoading.value && trainers.value.length === 0)
+  const hasFetchError = computed(() => !pending.value && error.value != null)
+
+  const isEmpty = computed(() => !isLoading.value && !hasFetchError.value && trainers.value.length === 0)
 
   function clearFilters() {
     updateFilters({
@@ -62,8 +67,11 @@ export function useFTTrainerList() {
     isLoadingMore,
     isEmpty,
     isAwaitingCity,
+    hasFetchError,
+    errorMessage,
     hasMore,
     loadMore,
     clearFilters,
+    refresh,
   }
 }

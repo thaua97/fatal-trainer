@@ -6,32 +6,50 @@ const props = defineProps<{
   actionPending?: boolean
 }>()
 
+const { user: adminUser } = useAdminAuth()
+const isSelf = computed(() => adminUser.value?.id === props.user.id)
+
 const emit = defineEmits<{
   edit: [AdminUserListItem]
   impersonate: [AdminUserListItem]
+  delete: [AdminUserListItem]
 }>()
 
 function viewProfile() {
   navigateTo(`/admin/usuarios/${props.user.id}`)
 }
 
-const dropdownItems = computed(() => [[
-  {
-    label: 'Ver perfil',
-    icon: 'i-lucide-user',
-    onSelect: viewProfile,
-  },
-  {
-    label: 'Editar',
-    icon: 'i-lucide-pencil',
-    onSelect: () => emit('edit', props.user),
-  },
-  {
-    label: 'Acessar como',
-    icon: 'i-lucide-user-check',
-    onSelect: () => emit('impersonate', props.user),
-  },
-]])
+const dropdownItems = computed(() => {
+  const items = [
+    {
+      label: 'Ver perfil',
+      icon: 'i-lucide-user',
+      onSelect: viewProfile,
+    },
+    {
+      label: 'Editar',
+      icon: 'i-lucide-pencil',
+      onSelect: () => emit('edit', props.user),
+    },
+  ]
+
+  if (!isSelf.value) {
+    items.push(
+      {
+        label: 'Acessar como',
+        icon: 'i-lucide-user-check',
+        onSelect: () => emit('impersonate', props.user),
+      },
+      {
+        label: 'Excluir',
+        icon: 'i-lucide-trash-2',
+        onSelect: () => emit('delete', props.user),
+      },
+    )
+  }
+
+  return [items]
+})
 </script>
 
 <template>
@@ -58,17 +76,28 @@ const dropdownItems = computed(() => [[
         :disabled="actionPending"
         @click="emit('edit', user)"
       />
-      <UButton
-        variant="outline"
-        color="neutral"
-        size="xs"
-        icon="i-lucide-user-check"
-        class="rounded-full whitespace-nowrap"
-        :disabled="actionPending"
-        @click="emit('impersonate', user)"
-      >
-        Acessar como
-      </UButton>
+      <template v-if="!isSelf">
+        <UButton
+          variant="outline"
+          color="neutral"
+          size="xs"
+          icon="i-lucide-user-check"
+          class="rounded-full whitespace-nowrap"
+          :disabled="actionPending"
+          @click="emit('impersonate', user)"
+        >
+          Acessar como
+        </UButton>
+        <UButton
+          variant="ghost"
+          color="error"
+          size="xs"
+          icon="i-lucide-trash-2"
+          aria-label="Excluir usuário"
+          :disabled="actionPending"
+          @click="emit('delete', user)"
+        />
+      </template>
     </div>
 
     <div class="lg:hidden">

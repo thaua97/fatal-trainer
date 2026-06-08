@@ -10,6 +10,7 @@ const SORT_BY_KEY = 'ft-admin-users-sort-by'
 const SORT_ORDER_KEY = 'ft-admin-users-sort-order'
 
 export function useFTAdminUsersPage() {
+  const { t } = useI18n()
   const {
     data,
     pending,
@@ -17,6 +18,7 @@ export function useFTAdminUsersPage() {
     refresh,
     updateUser,
     toggleFeatured,
+    deleteUser,
     impersonate,
     createUser,
   } = useAdminUsers()
@@ -39,11 +41,31 @@ export function useFTAdminUsersPage() {
     role: 'student' as UserRole,
   })
 
-  const roleLabel: Record<UserRole, string> = {
-    student: 'Aluno',
-    'personal-trainer': 'Personal',
-    admin: 'Admin',
-  }
+  const roleLabel = computed<Record<UserRole, string>>(() => ({
+    student: t('admin.errors.roles.student'),
+    'personal-trainer': t('admin.errors.roles.personal-trainer'),
+    admin: t('admin.errors.roles.admin'),
+  }))
+
+  const {
+    confirmOpen,
+    pendingAction,
+    requestToggleActive,
+    requestToggleFeatured,
+    requestImpersonate,
+    requestDelete,
+    confirmAction,
+  } = useFTAdminUserActionConfirm({
+    updateUser,
+    toggleFeatured,
+    impersonate: async (id) => {
+      const user = await impersonate(id)
+      await refreshRecentAccess()
+      return user
+    },
+    deleteUser,
+    actionPending,
+  })
 
   const sortedItems = computed(() => {
     const items = [...(data.value?.items ?? [])]
@@ -122,34 +144,6 @@ export function useFTAdminUsersPage() {
     }
   }
 
-  async function handleToggleActive(user: AdminUserListItem) {
-    actionPending.value = true
-    try {
-      await updateUser(user.id, { isActive: !user.isActive })
-    } finally {
-      actionPending.value = false
-    }
-  }
-
-  async function handleToggleFeatured(user: AdminUserListItem) {
-    actionPending.value = true
-    try {
-      await toggleFeatured(user.id, !user.featured)
-    } finally {
-      actionPending.value = false
-    }
-  }
-
-  async function handleImpersonate(user: AdminUserListItem) {
-    actionPending.value = true
-    try {
-      await impersonate(user.id)
-      await refreshRecentAccess()
-    } finally {
-      actionPending.value = false
-    }
-  }
-
   return {
     data,
     pending,
@@ -167,13 +161,17 @@ export function useFTAdminUsersPage() {
     sortedItems,
     pagination,
     activeFilterCount,
+    confirmOpen,
+    pendingAction,
     clearFilters,
     openCreate,
     openEdit,
     handleSave,
-    handleToggleActive,
-    handleToggleFeatured,
-    handleImpersonate,
+    handleToggleActive: requestToggleActive,
+    handleToggleFeatured: requestToggleFeatured,
+    handleImpersonate: requestImpersonate,
+    handleDelete: requestDelete,
+    confirmAction,
   }
 }
 

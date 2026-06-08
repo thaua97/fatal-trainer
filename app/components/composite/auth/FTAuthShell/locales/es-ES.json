@@ -54,7 +54,8 @@
         "required": "Ingresa tu correo electrónico.",
         "invalid": "Ingresa un correo válido.",
         "invalidCredentials": "Correo o contraseña incorrectos.",
-        "alreadyRegistered": "Este correo ya está registrado."
+        "alreadyRegistered": "Este correo ya está registrado.",
+        "alreadyExists": "Este correo ya está registrado."
       },
       "password": {
         "required": "Ingresa tu contraseña.",

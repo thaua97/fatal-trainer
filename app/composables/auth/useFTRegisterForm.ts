@@ -1,6 +1,8 @@
 import type { RegisterPayload, RegisterValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
 import { validateRegister } from '#shared/domain/auth/services/validate-register'
 import type { RegisterRequest } from '#shared/types/api'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): RegisterPayload {
   return {
@@ -15,35 +17,17 @@ function emptyForm(): RegisterPayload {
 
 export function useFTRegisterForm() {
   const { t } = useI18n()
+  const toast = useFTToast()
   const { register, pending } = useAuth()
+  const errorMessage = useFieldErrorTranslator('auth.errors')
 
   const form = reactive<RegisterPayload>(emptyForm())
   const errors = ref<RegisterValidationErrors>({})
-  const submitError = ref<string | null>(null)
   const showPassword = ref(false)
   const showConfirmPassword = ref(false)
 
-  function errorMessage(field: keyof RegisterValidationErrors, code?: string): string | undefined {
-    if (!code) {
-      return undefined
-    }
-    const key = `auth.errors.${field}.${code}`
-    const translated = t(key)
-    return translated === key ? code : translated
-  }
-
-  const fieldErrors = computed(() => ({
-    name: errorMessage('name', errors.value.name),
-    email: errorMessage('email', errors.value.email),
-    password: errorMessage('password', errors.value.password),
-    confirmPassword: errorMessage('confirmPassword', errors.value.confirmPassword),
-    role: errorMessage('role', errors.value.role),
-    termsAccepted: errorMessage('termsAccepted', errors.value.termsAccepted),
-  }))
-
   async function handleSubmit() {
     errors.value = {}
-    submitError.value = null
 
     const validation = validateRegister(form)
     if (!validation.valid) {
@@ -62,19 +46,25 @@ export function useFTRegisterForm() {
 
     const result = await register(payload)
     if (!result.success) {
-      if (result.errors && Object.keys(result.errors).length > 0) {
-        errors.value = result.errors
-      } else {
-        submitError.value = t('auth.errors.submitFailed')
-      }
+      applyApiError({
+        parsed: {
+          message: result.errorMessage ?? 'auth.errors.submitFailed',
+          fieldErrors: result.errors ?? {},
+        },
+        errors,
+        toast,
+        translate: t,
+        translator: (field, code) => errorMessage(field, code),
+        fallbackKey: 'auth.errors.submitFailed',
+      })
     }
   }
 
   return {
     form,
-    fieldErrors,
+    errors,
+    errorMessage,
     pending,
-    submitError,
     showPassword,
     showConfirmPassword,
     handleSubmit,

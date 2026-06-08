@@ -12,7 +12,9 @@ defineProps<{
 const emit = defineEmits<{
   edit: [AdminUserListItem]
   impersonate: [AdminUserListItem]
+  delete: [AdminUserListItem]
   toggleActive: [AdminUserListItem]
+  toggleFeatured: [AdminUserListItem]
   hoverUser: [AdminUserListItem | null, MouseEvent?]
 }>()
 
@@ -43,6 +45,9 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
           </th>
           <th class="px-4 py-3 font-semibold text-slate-600">
             Ativo
+          </th>
+          <th class="px-4 py-3 font-semibold text-slate-600">
+            Destaque
           </th>
           <th class="px-4 py-3 font-semibold text-slate-600">
             Ações
@@ -99,8 +104,22 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
             <USwitch
               :model-value="user.isActive"
               :disabled="actionPending"
+              aria-label="Ativo"
               @update:model-value="emit('toggleActive', user)"
             />
+          </td>
+          <td class="px-4 py-3">
+            <USwitch
+              v-if="user.role === 'personal-trainer'"
+              :model-value="user.featured"
+              :disabled="actionPending"
+              aria-label="Destaque"
+              @update:model-value="emit('toggleFeatured', user)"
+            />
+            <span
+              v-else
+              class="text-slate-300"
+            >—</span>
           </td>
           <td class="px-4 py-3">
             <FTAdminUserRowActions
@@ -108,6 +127,7 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
               :action-pending="actionPending"
               @edit="emit('edit', $event)"
               @impersonate="emit('impersonate', $event)"
+              @delete="emit('delete', $event)"
             />
           </td>
         </tr>

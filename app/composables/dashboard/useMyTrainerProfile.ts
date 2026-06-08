@@ -7,6 +7,7 @@ export function useMyTrainerProfile() {
   const pending = useState('my-trainer-profile-pending', () => false)
   const error = useState<Error | null>('my-trainer-profile-error', () => null)
   const hydrated = useState('my-trainer-profile-hydrated', () => false)
+  const { setUserAvatarUrl } = useAuth()
 
   async function fetchMyProfile(): Promise<void> {
     pending.value = true
@@ -30,8 +31,6 @@ export function useMyTrainerProfile() {
 
   function setTrainer(next: PersonalTrainer) {
     trainer.value = next
-
-    const { setUserAvatarUrl } = useAuth()
     setUserAvatarUrl(next.photoUrl || undefined)
   }
 

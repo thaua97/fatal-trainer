@@ -10,10 +10,7 @@ const {
   form,
   specialtyItems,
   modalityItems,
-  fieldErrors,
   pending,
-  success,
-  submitError,
   handleSubmit,
 } = useFTTrainerInfoForm(trainerRef)
 
@@ -24,26 +21,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
 
 <template>
   <div data-testid="trainer-info-form">
-    <UAlert
-      v-if="success"
-      color="success"
-      variant="subtle"
-      icon="i-lucide-circle-check"
-      :title="t('dashboard.info.success')"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-info-success"
-    />
-
-    <UAlert
-      v-else-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="t('dashboard.info.errors.submitFailed')"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-info-error"
-    />
-
     <form
       class="flex flex-col gap-5"
       data-testid="trainer-info-form-fields"
@@ -53,7 +30,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full sm:col-span-2"
           :label="t('dashboard.info.fields.name')"
-          :error="fieldErrors.name"
           required
         >
           <UInput
@@ -68,7 +44,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.contactPhone')"
-          :error="fieldErrors.contactPhone"
           required
         >
           <FTPhoneInput
@@ -81,7 +56,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.servicePrice')"
-          :error="fieldErrors.servicePrice"
           required
         >
           <UInput
@@ -99,7 +73,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full sm:col-span-2"
           :label="t('dashboard.info.fields.profession')"
-          :error="fieldErrors.profession"
           required
         >
           <UInput
@@ -114,7 +87,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full sm:col-span-2"
           :label="t('dashboard.info.fields.description')"
-          :error="fieldErrors.description"
           :hint="t('dashboard.info.hints.description')"
           required
         >
@@ -130,7 +102,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.specialties')"
-          :error="fieldErrors.specialties"
           required
         >
           <USelect
@@ -146,7 +117,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.modalities')"
-          :error="fieldErrors.modalities"
           required
         >
           <USelect
@@ -164,14 +134,12 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
             v-model:city="form.city"
             v-model:state="form.state"
             test-id="trainer-info-city"
-            :error="fieldErrors.city || fieldErrors.state"
           />
         </div>
 
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.cref')"
-          :error="fieldErrors.cref"
           required
         >
           <FTCrefInput
@@ -183,7 +151,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.experienceYears')"
-          :error="fieldErrors.experienceYears"
           required
         >
           <UInputNumber
@@ -200,7 +167,6 @@ const { fieldUi, selectUi, inputNumberUi, inputSize, textareaUi } = useFTFormFie
         <div class="w-full sm:col-span-2">
           <FTAvailabilityPicker
             v-model="form.availability"
-            :error="fieldErrors.availability"
           />
         </div>
       </div>

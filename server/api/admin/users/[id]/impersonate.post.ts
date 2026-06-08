@@ -1,3 +1,4 @@
+import { throwForbidden, throwValidationError } from '../../../../utils/api-error'
 import {
   impersonateUser,
   getSessionUser,
@@ -9,18 +10,22 @@ export default defineEventHandler((event) => {
   const admin = getSessionUser(token)
 
   if (!admin || admin.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+    throwForbidden()
   }
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
+  }
+
+  if (admin.id === id) {
+    throwForbidden()
   }
 
   const user = impersonateUser(event, token!, id)
 
   if (!user) {
-    throw createError({ statusCode: 400, statusMessage: 'Cannot impersonate user' })
+    throwValidationError({ user: 'cannotImpersonate' })
   }
 
   return { user }

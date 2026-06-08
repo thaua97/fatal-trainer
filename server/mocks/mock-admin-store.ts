@@ -27,12 +27,13 @@ import {
   clearSessionCookie,
   updateUserInStore,
   createUserInStore,
+  deleteUserFromStore,
   getAdminBackupToken,
   type AdminSession,
 } from './mock-user-store'
-import { findTrainerById, findTrainerByUserId } from '../services/trainer-repository'
-import { appendActivity, countUserActivity } from './mock-user-activity-store'
-import { countUserNotes } from './mock-user-notes-store'
+import { deleteTrainerByUserId, findTrainerById, findTrainerByUserId } from '../services/trainer-repository'
+import { appendActivity, countUserActivity, deleteUserActivity } from './mock-user-activity-store'
+import { countUserNotes, deleteUserNotes } from './mock-user-notes-store'
 
 const featuredTrainers = new Map<string, boolean>()
 
@@ -135,6 +136,27 @@ export function updateAdminUser(id: string, payload: UpdateAdminUserRequest): Ad
   return updated ? toAdminUser(updated) : null
 }
 
+export function deleteAdminUser(adminId: string, targetId: string): boolean {
+  if (adminId === targetId) {
+    return false
+  }
+
+  if (!findUserById(targetId)) {
+    return false
+  }
+
+  deleteTrainerByUserId(targetId)
+  deleteUserActivity(targetId)
+  deleteUserNotes(targetId)
+  featuredTrainers.delete(targetId)
+
+  const remainingLogs = impersonationLogs.filter(log => log.targetUserId !== targetId)
+  impersonationLogs.length = 0
+  impersonationLogs.push(...remainingLogs)
+
+  return deleteUserFromStore(targetId)
+}
+
 export function toggleUserFeatured(userId: string, featured: boolean): AdminUserListItem | null {
   const user = getAllUsers().find(u => u.id === userId)
   if (!user || user.role !== 'personal-trainer') return null
@@ -149,6 +171,7 @@ export function impersonateUser(
 ): AuthUser | null {
   const admin = getSessionUser(adminToken)
   if (!admin || admin.role !== 'admin') return null
+  if (admin.id === targetUserId) return null
 
   const target = getAllUsers().find(u => u.id === targetUserId)
   if (!target || !target.isActive) return null

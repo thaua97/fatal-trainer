@@ -1,3 +1,4 @@
+import { throwForbidden } from '../../../utils/api-error'
 import type { CreateAdminUserRequest } from '#shared/types/admin'
 import {
   createAdminUser,
@@ -10,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const user = getSessionUser(token)
 
   if (!user || user.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+    throwForbidden()
   }
 
   const body = await readBody<CreateAdminUserRequest>(event)

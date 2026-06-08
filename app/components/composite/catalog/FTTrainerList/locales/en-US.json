@@ -4,7 +4,9 @@
     "loadingTrainers": "Loading personal trainers",
     "clearFilters": "Clear filters",
     "loadMore": "Load more",
-    "seenAll": "You have seen all personal trainers"
+    "seenAll": "You have seen all personal trainers",
+    "loadFailedTitle": "Could not load personal trainers",
+    "retry": "Try again"
   },
   "favorites": {
     "emptyTitle": "No favorites yet",

@@ -4,7 +4,9 @@
     "loadingTrainers": "Cargando entrenadores personales",
     "clearFilters": "Limpiar filtros",
     "loadMore": "Cargar más",
-    "seenAll": "Has visto todos los entrenadores personales"
+    "seenAll": "Has visto todos los entrenadores personales",
+    "loadFailedTitle": "No se pudieron cargar los entrenadores personales",
+    "retry": "Intentar de nuevo"
   },
   "favorites": {
     "emptyTitle": "Aún no hay favoritos",

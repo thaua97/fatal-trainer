@@ -13,15 +13,27 @@ const { specialtyItems } = useFTTrainerFieldOptions();
 
 const {
   form,
-  fieldErrors,
+  errors,
+  errorMessage,
   pending: infoPending,
-  success: infoSuccess,
-  submitError: infoSubmitError,
   handleSubmit: handleInfoSubmit,
 } = useFTTrainerInfoForm(trainerRef);
 
 const { uploadPending, uploadCoverPhoto } =
   useFTTrainerGalleryManager(trainerRef);
+
+const fieldErrors = computed(() => ({
+  name: errorMessage('name', errors.value.name),
+  profession: errorMessage('profession', errors.value.profession),
+  contactPhone: errorMessage('contactPhone', errors.value.contactPhone),
+  city: errorMessage('city', errors.value.city),
+  state: errorMessage('state', errors.value.state),
+  description: errorMessage('description', errors.value.description),
+  specialties: errorMessage('specialties', errors.value.specialties),
+  cref: errorMessage('cref', errors.value.cref),
+  availability: errorMessage('availability', errors.value.availability),
+  experienceYears: errorMessage('experienceYears', errors.value.experienceYears),
+}));
 
 async function handleHeroPhotoChange(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -35,26 +47,6 @@ async function handleHeroPhotoChange(event: Event) {
 
 <template>
   <div data-testid="profile-edit-header">
-    <UAlert
-      v-if="infoSuccess"
-      color="success"
-      variant="subtle"
-      icon="i-lucide-circle-check"
-      :title="t('dashboard.info.success')"
-      class="mx-5 mb-4 rounded-2xl lg:mx-0"
-      data-testid="trainer-info-success"
-    />
-
-    <UAlert
-      v-else-if="infoSubmitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="t('dashboard.info.errors.submitFailed')"
-      class="mx-5 mb-4 rounded-2xl lg:mx-0"
-      data-testid="trainer-info-error"
-    />
-
     <form
       data-testid="trainer-info-form-fields"
       @submit.prevent="handleInfoSubmit"
@@ -78,7 +70,6 @@ async function handleHeroPhotoChange(event: Event) {
           class="w-full"
           :label="t('dashboard.info.fields.description')"
           :hint="t('dashboard.info.hints.description')"
-          :error="fieldErrors.description"
         >
           <UTextarea
             v-model="form.description"
@@ -95,7 +86,6 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.specialties')"
-          :error="fieldErrors.specialties"
         >
           <USelect
             v-model="form.specialties"
@@ -113,7 +103,6 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.cref')"
-          :error="fieldErrors.cref"
         >
           <FTCrefInput
             v-model="form.cref"
@@ -126,7 +115,6 @@ async function handleHeroPhotoChange(event: Event) {
       <FTProfileSection :title="t('dashboard.edit.availabilityTitle')">
         <FTAvailabilityPicker
           v-model="form.availability"
-          :error="fieldErrors.availability"
         />
       </FTProfileSection>
 
@@ -134,7 +122,6 @@ async function handleHeroPhotoChange(event: Event) {
         <UFormField
           class="w-full"
           :label="t('dashboard.info.fields.experienceYears')"
-          :error="fieldErrors.experienceYears"
         >
           <UInputNumber
             v-model="form.experienceYears"
@@ -172,7 +159,7 @@ async function handleHeroPhotoChange(event: Event) {
     </FTProfileSection>
 
     <FTProfileSection :title="t('dashboard.tabs.promotion')">
-      <FTTrainerPromotionForm :trainer="trainer" variant="profile" />
+      <FTTrainerPromotionPicker :trainer="trainer" />
     </FTProfileSection>
   </div>
 </template>

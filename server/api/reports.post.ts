@@ -3,6 +3,7 @@ import { validateReport } from '#shared/domain/report/services/validate-report'
 import type { CreateReportRequest } from '#shared/types/api'
 import { createReport } from '../services/report-repository'
 import { findTrainerById } from '../services/trainer-repository'
+import { throwValidationError } from '../utils/api-error'
 
 function toReportPayload(body: CreateReportRequest): ReportPayload {
   return {
@@ -25,14 +26,7 @@ export default defineEventHandler(async (event) => {
   const validation = validateReport(payload, { trainerExists })
 
   if (!validation.valid) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: {
-        message: 'Validation failed',
-        errors: validation.errors,
-      },
-    })
+    throwValidationError(validation.errors)
   }
 
   const result = createReport(payload)

@@ -1,13 +1,9 @@
 import type { AdminReportsQuery } from '#shared/types/admin'
-import { listAdminReports, getSessionUser, getSessionTokenFromEvent } from '../../../mocks/mock-admin-store'
+import { listAdminReports } from '../../../mocks/mock-admin-store'
+import { requireAdminSession } from '../../../utils/require-admin-session'
 
 export default defineEventHandler((event) => {
-  const token = getSessionTokenFromEvent(event)
-  const user = getSessionUser(token)
-
-  if (!user || user.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
-  }
+  requireAdminSession(event)
 
   const query = getQuery(event) as AdminReportsQuery
   return listAdminReports(query)

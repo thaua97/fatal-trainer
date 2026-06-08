@@ -4,16 +4,14 @@ import {
   getSessionTokenFromEvent,
   getSessionUser,
 } from '../mocks/mock-user-store'
+import { throwUnauthorized } from './api-error'
 
 export function requireUserSession(event: H3Event): AuthUser {
   const token = getSessionTokenFromEvent(event)
   const user = getSessionUser(token)
 
   if (!user) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized',
-    })
+    throwUnauthorized()
   }
 
   return user

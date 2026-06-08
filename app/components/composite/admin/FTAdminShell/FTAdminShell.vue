@@ -4,67 +4,103 @@ defineProps<{
 }>()
 
 const route = useRoute()
+const { t } = useI18n()
 const { user, logout } = useAdminAuth()
 const { items: recentAccessItems, pending: recentAccessPending } = useFTAdminRecentAccess()
 
-const roleLabel: Record<string, string> = {
-  student: 'Aluno',
-  'personal-trainer': 'Personal',
-  admin: 'Admin',
-}
+const roleLabel = computed(() => ({
+  student: t('admin.errors.roles.student'),
+  'personal-trainer': t('admin.errors.roles.personal-trainer'),
+  admin: t('admin.errors.roles.admin'),
+}))
 
 const navItems = [
   { label: 'Usuários', to: '/admin/usuarios', icon: 'i-lucide-users' },
+  { label: 'Promoções', to: '/admin/promocoes', icon: 'i-lucide-badge-percent' },
   { label: 'Denúncias', to: '/admin/denuncias', icon: 'i-lucide-flag' },
 ]
 </script>
 
 <template>
-  <UDashboardGroup class="relative min-h-screen overflow-hidden bg-slate-50">
+  <UDashboardGroup
+    storage-key="ft-admin"
+    unit="rem"
+    class="bg-slate-50"
+  >
     <UDashboardSidebar
+      id="main"
       collapsible
+      :default-size="16"
+      :min-size="14"
+      :max-size="22"
+      :collapsed-size="3.75"
       class="border-r border-slate-200/80 bg-white"
+      :ui="{ root: 'overflow-x-hidden', body: 'overflow-x-hidden' }"
     >
-      <template #header>
-        <div class="flex items-center gap-3 px-2 py-1">
+      <template #header="{ collapsed }">
+        <div
+          class="flex items-center gap-3 px-2 py-1"
+          :class="collapsed ? 'justify-center' : ''"
+        >
           <FTLogo size="sm" />
-          <span class="font-display text-sm font-bold text-slate-900">Admin</span>
+          <span
+            v-if="!collapsed"
+            class="font-display text-sm font-bold text-slate-900"
+          >
+            Admin
+          </span>
         </div>
       </template>
 
-      <nav class="flex flex-col gap-1 px-2">
-        <NuxtLink
-          v-for="item in navItems"
-          :key="item.to"
-          :to="item.to"
-          class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
-          :class="route.path.startsWith(item.to)
-            ? 'bg-gradient-to-r from-violet-600 to-violet-500 text-white shadow-sm'
-            : 'text-slate-600 hover:bg-slate-100'"
+      <template #default="{ collapsed }">
+        <nav
+          class="flex flex-col gap-1 px-2"
+          :class="collapsed ? 'items-center' : ''"
         >
-          <UIcon
-            :name="item.icon"
-            class="size-4"
-          />
-          {{ item.label }}
-        </NuxtLink>
-      </nav>
+          <NuxtLink
+            v-for="item in navItems"
+            :key="item.to"
+            :to="item.to"
+            class="flex items-center rounded-xl text-sm font-medium transition-colors"
+            :class="[
+              collapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5',
+              route.path.startsWith(item.to)
+                ? 'bg-gradient-to-r from-violet-600 to-violet-500 text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100',
+            ]"
+            :title="collapsed ? item.label : undefined"
+          >
+            <UIcon
+              :name="item.icon"
+              class="size-4 shrink-0"
+            />
+            <span v-if="!collapsed">{{ item.label }}</span>
+          </NuxtLink>
+        </nav>
 
-      <FTAdminRecentAccessList
-        :items="recentAccessItems"
-        :pending="recentAccessPending"
-        :role-label="roleLabel"
-        @select="(item) => navigateTo(`/admin/usuarios/${item.targetUserId}`)"
-      />
+        <FTAdminRecentAccessList
+          v-if="!collapsed"
+          :items="recentAccessItems"
+          :pending="recentAccessPending"
+          :role-label="roleLabel"
+          @select="(item) => navigateTo(`/admin/usuarios/${item.targetUserId}`)"
+        />
+      </template>
 
-      <template #footer>
-        <div class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3">
+      <template #footer="{ collapsed }">
+        <div
+          class="flex items-center gap-3 rounded-2xl bg-slate-50 p-3"
+          :class="collapsed ? 'justify-center' : ''"
+        >
           <UAvatar
             :alt="user?.name"
             size="sm"
             icon="i-lucide-shield"
           />
-          <div class="min-w-0 flex-1">
+          <div
+            v-if="!collapsed"
+            class="min-w-0 flex-1"
+          >
             <p class="truncate text-sm font-semibold text-slate-900">
               {{ user?.name }}
             </p>
@@ -78,16 +114,17 @@ const navItems = [
             size="xs"
             icon="i-lucide-log-out"
             aria-label="Sair"
+            :class="collapsed ? '' : 'shrink-0'"
             @click="logout"
           />
         </div>
       </template>
     </UDashboardSidebar>
 
-    <UDashboardPanel class="relative overflow-hidden">
+    <UDashboardPanel>
       <FTGradientOrbs variant="panel" />
 
-      <UDashboardNavbar :title="title" class="relative">
+      <UDashboardNavbar :title="title">
         <template #leading>
           <UDashboardSidebarCollapse />
         </template>
@@ -99,3 +136,10 @@ const navItems = [
     </UDashboardPanel>
   </UDashboardGroup>
 </template>
+
+<style scoped>
+:deep([data-slot="root"][id*="sidebar"]) {
+  width: var(--width);
+  max-width: 100%;
+}
+</style>

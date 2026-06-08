@@ -2,6 +2,8 @@ import { REPORT_TYPE_OPTIONS } from '#shared/domain/report/constants/report-opti
 import type { ReportField, ReportPayload, ReportValidationErrors } from '#shared/domain/report/entities/report'
 import { validateReport } from '#shared/domain/report/services/validate-report'
 import type { CreateReportRequest } from '#shared/types/api'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): ReportPayload {
   return {
@@ -15,36 +17,20 @@ function emptyForm(): ReportPayload {
 
 export function useFTReportForm() {
   const { t } = useI18n()
+  const toast = useFTToast()
   const route = useRoute()
-  const { submit, pending, submitted, error: submitError, fieldErrors: submitFieldErrors, reset: resetSubmit } = useSubmitReport()
+  const { submit, pending, submitted, error: apiError, fieldErrors: apiFieldErrors, reset: resetSubmit } = useSubmitReport()
+  const errorMessage = useFieldErrorTranslator('report.errors')
 
   const form = reactive<ReportPayload>(emptyForm())
   const errors = ref<ReportValidationErrors>({})
 
   const typeItems = computed(() =>
-    REPORT_TYPE_OPTIONS.map((option) => ({
+    REPORT_TYPE_OPTIONS.map(option => ({
       label: t(option.labelKey),
       value: option.value,
     })),
   )
-
-  function errorMessage(field: ReportField, code?: string): string | undefined {
-    if (!code) {
-      return undefined
-    }
-
-    const key = `report.errors.${field}.${code}`
-    const translated = t(key)
-    return translated === key ? code : translated
-  }
-
-  const fieldErrors = computed(() => ({
-    type: errorMessage('type', errors.value.type ?? submitFieldErrors.value.type),
-    occurredAt: errorMessage('occurredAt', errors.value.occurredAt ?? submitFieldErrors.value.occurredAt),
-    trainerId: errorMessage('trainerId', errors.value.trainerId ?? submitFieldErrors.value.trainerId),
-    description: errorMessage('description', errors.value.description ?? submitFieldErrors.value.description),
-    contactEmail: errorMessage('contactEmail', errors.value.contactEmail ?? submitFieldErrors.value.contactEmail),
-  }))
 
   onMounted(() => {
     const trainerId = route.query.trainer
@@ -79,19 +65,32 @@ export function useFTReportForm() {
     const success = await submit(payload)
 
     if (!success) {
+      applyApiError({
+        parsed: {
+          message: apiError.value ?? 'report.errors.submitFailed',
+          fieldErrors: apiFieldErrors.value,
+        },
+        errors,
+        toast,
+        translate: t,
+        translator: (field, code) => errorMessage(field, code),
+        fallbackKey: 'report.errors.submitFailed',
+      })
       return
     }
 
+    toast.success(t('report.success.title'), t('report.success.description'))
     Object.assign(form, emptyForm())
+    resetSubmit()
   }
 
   return {
     form,
+    errors,
+    errorMessage,
     typeItems,
-    fieldErrors,
     pending,
     submitted,
-    submitError,
     handleSubmit,
     resetForm,
   }

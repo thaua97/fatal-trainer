@@ -17,11 +17,8 @@ const trainer: PersonalTrainer = {
 vi.mock('~/composables/components/useFTProfileReviewForm', () => ({
   useFTProfileReviewForm: () => ({
     form: ref({ rating: 0, comment: '' }),
-    fieldErrors: ref({ rating: undefined, comment: undefined }),
     pending: ref(false),
     loadingMine: ref(false),
-    submitted: ref(false),
-    submitError: ref(null),
     isEditing: ref(false),
     mineReviewId: ref(null),
     showForm: ref(false),

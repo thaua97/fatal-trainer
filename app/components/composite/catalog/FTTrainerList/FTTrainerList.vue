@@ -43,6 +43,26 @@ const isLoading = computed(() => {
   return fullState!.isLoading.value
 })
 
+const hasFetchError = computed(() => {
+  if (props.variant === 'full') {
+    return fullState!.hasFetchError.value
+  }
+
+  return false
+})
+
+const fetchErrorMessage = computed(() => {
+  if (props.variant === 'full') {
+    return fullState!.errorMessage.value
+  }
+
+  return null
+})
+
+const refreshList = props.variant === 'full'
+  ? fullState!.refresh
+  : () => {}
+
 const isEmpty = computed(() => {
   if (props.variant === 'preview') {
     return previewState!.isEmpty.value
@@ -126,6 +146,23 @@ const emptyTitleKey = computed(() => {
       :title="$t('cityModal.awaitingCity')"
       test-id="trainer-list-awaiting-city"
     />
+
+    <FTErrorState
+      v-else-if="hasFetchError"
+      :title="$t('catalog.loadFailedTitle')"
+      :description="fetchErrorMessage ?? $t('error.network')"
+      test-id="trainer-list-error"
+    >
+      <UButton
+        color="primary"
+        variant="solid"
+        class="rounded-full px-6"
+        data-testid="trainer-list-retry"
+        @click="refreshList"
+      >
+        {{ $t('catalog.retry') }}
+      </UButton>
+    </FTErrorState>
 
     <div
       v-else-if="isLoading"

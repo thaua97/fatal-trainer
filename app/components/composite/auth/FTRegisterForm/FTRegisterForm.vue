@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const {
   form,
-  fieldErrors,
+  errors,
+  errorMessage,
   pending,
-  submitError,
   showPassword,
   showConfirmPassword,
   handleSubmit,
@@ -19,16 +19,6 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
     class="w-full"
     data-testid="register-form"
   >
-    <UAlert
-      v-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="submitError"
-      class="mb-5 w-full rounded-2xl"
-      data-testid="register-error-alert"
-    />
-
     <form
       class="flex w-full flex-col gap-5"
       data-testid="register-form-fields"
@@ -37,7 +27,6 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.roles.label')"
-        :error="fieldErrors.role"
         required
       >
         <FTAuthRoleSelector v-model="form.role" />
@@ -46,7 +35,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.register.name')"
-        :error="fieldErrors.name"
+        :error="errorMessage('name', errors.name)"
         required
       >
         <UInput
@@ -64,7 +53,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.register.email')"
-        :error="fieldErrors.email"
+        :error="errorMessage('email', errors.email)"
         required
       >
         <UInput
@@ -82,7 +71,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.register.password')"
-        :error="fieldErrors.password"
+        :error="errorMessage('password', errors.password)"
         required
       >
         <UInput
@@ -112,7 +101,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.register.confirmPassword')"
-        :error="fieldErrors.confirmPassword"
+        :error="errorMessage('confirmPassword', errors.confirmPassword)"
         required
       >
         <UInput
@@ -141,7 +130,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
 
       <UFormField
         class="w-full"
-        :error="fieldErrors.termsAccepted"
+        :error="errorMessage('termsAccepted', errors.termsAccepted)"
       >
         <UCheckbox
           v-model="form.termsAccepted"

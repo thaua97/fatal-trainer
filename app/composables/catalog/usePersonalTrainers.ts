@@ -4,6 +4,8 @@ import type { PaginatedTrainersResponse } from '#shared/types/api'
 import type { ListQuery } from '#shared/domain/catalog/value-objects/list-query'
 import { DEFAULT_LIST_QUERY } from '#shared/domain/catalog/value-objects/list-query'
 import { personalTrainersService } from '~/services/catalog/personal-trainers.service'
+import { parseApiError } from '~/services/api/extract-api-errors'
+import { resolveToastMessage } from '~/composables/core/useFTToast'
 
 export interface UsePersonalTrainersOptions {
   enabled?: Ref<boolean>
@@ -13,6 +15,8 @@ export function usePersonalTrainers(
   initialQuery: Partial<ListQuery> = {},
   options: UsePersonalTrainersOptions = {},
 ) {
+  const { t } = useI18n()
+  const toast = useFTToast()
   const enabled = options.enabled ?? ref(true)
   const query = useState<ListQuery>('personal-trainers-query', () => ({
     ...DEFAULT_LIST_QUERY,
@@ -62,6 +66,8 @@ export function usePersonalTrainers(
       accumulatedTrainers.value = [...accumulatedTrainers.value, ...nextItems]
     } catch (err: unknown) {
       error.value = err instanceof Error ? err : new Error('fetchFailed')
+      const parsed = parseApiError(err, 'error.network')
+      toast.error(resolveToastMessage(t, parsed.message))
     } finally {
       pending.value = false
     }
@@ -89,6 +95,7 @@ export function usePersonalTrainers(
   const isLoadingMore = computed(() => pending.value && query.value.page > 1)
 
   const data = computed(() => lastResponse.value)
+  const errorMessage = computed(() => error.value ? t('error.network') : null)
   const status = computed(() => {
     if (pending.value) {
       return 'pending'
@@ -117,6 +124,7 @@ export function usePersonalTrainers(
     isLoadingMore,
     status,
     error,
+    errorMessage,
     refresh: fetchTrainers,
     loadMore,
   }

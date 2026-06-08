@@ -8,6 +8,8 @@ definePageMeta({
 })
 
 const route = useRoute()
+const { t } = useI18n()
+const toast = useFTToast()
 const userId = computed(() => String(route.params.id))
 
 const {
@@ -20,6 +22,7 @@ const {
   notesPending,
   noteSubmitting,
   error,
+  errorMessage,
   roleLabel,
   submitNote,
   refreshAll,
@@ -58,22 +61,31 @@ async function handleSave() {
       role: form.role,
     })
     modalOpen.value = false
+    toast.success(t('toast.admin.userUpdated'))
     await refreshAll()
+  } catch {
+    toast.error(t('toast.errors.submitFailed'))
   } finally {
     actionPending.value = false
   }
 }
 
+const { user: adminUser } = useAdminAuth()
+const isSelf = computed(() => adminUser.value?.id === user.value?.id)
+
 async function handleImpersonate() {
-  if (!user.value) return
+  if (!user.value || isSelf.value) return
   actionPending.value = true
   try {
     await adminService.impersonateAdminUser(user.value.id)
+    toast.info(t('toast.admin.impersonationStarted'))
     const { fetchMe } = useAuth()
     const { fetchAdminMe } = useAdminAuth()
     await fetchMe()
     await fetchAdminMe()
     await navigateTo('/')
+  } catch {
+    toast.error(t('toast.errors.generic'))
   } finally {
     actionPending.value = false
   }
@@ -92,24 +104,21 @@ async function handleImpersonate() {
       />
     </div>
 
-    <UAlert
+    <FTErrorState
       v-else-if="error"
-      color="error"
-      variant="subtle"
-      title="Usuário não encontrado"
-      :description="error"
+      :title="t('admin.errors.loadFailed')"
+      :description="errorMessage ?? t('error.notFound')"
+      class="py-20"
     >
-      <template #actions>
-        <UButton
-          to="/admin/usuarios"
-          variant="outline"
-          color="neutral"
-          size="sm"
-        >
-          Voltar à lista
-        </UButton>
-      </template>
-    </UAlert>
+      <UButton
+        to="/admin/usuarios"
+        variant="outline"
+        color="neutral"
+        size="sm"
+      >
+        {{ t('admin.userProfile.backToList') }}
+      </UButton>
+    </FTErrorState>
 
     <template v-else-if="user">
       <FTAdminUserProfileHeader

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { AdminUserDetail } from '#shared/types/admin'
 
-defineProps<{
+const props = defineProps<{
   user: AdminUserDetail
   actionPending?: boolean
 }>()
+
+const { user: adminUser } = useAdminAuth()
+const isSelf = computed(() => adminUser.value?.id === props.user.id)
 
 const emit = defineEmits<{
   edit: []
@@ -46,6 +49,7 @@ const emit = defineEmits<{
         Editar
       </UButton>
       <UButton
+        v-if="!isSelf"
         variant="outline"
         color="neutral"
         icon="i-lucide-user-check"

@@ -1,3 +1,4 @@
+import { throwForbidden, throwValidationError } from '../../../../utils/api-error'
 import { appendActivity } from '../../../../mocks/mock-user-activity-store'
 import {
   getAdminUserById,
@@ -11,12 +12,12 @@ export default defineEventHandler(async (event) => {
   const user = getSessionUser(token)
 
   if (!user || user.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+    throwForbidden()
   }
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   const body = await readBody<{ featured: boolean }>(event)
@@ -25,7 +26,7 @@ export default defineEventHandler(async (event) => {
   const updated = toggleUserFeatured(id, body.featured)
 
   if (!updated) {
-    throw createError({ statusCode: 400, statusMessage: 'Cannot toggle featured' })
+    throwValidationError({ featured: 'cannotToggle' })
   }
 
   appendActivity({

@@ -12,6 +12,7 @@ defineProps<{
 const emit = defineEmits<{
   edit: [AdminUserListItem]
   impersonate: [AdminUserListItem]
+  delete: [AdminUserListItem]
   toggleActive: [AdminUserListItem]
   toggleFeatured: [AdminUserListItem]
   hoverUser: [AdminUserListItem | null, MouseEvent?]
@@ -92,6 +93,7 @@ function onUserAreaMove(user: AdminUserListItem, event: MouseEvent) {
         :action-pending="actionPending"
         @edit="emit('edit', $event)"
         @impersonate="emit('impersonate', $event)"
+        @delete="emit('delete', $event)"
       />
     </article>
   </div>

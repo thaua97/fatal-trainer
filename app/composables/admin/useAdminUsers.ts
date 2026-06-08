@@ -8,6 +8,9 @@ import type { AuthUser } from '#shared/domain/auth/entities/user'
 import { adminService } from '~/services/admin/admin.service'
 
 export function useAdminUsers() {
+  const { t } = useI18n()
+  const toast = useFTToast()
+
   const query = reactive<AdminUsersQuery>({
     page: 1,
     pageSize: 10,
@@ -30,6 +33,7 @@ export function useAdminUsers() {
     } catch (err) {
       error.value = err instanceof Error ? err : new Error('Failed to load users')
       data.value = null
+      toast.error(t('toast.errors.loadFailed'))
     } finally {
       pending.value = false
     }
@@ -48,29 +52,70 @@ export function useAdminUsers() {
     { immediate: true },
   )
 
+  const { showError } = useAdminApiError()
+
   async function createUser(payload: CreateAdminUserRequest) {
-    await adminService.createAdminUser(payload)
-    await refresh()
+    try {
+      await adminService.createAdminUser(payload)
+      toast.success(t('toast.admin.userCreated'))
+      await refresh()
+    } catch (err) {
+      showError(err)
+      throw err
+    }
   }
 
   async function updateUser(id: string, payload: UpdateAdminUserRequest) {
-    await adminService.updateAdminUser(id, payload)
-    await refresh()
+    try {
+      await adminService.updateAdminUser(id, payload)
+      if (payload.isActive !== undefined && Object.keys(payload).length === 1) {
+        toast.success(payload.isActive ? t('toast.admin.userActivated') : t('toast.admin.userDeactivated'))
+      } else {
+        toast.success(t('toast.admin.userUpdated'))
+      }
+      await refresh()
+    } catch (err) {
+      showError(err)
+      throw err
+    }
   }
 
   async function toggleFeatured(id: string, featured: boolean) {
-    await adminService.toggleAdminUserFeatured(id, featured)
-    await refresh()
+    try {
+      await adminService.toggleAdminUserFeatured(id, featured)
+      toast.success(featured ? t('toast.admin.userFeatured') : t('toast.admin.userUnfeatured'))
+      await refresh()
+    } catch (err) {
+      showError(err)
+      throw err
+    }
+  }
+
+  async function deleteUser(id: string) {
+    try {
+      await adminService.deleteAdminUser(id)
+      toast.success(t('toast.admin.userDeleted'))
+      await refresh()
+    } catch (err) {
+      showError(err)
+      throw err
+    }
   }
 
   async function impersonate(id: string): Promise<AuthUser> {
-    const response = await adminService.impersonateAdminUser(id)
-    const { fetchMe } = useAuth()
-    const { fetchAdminMe } = useAdminAuth()
-    await fetchMe()
-    await fetchAdminMe()
-    await navigateTo('/')
-    return response.user
+    try {
+      const response = await adminService.impersonateAdminUser(id)
+      toast.info(t('toast.admin.impersonationStarted'))
+      const { fetchMe } = useAuth()
+      const { fetchAdminMe } = useAdminAuth()
+      await fetchMe()
+      await fetchAdminMe()
+      await navigateTo('/')
+      return response.user
+    } catch (err) {
+      showError(err)
+      throw err
+    }
   }
 
   return {
@@ -82,6 +127,7 @@ export function useAdminUsers() {
     createUser,
     updateUser,
     toggleFeatured,
+    deleteUser,
     impersonate,
   }
 }

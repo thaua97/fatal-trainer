@@ -23,6 +23,10 @@ const {
   handleToggleActive,
   handleToggleFeatured,
   handleImpersonate,
+  handleDelete,
+  confirmOpen,
+  pendingAction,
+  confirmAction,
 } = useFTAdminUsersTable()
 
 const hoveredUser = ref<AdminUserListItem | null>(null)
@@ -73,7 +77,9 @@ function onHoverUser(user: AdminUserListItem | null, event?: MouseEvent) {
         :action-pending="actionPending"
         @edit="openEdit"
         @impersonate="handleImpersonate"
+        @delete="handleDelete"
         @toggle-active="handleToggleActive"
+        @toggle-featured="handleToggleFeatured"
         @hover-user="onHoverUser"
       />
 
@@ -84,6 +90,7 @@ function onHoverUser(user: AdminUserListItem | null, event?: MouseEvent) {
         :action-pending="actionPending"
         @edit="openEdit"
         @impersonate="handleImpersonate"
+        @delete="handleDelete"
         @toggle-active="handleToggleActive"
         @toggle-featured="handleToggleFeatured"
         @hover-user="onHoverUser"
@@ -113,6 +120,14 @@ function onHoverUser(user: AdminUserListItem | null, event?: MouseEvent) {
       :editing="!!editingUser"
       :pending="actionPending"
       @save="handleSave"
+    />
+
+    <FTAdminUserActionConfirmModal
+      v-model:open="confirmOpen"
+      :action="pendingAction?.action"
+      :user-name="pendingAction?.user.name"
+      :pending="actionPending"
+      @confirm="confirmAction"
     />
   </div>
 </template>

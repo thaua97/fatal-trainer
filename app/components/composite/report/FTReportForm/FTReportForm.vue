@@ -1,57 +1,24 @@
 <script setup lang="ts">
 const {
   form,
+  errors,
+  errorMessage,
   typeItems,
-  fieldErrors,
   pending,
-  submitted,
-  submitError,
   handleSubmit,
-  resetForm,
-} = useFTReportForm();
+} = useFTReportForm()
 
-const { t } = useI18n();
+const { t } = useI18n()
 
-const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
+const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>
-  <div class="w-full" data-testid="report-form">
-    <UAlert
-      v-if="submitted"
-      color="success"
-      variant="subtle"
-      icon="i-lucide-circle-check"
-      :title="t('report.success.title')"
-      :description="t('report.success.description')"
-      class="mb-6 rounded-2xl"
-      data-testid="report-success-alert"
-    >
-      <template #actions>
-        <UButton
-          color="neutral"
-          variant="ghost"
-          class="rounded-full"
-          data-testid="report-new-button"
-          @click="resetForm"
-        >
-          {{ t("report.newReport") }}
-        </UButton>
-      </template>
-    </UAlert>
-
-    <UAlert
-      v-else-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="t('report.errors.submitFailed')"
-      class="mb-6 rounded-2xl"
-      data-testid="report-error-alert"
-    />
-
+  <div
+    class="w-full"
+    data-testid="report-form"
+  >
     <form
-      v-if="!submitted"
       class="flex w-full flex-col gap-5"
       data-testid="report-form-fields"
       @submit.prevent="handleSubmit"
@@ -59,7 +26,7 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
       <UFormField
         class="w-full"
         :label="t('report.fields.type')"
-        :error="fieldErrors.type"
+        :error="errorMessage('type', errors.type)"
         required
       >
         <USelect
@@ -75,16 +42,19 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
       <UFormField
         class="w-full"
         :label="t('report.fields.occurredAt')"
-        :error="fieldErrors.occurredAt"
+        :error="errorMessage('occurredAt', errors.occurredAt)"
         required
       >
-        <FTDatePicker v-model="form.occurredAt" test-id="report-date-picker" />
+        <FTDatePicker
+          v-model="form.occurredAt"
+          test-id="report-date-picker"
+        />
       </UFormField>
 
       <UFormField
         class="w-full"
         :label="t('report.fields.trainer')"
-        :error="fieldErrors.trainerId"
+        :error="errorMessage('trainerId', errors.trainerId)"
         required
       >
         <FTTrainerSelectMenu v-model="form.trainerId" />
@@ -93,8 +63,8 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
       <UFormField
         class="w-full"
         :label="t('report.fields.description')"
-        :error="fieldErrors.description"
         :hint="t('report.hints.description')"
+        :error="errorMessage('description', errors.description)"
         required
       >
         <UTextarea
@@ -110,7 +80,7 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
       <UFormField
         class="w-full"
         :label="t('report.fields.contactEmail')"
-        :error="fieldErrors.contactEmail"
+        :error="errorMessage('contactEmail', errors.contactEmail)"
         required
       >
         <UInput
@@ -124,7 +94,7 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
           :size="inputSize"
         />
         <p class="text-xs mt-2 text-slate-500">
-          {{ t("report.hints.contactEmail") }}
+          {{ t('report.hints.contactEmail') }}
         </p>
       </UFormField>
 
@@ -138,7 +108,7 @@ const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
           :loading="pending"
           data-testid="report-submit-button"
         >
-          {{ pending ? t("report.submitting") : t("report.submit") }}
+          {{ pending ? t('report.submitting') : t('report.submit') }}
         </UButton>
       </div>
     </form>

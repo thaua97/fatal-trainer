@@ -1,28 +1,21 @@
+import { throwNotFound, throwValidationError } from '../../../utils/api-error'
 import type { ReportStatus } from '#shared/types/admin'
-import {
-  updateReportStatus,
-  getSessionUser,
-  getSessionTokenFromEvent,
-} from '../../../mocks/mock-admin-store'
+import { updateReportStatus } from '../../../mocks/mock-admin-store'
+import { requireAdminSession } from '../../../utils/require-admin-session'
 
 export default defineEventHandler(async (event) => {
-  const token = getSessionTokenFromEvent(event)
-  const admin = getSessionUser(token)
-
-  if (!admin || admin.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
-  }
+  const admin = requireAdminSession(event)
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   const body = await readBody<{ status: ReportStatus }>(event)
   const report = updateReportStatus(id, body.status, admin.id)
 
   if (!report) {
-    throw createError({ statusCode: 404, statusMessage: 'Report not found' })
+    throwNotFound()
   }
 
   return { report }

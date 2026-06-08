@@ -1,13 +1,14 @@
 <script setup lang="ts">
 const {
   form,
-  fieldErrors,
+  errors,
+  errorMessage,
   pending,
-  submitError,
   showPassword,
   handleSubmit,
 } = useFTAdminLoginForm()
 
+const { t } = useI18n()
 const { authFieldUi, inputSize } = useFTFormFieldUi()
 </script>
 
@@ -16,23 +17,14 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
     class="w-full"
     data-testid="admin-login-form"
   >
-    <UAlert
-      v-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="submitError"
-      class="mb-5 w-full rounded-2xl"
-    />
-
     <form
       class="flex w-full flex-col gap-5"
       @submit.prevent="handleSubmit"
     >
       <UFormField
         class="w-full"
-        label="E-mail"
-        :error="fieldErrors.email"
+        :label="t('admin.login.email')"
+        :error="errorMessage('email', errors.email)"
         required
       >
         <UInput
@@ -49,8 +41,8 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
 
       <UFormField
         class="w-full"
-        label="Senha"
-        :error="fieldErrors.password"
+        :label="t('admin.login.password')"
+        :error="errorMessage('password', errors.password)"
         required
       >
         <UInput
@@ -58,7 +50,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
           class="w-full"
           :type="showPassword ? 'text' : 'password'"
           autocomplete="current-password"
-          placeholder="••••••••"
+          :placeholder="t('admin.login.passwordPlaceholder')"
           :ui="authFieldUi"
           :size="inputSize"
           data-testid="admin-login-password"
@@ -86,7 +78,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
         :loading="pending"
         data-testid="admin-login-submit"
       >
-        Entrar no painel
+        {{ t('admin.login.submit') }}
       </UButton>
     </form>
   </div>

@@ -1,0 +1,58 @@
+{
+  "error": {
+    "validation": "Verifique os campos destacados.",
+    "unauthorized": "Sessão expirada. Faça login novamente.",
+    "forbidden": "Você não tem permissão para esta ação.",
+    "notFound": "Registro não encontrado.",
+    "conflict": "Conflito ao salvar. Verifique os dados.",
+    "internal": "Erro interno. Tente novamente.",
+    "invalidCredentials": "E-mail ou senha incorretos.",
+    "network": "Falha de conexão. Verifique sua internet."
+  },
+  "admin": {
+    "login": {
+      "email": "E-mail",
+      "password": "Senha",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Entrar no painel"
+    },
+    "userProfile": {
+      "backToList": "Voltar à lista"
+    },
+    "errors": {
+      "submitFailed": "Não foi possível concluir a ação.",
+      "loadFailed": "Não foi possível carregar os dados.",
+      "loginFailed": "Credenciais inválidas ou acesso negado.",
+      "email": {
+        "invalid": "E-mail inválido.",
+        "required": "E-mail obrigatório."
+      },
+      "password": {
+        "required": "Senha obrigatória."
+      },
+      "roles": {
+        "student": "Aluno",
+        "personal-trainer": "Personal",
+        "admin": "Admin"
+      }
+    }
+  },
+  "toast": {
+    "errors": {
+      "generic": "Algo deu errado. Tente novamente.",
+      "submitFailed": "Não foi possível enviar. Verifique os dados.",
+      "loadFailed": "Não foi possível carregar os dados.",
+      "notFound": "Registro não encontrado."
+    },
+    "admin": {
+      "userUpdated": "Usuário atualizado com sucesso.",
+      "userCreated": "Usuário criado com sucesso.",
+      "userDeleted": "Usuário removido com sucesso.",
+      "userActivated": "Usuário ativado com sucesso.",
+      "userDeactivated": "Usuário desativado com sucesso.",
+      "userFeatured": "Usuário destacado com sucesso.",
+      "userUnfeatured": "Destaque removido com sucesso.",
+      "impersonationStarted": "Sessão iniciada como usuário."
+    }
+  }
+}

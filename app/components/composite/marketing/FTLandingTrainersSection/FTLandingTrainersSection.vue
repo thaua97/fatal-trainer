@@ -40,7 +40,7 @@ withDefaults(defineProps<{
       </UButton>
     </div>
 
-    <div class="mt-6 overflow-hidden rounded-3xl bg-white px-2 ring-1 ring-slate-200 sm:px-4">
+    <div class="mt-6 overflow-hidden rounded-3xl bg-white px-2 sm:px-4">
       <FTTrainerList
         :limit="limit"
         variant="preview"

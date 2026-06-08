@@ -2,7 +2,7 @@ import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { LoginRequest, RegisterRequest } from '#shared/types/api'
 import type { LoginValidationErrors, RegisterValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
 import { authService } from '~/services/auth/auth.service'
-import { extractApiErrors } from '~/services/api/extract-api-errors'
+import { parseApiError } from '~/services/api/extract-api-errors'
 
 export function useAuth() {
   const user = useState<AuthUser | null>('auth-user', () => null)
@@ -40,7 +40,7 @@ export function useAuth() {
   async function login(
     payload: LoginRequest,
     redirectTo?: string | null,
-  ): Promise<{ success: boolean, errors?: LoginValidationErrors }> {
+  ): Promise<{ success: boolean, errors?: LoginValidationErrors, errorMessage?: string }> {
     pending.value = true
     try {
       const response = await authService.login(payload)
@@ -54,14 +54,18 @@ export function useAuth() {
       await navigateTo(destination)
       return { success: true }
     } catch (err: unknown) {
-      const errors = extractApiErrors<LoginValidationErrors>(err)
-      return { success: false, errors }
+      const parsed = parseApiError(err, 'auth.errors.submitFailed')
+      return {
+        success: false,
+        errors: parsed.fieldErrors as LoginValidationErrors,
+        errorMessage: parsed.message,
+      }
     } finally {
       pending.value = false
     }
   }
 
-  async function register(payload: RegisterRequest): Promise<{ success: boolean, errors?: RegisterValidationErrors }> {
+  async function register(payload: RegisterRequest): Promise<{ success: boolean, errors?: RegisterValidationErrors, errorMessage?: string }> {
     pending.value = true
     try {
       const response = await authService.register(payload)
@@ -73,8 +77,12 @@ export function useAuth() {
       await navigateTo('/?welcome=1')
       return { success: true }
     } catch (err: unknown) {
-      const errors = extractApiErrors<RegisterValidationErrors>(err)
-      return { success: false, errors }
+      const parsed = parseApiError(err, 'auth.errors.submitFailed')
+      return {
+        success: false,
+        errors: parsed.fieldErrors as RegisterValidationErrors,
+        errorMessage: parsed.message,
+      }
     } finally {
       pending.value = false
     }

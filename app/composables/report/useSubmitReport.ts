@@ -1,6 +1,6 @@
 import type { CreateReportRequest, CreateReportResponse } from '#shared/types/api'
 import type { ReportValidationErrors } from '#shared/domain/report/entities/report'
-import { extractApiErrorMessage, extractApiErrors } from '~/services/api/extract-api-errors'
+import { parseApiError } from '~/services/api/extract-api-errors'
 import { reportsService } from '~/services/report/reports.service'
 
 export function useSubmitReport() {
@@ -22,8 +22,9 @@ export function useSubmitReport() {
       submitted.value = true
       return true
     } catch (err: unknown) {
-      fieldErrors.value = extractApiErrors<ReportValidationErrors>(err)
-      error.value = extractApiErrorMessage(err)
+      const parsed = parseApiError(err, 'report.errors.submitFailed')
+      fieldErrors.value = parsed.fieldErrors as ReportValidationErrors
+      error.value = parsed.message
       return false
     } finally {
       pending.value = false

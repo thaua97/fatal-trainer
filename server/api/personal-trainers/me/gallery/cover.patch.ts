@@ -1,3 +1,4 @@
+import { throwNotFound, throwValidationError } from '../../../../utils/api-error'
 import {
   findTrainerByUserId,
   setTrainerCoverPhoto,
@@ -10,21 +11,14 @@ export default defineEventHandler(async (event) => {
   const trainer = findTrainerByUserId(user.id)
 
   if (!trainer) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Trainer profile not found',
-    })
+    throwNotFound()
   }
 
   const body = await readBody<{ url?: string, imageUrl?: string }>(event)
   const url = (body.imageUrl ?? body.url)?.trim()
 
   if (!url) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: { message: 'Validation failed', errors: { url: 'required' } },
-    })
+    throwValidationError({ url: 'required' })
   }
 
   try {
@@ -44,10 +38,6 @@ export default defineEventHandler(async (event) => {
 
     return { trainer: updated }
   } catch {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Image not in gallery',
-      data: { message: 'Image not in gallery', errors: { url: 'notFound' } },
-    })
+    throwValidationError({ url: 'notFound' })
   }
 })

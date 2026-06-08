@@ -46,8 +46,14 @@ export interface TrainerPromotionPayload {
   maxRedemptions: number | null
 }
 
+export interface TrainerPromotionActivationPayload {
+  templateId: string | null
+}
+
 export type TrainerInfoValidationErrors = Partial<Record<TrainerInfoField, string>>
-export type TrainerPromotionValidationErrors = Partial<Record<TrainerPromotionField, string>>
+export type TrainerPromotionValidationErrors = Partial<
+  Record<TrainerPromotionField | keyof TrainerPromotionActivationPayload, string>
+>
 
 export interface TrainerProfileValidationResult<T extends Record<string, string | undefined>> {
   valid: boolean
