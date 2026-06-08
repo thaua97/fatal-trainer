@@ -54,7 +54,7 @@ const navItems = [
         :items="recentAccessItems"
         :pending="recentAccessPending"
         :role-label="roleLabel"
-        @select="navigateTo('/admin/usuarios')"
+        @select="(item) => navigateTo(`/admin/usuarios/${item.targetUserId}`)"
       />
 
       <template #footer>

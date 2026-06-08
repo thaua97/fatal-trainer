@@ -1,7 +1,7 @@
 import type { ReviewField, ReviewPayload, ReviewValidationErrors } from '#shared/domain/review/entities/trainer-review'
 import { validateReview } from '#shared/domain/review/services/validate-review'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { UpsertReviewRequest } from '#shared/types/api'
+import type { TrainerReviewItem, UpsertReviewRequest } from '#shared/types/api'
 import { reviewsService } from '~/services/reviews/reviews.service'
 import { extractApiErrors } from '~/services/api/extract-api-errors'
 
@@ -24,6 +24,8 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
   const submitted = ref(false)
   const submitError = ref<string | null>(null)
   const hasExistingReview = ref(false)
+  const mineReview = ref<TrainerReviewItem | null>(null)
+  const isEditing = ref(false)
 
   const isOwnProfile = computed(() => {
     if (!user.value?.id || !trainer.value.userId) {
@@ -33,7 +35,9 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
   })
 
   const showForm = computed(() => initialized.value && isAuthenticated.value && !isOwnProfile.value)
+  const showFormFields = computed(() => showForm.value && (!hasExistingReview.value || isEditing.value))
   const showGuestCta = computed(() => initialized.value && !isAuthenticated.value)
+  const mineReviewId = computed(() => mineReview.value?.id ?? null)
   const loginPath = computed(() => {
     const redirect = encodeURIComponent(route.fullPath)
     return `/login?redirect=${redirect}`
@@ -67,8 +71,7 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     try {
       const response = await reviewsService.getMine(trainer.value.id)
       if (response.review) {
-        form.rating = response.review.rating
-        form.comment = response.review.comment
+        mineReview.value = response.review
         hasExistingReview.value = true
       }
     } catch {
@@ -87,6 +90,8 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
 
       Object.assign(form, emptyForm())
       hasExistingReview.value = false
+      mineReview.value = null
+      isEditing.value = false
       submitted.value = false
       submitError.value = null
       errors.value = {}
@@ -116,9 +121,9 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     pending.value = true
     try {
       const result = await reviewsService.upsert(trainer.value.id, payload)
-      form.rating = result.review.rating
-      form.comment = result.review.comment
+      mineReview.value = result.review
       hasExistingReview.value = true
+      isEditing.value = false
       submitted.value = true
       return true
     } catch (err: unknown) {
@@ -138,6 +143,27 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     submitted.value = false
   }
 
+  function startEditing() {
+    if (!mineReview.value) {
+      return
+    }
+
+    form.rating = mineReview.value.rating
+    form.comment = mineReview.value.comment
+    isEditing.value = true
+    submitted.value = false
+    submitError.value = null
+    errors.value = {}
+  }
+
+  function cancelEditing() {
+    Object.assign(form, emptyForm())
+    isEditing.value = false
+    submitted.value = false
+    submitError.value = null
+    errors.value = {}
+  }
+
   return {
     form,
     fieldErrors,
@@ -146,12 +172,17 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     submitted,
     submitError,
     hasExistingReview,
+    isEditing,
+    mineReviewId,
     isOwnProfile,
     showForm,
+    showFormFields,
     showGuestCta,
     loginPath,
     submitLabel,
     handleSubmit,
     resetSubmitted,
+    startEditing,
+    cancelEditing,
   }
 }

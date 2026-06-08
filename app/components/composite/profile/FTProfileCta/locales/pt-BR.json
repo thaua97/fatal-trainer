@@ -1,6 +1,12 @@
 {
   "profile": {
     "hireTrainer": "Contratar personal",
-    "comingSoon": "{label} — em breve"
+    "comingSoon": "{label} — em breve",
+    "hireUnavailable": {
+      "noPhoneTitle": "Contato indisponível",
+      "noPhoneDescription": "Este personal ainda não cadastrou um telefone para contato.",
+      "inactiveTitle": "Personal desativado",
+      "inactiveDescription": "Este personal não está disponível para contratação no momento."
+    }
   }
 }

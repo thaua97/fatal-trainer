@@ -30,6 +30,21 @@ const defaultStubs = {
   },
   USkeleton: { template: '<span class="u-skeleton-stub" />' },
   UDropdownMenu: { template: '<div><slot /></div>' },
+  UModal: {
+    name: 'UModal',
+    props: {
+      open: { type: Boolean, default: false },
+      dismissible: { type: Boolean, default: true },
+      fullscreen: { type: Boolean, default: false },
+    },
+    emits: ['update:open', 'after:enter', 'after:leave', 'close:prevent'],
+    template: `
+      <div v-if="open" data-testid="u-modal-stub">
+        <slot />
+        <slot name="content" />
+      </div>
+    `,
+  },
   UPopover: { template: '<div><slot /><slot name="content" /></div>' },
   UCalendar: { template: '<div class="u-calendar-stub" />' },
   USelectMenu: { template: '<select data-testid="report-trainer-select-stub" />' },

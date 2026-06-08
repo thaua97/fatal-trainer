@@ -90,7 +90,8 @@
           "invalid": "Informe um preço válido."
         },
         "cref": {
-          "required": "Informe seu CREF."
+          "required": "Informe seu CREF.",
+          "invalid": "Informe um CREF válido (ex.: 123456-G/SP)."
         },
         "availability": {
           "required": "Informe sua disponibilidade."

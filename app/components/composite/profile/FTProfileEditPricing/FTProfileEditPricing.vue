@@ -6,7 +6,7 @@ defineProps<{
 }>()
 
 const { t } = useI18n()
-const { priceUi } = useFTProfileEditFieldUi()
+const { priceUi, inputSize } = useFTFormFieldUi()
 const {
   priceViewOptions,
   displayPrice,
@@ -61,6 +61,7 @@ const {
           min="1"
           step="1"
           :ui="priceUi"
+          :size="inputSize"
           data-testid="trainer-info-price"
         />
         <span class="shrink-0 pb-2 text-sm text-slate-500">{{ periodLabel }}</span>

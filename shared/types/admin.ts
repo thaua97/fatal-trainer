@@ -1,4 +1,5 @@
 import type { UserRole } from '#shared/domain/auth/entities/user'
+import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 
 export type ReportStatus = 'pending' | 'in_review' | 'resolved' | 'archived'
 
@@ -101,4 +102,73 @@ export interface AdminRecentAccessItem {
 
 export interface AdminRecentAccessResponse {
   items: AdminRecentAccessItem[]
+}
+
+export type AdminUserActivityType =
+  | 'profile_info_edit'
+  | 'profile_promotion_edit'
+  | 'profile_gallery_edit'
+  | 'admin_user_edit'
+  | 'admin_featured_toggle'
+  | 'admin_impersonation'
+  | 'account_login'
+  | 'account_register'
+  | 'account_deactivated'
+  | 'report_received'
+
+export interface AdminUserActivityChange {
+  field: string
+  label: string
+  before: string | null
+  after: string | null
+}
+
+export interface AdminUserActivityItem {
+  id: string
+  userId: string
+  type: AdminUserActivityType
+  title: string
+  description?: string
+  actorId?: string
+  actorName?: string
+  actorRole?: UserRole
+  changes?: AdminUserActivityChange[]
+  metadata?: Record<string, string>
+  createdAt: string
+}
+
+export interface AdminUserActivityListResponse {
+  items: AdminUserActivityItem[]
+  total: number
+  page: number
+  pageSize: number
+  hasMore: boolean
+}
+
+export interface AdminUserNote {
+  id: string
+  userId: string
+  authorId: string
+  authorName: string
+  content: string
+  createdAt: string
+}
+
+export interface AdminUserNotesResponse {
+  items: AdminUserNote[]
+}
+
+export interface CreateAdminUserNoteRequest {
+  content: string
+}
+
+export interface AdminUserDetail extends AdminUserListItem {
+  trainer?: PersonalTrainer
+  notesCount: number
+  activityCount: number
+}
+
+export interface AdminUserActivityQuery {
+  page?: number
+  pageSize?: number
 }

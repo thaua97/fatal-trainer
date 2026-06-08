@@ -8,6 +8,7 @@
     "commentPlaceholder": "Tell us about your experience with this trainer...",
     "submit": "Submit review",
     "update": "Update review",
+    "cancel": "Cancel",
     "successTitle": "Review submitted",
     "successDescription": "Thank you for sharing your experience.",
     "errors": {

@@ -26,6 +26,13 @@ const {
 
 const reviewsTitle = computed(() => t('profile.reviews', { count: reviewCount.value || total.value }))
 
+const reviewFormRef = ref<{ startEditing: () => void } | null>(null)
+const editableReviewId = ref<string | null>(null)
+
+function handleEditReview() {
+  reviewFormRef.value?.startEditing()
+}
+
 async function handleSubmitted() {
   await refresh()
   emit('trainerUpdated')
@@ -39,6 +46,8 @@ async function handleSubmitted() {
   >
     <div class="space-y-6">
       <FTProfileReviewForm
+        ref="reviewFormRef"
+        v-model:editable-review-id="editableReviewId"
         :trainer="trainer"
         @submitted="handleSubmitted"
       />
@@ -68,6 +77,8 @@ async function handleSubmitted() {
       <FTProfileReviewList
         v-else
         :reviews="items"
+        :editable-review-id="editableReviewId"
+        @edit="handleEditReview"
       />
 
       <FTProfileReviewPagination

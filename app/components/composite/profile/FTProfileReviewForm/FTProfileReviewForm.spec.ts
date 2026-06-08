@@ -22,12 +22,16 @@ vi.mock('~/composables/components/useFTProfileReviewForm', () => ({
     loadingMine: ref(false),
     submitted: ref(false),
     submitError: ref(null),
+    isEditing: ref(false),
+    mineReviewId: ref(null),
     showForm: ref(false),
+    showFormFields: ref(false),
     showGuestCta: ref(true),
     loginPath: '/login?redirect=%2Fpersonal-trainers%2Ftrainer-001',
     submitLabel: ref('Publicar avaliação'),
     handleSubmit: vi.fn(),
-    resetSubmitted: vi.fn(),
+    startEditing: vi.fn(),
+    cancelEditing: vi.fn(),
   }),
 }))
 

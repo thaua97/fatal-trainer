@@ -20,11 +20,7 @@ const {
   promotionLabel,
   promotionEndsAt,
 } = useFTTrainerPrice(trainerRef)
-
-const { openChat, canContact } = useWhatsApp({
-  phone: computed(() => props.trainer.contactPhone),
-  trainerName: computed(() => props.trainer.name),
-})
+const { label: hireLabel, openModal: openHireModal, hireUnavailableReason } = useFTProfileCta(trainerRef)
 
 const { t, locale } = useI18n()
 
@@ -60,24 +56,15 @@ const promotionValidity = computed(() => {
         <FTIconButton
           to="/personal-trainers"
           class="absolute left-4 top-4"
-          :ariaLabel="$t('profile.backToCatalog')"
+          :aria-label="$t('profile.backToCatalog')"
         >
           <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
         </FTIconButton>
         <div class="absolute right-4 top-4 flex gap-2">
           <FTIconButton
-            variant="whatsapp"
-            :ariaLabel="$t('profile.message')"
-            :disabled="!canContact"
-            data-testid="profile-message-button"
-            @click="openChat"
-          >
-            <UIcon name="i-lucide-message-circle" class="size-5" />
-          </FTIconButton>
-          <FTIconButton
             variant="favorite"
             :active="isFavorited"
-            :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
+            :aria-label="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
             :aria-pressed="isFavorited"
             :disabled="favoritePending"
             data-testid="profile-favorite-button"
@@ -92,7 +79,7 @@ const promotionValidity = computed(() => {
           <FTIconButton
             variant="report"
             :to="reportTo"
-            :ariaLabel="$t('profile.report')"
+            :aria-label="$t('profile.report')"
             data-testid="profile-report-button"
           >
             <UIcon name="i-lucide-flag" class="size-5" />
@@ -111,7 +98,7 @@ const promotionValidity = computed(() => {
         </div>
       </div>
 
-      <div :class="[$style.sheetTop, 'relative -mt-10 px-5 pb-6 pt-5']">
+      <div :class="[$style.sheet__top, 'relative -mt-10 px-5 pb-6 pt-5']">
         <div class="flex items-start justify-between gap-4">
           <p class="text-xs text-slate-400">
             {{ trainer.profession }}
@@ -157,7 +144,7 @@ const promotionValidity = computed(() => {
       <FTAvatar
         :src="trainer.photoUrl"
         :name="trainer.name"
-        size="xl"
+        size="2xl"
         :monochrome="false"
         class="shrink-0"
       />
@@ -165,23 +152,14 @@ const promotionValidity = computed(() => {
         <div class="mb-4 flex gap-2">
           <FTIconButton
             to="/personal-trainers"
-            :ariaLabel="$t('profile.backToCatalog')"
+            :aria-label="$t('profile.backToCatalog')"
           >
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
           </FTIconButton>
           <FTIconButton
-            variant="whatsapp"
-            :ariaLabel="$t('profile.message')"
-            :disabled="!canContact"
-            data-testid="profile-message-button"
-            @click="openChat"
-          >
-            <UIcon name="i-lucide-message-circle" class="size-5" />
-          </FTIconButton>
-          <FTIconButton
             variant="favorite"
             :active="isFavorited"
-            :ariaLabel="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
+            :aria-label="isFavorited ? $t('profile.unfavorite') : $t('profile.favorite')"
             :aria-pressed="isFavorited"
             :disabled="favoritePending"
             data-testid="profile-favorite-button"
@@ -196,7 +174,7 @@ const promotionValidity = computed(() => {
           <FTIconButton
             variant="report"
             :to="reportTo"
-            :ariaLabel="$t('profile.report')"
+            :aria-label="$t('profile.report')"
             data-testid="profile-report-button"
           >
             <UIcon name="i-lucide-flag" class="size-5" />
@@ -240,13 +218,20 @@ const promotionValidity = computed(() => {
             :promotion-validity="hasPromotion ? promotionValidity : null"
           />
         </div>
+        <FTProfileHireAction
+          class="mt-6"
+          :label="hireLabel"
+          test-id="trainer-profile-hire-button-desktop"
+          :unavailable-reason="hireUnavailableReason"
+          @click="openHireModal"
+        />
       </div>
     </header>
   </div>
 </template>
 
 <style module>
-.sheetTop {
+.sheet__top {
   background: #fff;
   border-radius: 1.5rem 1.5rem 0 0;
 }

@@ -4,6 +4,8 @@ import { randomUUID } from 'node:crypto'
 import type { Report, ReportPayload } from '#shared/domain/report/entities/report'
 import type { CreateReportResponse } from '#shared/types/api'
 import { addMockReport } from '../mocks/mock-admin-store'
+import { appendActivity } from '../mocks/mock-user-activity-store'
+import { findTrainerById } from './trainer-repository'
 
 const REPORTS_FILE = join(process.cwd(), 'server/data/reports.json')
 
@@ -41,6 +43,20 @@ export function createReport(payload: ReportPayload): CreateReportResponse {
     contactEmail: report.contactEmail,
     trainerName: undefined,
   })
+
+  const trainer = findTrainerById(report.trainerId)
+  if (trainer?.userId) {
+    appendActivity({
+      userId: trainer.userId,
+      type: 'report_received',
+      title: 'Denúncia recebida',
+      description: report.description,
+      metadata: {
+        reportId: report.id,
+        reportType: report.type,
+      },
+    })
+  }
 
   return {
     id: report.id,

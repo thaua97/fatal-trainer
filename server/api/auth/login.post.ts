@@ -6,6 +6,7 @@ import {
   createSession,
 } from '../../mocks/mock-user-store'
 import { enrichAuthUser } from '../../utils/enrich-auth-user'
+import { appendActivity } from '../../mocks/mock-user-activity-store'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<LoginRequest>(event)
@@ -43,6 +44,15 @@ export default defineEventHandler(async (event) => {
 
   const token = createSession(user.id)
   setSessionCookie(event, token)
+
+  appendActivity({
+    userId: user.id,
+    type: 'account_login',
+    title: 'Login realizado',
+    actorId: user.id,
+    actorName: user.name,
+    actorRole: user.role,
+  })
 
   return { user: enrichAuthUser(user) }
 })

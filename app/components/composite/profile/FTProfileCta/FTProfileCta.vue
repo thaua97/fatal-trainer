@@ -5,7 +5,8 @@ const props = defineProps<{
   trainer: PersonalTrainer
 }>()
 
-const { label, disabled } = useFTProfileCta()
+const trainerRef = toRef(props, 'trainer')
+const { label, openModal, hireUnavailableReason } = useFTProfileCta(trainerRef)
 const { servicePrice, promoPrice, hasPromotion, priceView } = useFTTrainerPrice(toRef(props, 'trainer'))
 </script>
 
@@ -26,37 +27,11 @@ const { servicePrice, promoPrice, hasPromotion, priceView } = useFTTrainerPrice(
         size="md"
       />
     </div>
-    <button
-      type="button"
-      :class="$style.ctaPill"
-      :disabled="disabled"
-      :aria-label="$t('profile.comingSoon', { label })"
-    >
-      {{ label }}
-    </button>
+    <FTProfileHireAction
+      :label="label"
+      test-id="trainer-profile-hire-button"
+      :unavailable-reason="hireUnavailableReason"
+      @click="openModal"
+    />
   </div>
 </template>
-
-<style module>
-.ctaPill {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background: var(--ft-primary);
-  padding: 1rem 1.5rem;
-  font-weight: 700;
-  color: var(--ft-primary-foreground);
-  transition: background-color 0.15s ease;
-}
-
-.ctaPill:hover:not(:disabled) {
-  background: var(--ft-primary-hover);
-}
-
-.ctaPill:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-</style>

@@ -3,7 +3,14 @@ import type { TrainerReviewItem } from '#shared/types/api'
 
 defineProps<{
   reviews: TrainerReviewItem[]
+  editableReviewId?: string | null
 }>()
+
+const emit = defineEmits<{
+  edit: []
+}>()
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -23,7 +30,20 @@ defineProps<{
             <p class="font-semibold text-slate-900">
               {{ review.author }}
             </p>
-            <FTStarRating :rating="review.rating" />
+            <div class="flex shrink-0 items-center gap-1">
+              <UButton
+                v-if="editableReviewId === review.id"
+                variant="ghost"
+                color="neutral"
+                size="xs"
+                icon="i-lucide-pencil"
+                :aria-label="t('profile.editReview')"
+                class="text-slate-400 transition-colors hover:bg-violet-50 hover:text-violet-600"
+                data-testid="profile-review-edit"
+                @click="emit('edit')"
+              />
+              <FTStarRating :rating="review.rating" />
+            </div>
           </div>
           <p class="mt-2 text-sm leading-relaxed text-slate-600">
             {{ review.comment }}

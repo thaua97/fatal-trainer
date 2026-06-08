@@ -1,6 +1,12 @@
 {
   "profile": {
     "hireTrainer": "Hire trainer",
-    "comingSoon": "{label} — coming soon"
+    "comingSoon": "{label} — coming soon",
+    "hireUnavailable": {
+      "noPhoneTitle": "Contact unavailable",
+      "noPhoneDescription": "This trainer has not registered a phone number for contact yet.",
+      "inactiveTitle": "Trainer deactivated",
+      "inactiveDescription": "This trainer is not available for booking at the moment."
+    }
   }
 }

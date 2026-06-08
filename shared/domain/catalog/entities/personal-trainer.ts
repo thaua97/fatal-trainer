@@ -42,4 +42,5 @@ export interface PersonalTrainer {
   reviews?: TrainerReview[]
   featured?: boolean
   promotion?: TrainerPromotion
+  isActive?: boolean
 }

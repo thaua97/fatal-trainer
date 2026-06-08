@@ -12,7 +12,7 @@ const {
 
 const { t } = useI18n();
 
-const fieldUi = { base: "w-full rounded-2xl" };
+const { fieldUi, textareaUi, selectUi, inputSize } = useFTFormFieldUi();
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const fieldUi = { base: "w-full rounded-2xl" };
           :items="typeItems"
           :placeholder="t('report.placeholders.type')"
           data-testid="report-type-select"
-          :ui="fieldUi"
+          :ui="selectUi"
         />
       </UFormField>
 
@@ -103,7 +103,7 @@ const fieldUi = { base: "w-full rounded-2xl" };
           :rows="5"
           :placeholder="t('report.placeholders.description')"
           data-testid="report-description"
-          :ui="fieldUi"
+          :ui="textareaUi"
         />
       </UFormField>
 
@@ -121,6 +121,7 @@ const fieldUi = { base: "w-full rounded-2xl" };
           :placeholder="t('report.placeholders.contactEmail')"
           data-testid="report-email-input"
           :ui="fieldUi"
+          :size="inputSize"
         />
         <p class="text-xs mt-2 text-slate-500">
           {{ t("report.hints.contactEmail") }}

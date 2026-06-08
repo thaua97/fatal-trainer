@@ -10,6 +10,7 @@ function emptyForm(): LoginPayload {
 }
 
 export function useFTLoginForm() {
+  const route = useRoute()
   const { t } = useI18n()
   const toast = useToast()
   const { login, pending } = useAuth()

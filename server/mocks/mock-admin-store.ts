@@ -2,6 +2,7 @@ import type { AuthUser, StoredUser, UserRole } from '#shared/domain/auth/entitie
 import type {
   AdminReportListItem,
   AdminReportListResponse,
+  AdminUserDetail,
   AdminUserListItem,
   AdminUserListResponse,
   AdminReportsQuery,
@@ -16,6 +17,7 @@ import {
   createSession,
   destroySession,
   findUserByEmail,
+  findUserById,
   getAllUsers,
   getSessionUser,
   getSessionTokenFromEvent,
@@ -28,7 +30,9 @@ import {
   getAdminBackupToken,
   type AdminSession,
 } from './mock-user-store'
-import { findTrainerByUserId } from '../services/trainer-repository'
+import { findTrainerById, findTrainerByUserId } from '../services/trainer-repository'
+import { appendActivity, countUserActivity } from './mock-user-activity-store'
+import { countUserNotes } from './mock-user-notes-store'
 
 const featuredTrainers = new Map<string, boolean>()
 
@@ -111,6 +115,21 @@ export function createAdminUser(payload: CreateAdminUserRequest): AdminUserListI
   return toAdminUser(user)
 }
 
+export function getAdminUserById(id: string): AdminUserDetail | null {
+  const user = findUserById(id)
+  if (!user) return null
+
+  const listItem = toAdminUser(user)
+  const trainer = findTrainerByUserId(id)
+
+  return {
+    ...listItem,
+    trainer,
+    notesCount: countUserNotes(id),
+    activityCount: countUserActivity(id),
+  }
+}
+
 export function updateAdminUser(id: string, payload: UpdateAdminUserRequest): AdminUserListItem | null {
   const updated = updateUserInStore(id, payload)
   return updated ? toAdminUser(updated) : null
@@ -144,6 +163,16 @@ export function impersonateUser(
   if (impersonationLogs.length > 50) {
     impersonationLogs.length = 50
   }
+
+  appendActivity({
+    userId: target.id,
+    type: 'admin_impersonation',
+    title: 'Acesso como usuário',
+    description: `${admin.name} acessou a conta deste usuário`,
+    actorId: admin.id,
+    actorName: admin.name,
+    actorRole: admin.role,
+  })
 
   setAdminBackupCookie(event, adminToken)
   destroySession(adminToken)
@@ -233,7 +262,22 @@ export function deactivateTrainerFromReport(
   const report = reports.find(r => r.id === reportId)
   if (!report) return null
 
-  updateUserInStore(report.trainerId, { isActive: false })
+  const trainer = findTrainerByUserId(report.trainerId) ?? findTrainerById(report.trainerId)
+  const targetUserId = trainer?.userId ?? report.trainerId
+  const admin = findUserById(adminId)
+
+  updateUserInStore(targetUserId, { isActive: false })
+
+  appendActivity({
+    userId: targetUserId,
+    type: 'account_deactivated',
+    title: 'Conta desativada via denúncia',
+    actorId: adminId,
+    actorName: admin?.name,
+    actorRole: admin?.role,
+    metadata: { reportId },
+  })
+
   return updateReportStatus(reportId, 'resolved', adminId)
 }
 

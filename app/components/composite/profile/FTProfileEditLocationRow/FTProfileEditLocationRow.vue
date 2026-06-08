@@ -9,7 +9,6 @@ defineProps<{
 }>()
 
 const { t } = useI18n()
-const { fieldUi } = useFTProfileEditFieldUi()
 </script>
 
 <template>
@@ -24,13 +23,10 @@ const { fieldUi } = useFTProfileEditFieldUi()
         :label="t('dashboard.info.fields.contactPhone')"
         :error="fieldErrors.contactPhone"
       >
-        <UInput
+        <FTPhoneInput
           v-model="form.contactPhone"
-          class="w-full"
-          type="tel"
           :placeholder="t('dashboard.info.placeholders.contactPhone')"
-          :ui="fieldUi"
-          data-testid="trainer-info-phone"
+          test-id="trainer-info-phone"
         />
       </UFormField>
 

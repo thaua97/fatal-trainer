@@ -53,6 +53,8 @@ useSeoMeta({
         :trainer="trainer"
         @trainer-updated="refresh"
       />
+      <FTHireTrainerModal :trainer="trainer" />
+      <FTProfileGalleryViewerModal :trainer="trainer" />
       <FTProfileCta :trainer="trainer" />
     </article>
   </div>

@@ -10,7 +10,13 @@ const props = defineProps<{
   y: number
 }>()
 
-const pricing = useFTAdminUserPricing(toRef(props, 'user'))
+const {
+  sessionPrice,
+  monthlyPrice,
+  sessionPromoPrice,
+  monthlyPromoPrice,
+  hasPricing,
+} = useFTAdminUserPricing(toRef(props, 'user'))
 const phoneDisplay = computed(() => formatAdminPhone(props.user.phoneNumber))
 const locationDisplay = computed(() => formatAdminLocation(props.user))
 
@@ -118,7 +124,7 @@ const cardStyle = computed(() => {
           </dd>
         </div>
         <div
-          v-if="pricing.hasPricing"
+          v-if="hasPricing"
           class="flex items-start gap-2"
         >
           <UIcon
@@ -127,14 +133,16 @@ const cardStyle = computed(() => {
           />
           <dd class="space-y-1">
             <FTPriceLabel
-              :price="pricing.sessionPrice!"
-              :promo-price="pricing.sessionPromoPrice"
+              v-if="sessionPrice != null"
+              :price="sessionPrice"
+              :promo-price="sessionPromoPrice"
               price-view="session"
               size="md"
             />
             <FTPriceLabel
-              :price="pricing.monthlyPrice!"
-              :promo-price="pricing.monthlyPromoPrice"
+              v-if="monthlyPrice != null"
+              :price="monthlyPrice"
+              :promo-price="monthlyPromoPrice"
               price-view="monthly"
               size="md"
             />

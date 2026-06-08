@@ -5,9 +5,15 @@ import type {
   AdminReportListResponse,
   AdminReportsQuery,
   AdminRecentAccessResponse,
+  AdminUserActivityListResponse,
+  AdminUserActivityQuery,
+  AdminUserDetail,
   AdminUserListItem,
   AdminUserListResponse,
+  AdminUserNote,
+  AdminUserNotesResponse,
   AdminUsersQuery,
+  CreateAdminUserNoteRequest,
   CreateAdminUserRequest,
   ReportStatus,
   UpdateAdminUserRequest,
@@ -90,6 +96,31 @@ export async function deactivateTrainerFromReport(id: string): Promise<{ report:
   return apiFetch(`/admin/reports/${id}/deactivate-trainer`, { method: 'POST' })
 }
 
+export async function getAdminUser(id: string): Promise<{ user: AdminUserDetail }> {
+  return apiFetch(`/admin/users/${id}`)
+}
+
+export async function listAdminUserActivity(
+  id: string,
+  query: AdminUserActivityQuery = {},
+): Promise<AdminUserActivityListResponse> {
+  return apiFetch(`/admin/users/${id}/activity`, { query })
+}
+
+export async function listAdminUserNotes(id: string): Promise<AdminUserNotesResponse> {
+  return apiFetch(`/admin/users/${id}/notes`)
+}
+
+export async function createAdminUserNote(
+  id: string,
+  payload: CreateAdminUserNoteRequest,
+): Promise<{ note: AdminUserNote }> {
+  return apiFetch(`/admin/users/${id}/notes`, {
+    method: 'POST',
+    body: payload,
+  })
+}
+
 export const adminService = {
   adminLogin,
   getSessionUser,
@@ -104,4 +135,8 @@ export const adminService = {
   listAdminReports,
   updateAdminReportStatus,
   deactivateTrainerFromReport,
+  getAdminUser,
+  listAdminUserActivity,
+  listAdminUserNotes,
+  createAdminUserNote,
 }

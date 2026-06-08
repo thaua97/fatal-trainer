@@ -7,6 +7,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   submitted: []
+  'update:editableReviewId': [id: string | null]
 }>()
 
 const trainerRef = toRef(props, 'trainer')
@@ -19,12 +20,16 @@ const {
   loadingMine,
   submitted,
   submitError,
+  isEditing,
+  mineReviewId,
   showForm,
+  showFormFields,
   showGuestCta,
   loginPath,
   submitLabel,
   handleSubmit,
-  resetSubmitted,
+  startEditing,
+  cancelEditing,
 } = useFTProfileReviewForm(trainerRef)
 
 const fieldUi = { base: 'w-full rounded-2xl' }
@@ -35,10 +40,19 @@ async function onSubmit() {
     emit('submitted')
   }
 }
+
+watch(mineReviewId, (id) => {
+  emit('update:editableReviewId', id)
+}, { immediate: true })
+
+defineExpose({
+  startEditing,
+})
 </script>
 
 <template>
   <div
+    v-if="showGuestCta || showFormFields"
     class="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5"
     data-testid="profile-review-form"
   >
@@ -72,7 +86,7 @@ async function onSubmit() {
     </div>
 
     <div
-      v-else-if="showForm"
+      v-else-if="showFormFields"
       data-testid="profile-review-form-fields"
     >
       <UAlert
@@ -112,12 +126,14 @@ async function onSubmit() {
         </UFormField>
 
         <UFormField
+          class="w-full"
           :label="t('reviewForm.commentLabel')"
           :error="fieldErrors.comment"
           required
         >
           <UTextarea
             v-model="form.comment"
+            class="w-full"
             :placeholder="t('reviewForm.commentPlaceholder')"
             :rows="4"
             :disabled="pending || loadingMine"
@@ -126,7 +142,19 @@ async function onSubmit() {
           />
         </UFormField>
 
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-3">
+          <UButton
+            v-if="isEditing"
+            type="button"
+            variant="ghost"
+            color="neutral"
+            class="rounded-full px-6"
+            :disabled="pending"
+            data-testid="profile-review-cancel"
+            @click="cancelEditing"
+          >
+            {{ t('reviewForm.cancel') }}
+          </UButton>
           <UButton
             type="submit"
             color="primary"

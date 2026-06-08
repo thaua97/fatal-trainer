@@ -7,8 +7,8 @@ const props = defineProps<{
 
 const trainerRef = toRef(props, "trainer");
 const { t } = useI18n();
-const { fieldUi, textareaUi, selectUi, inputNumberUi } =
-  useFTProfileEditFieldUi();
+const { textareaUi, selectUi, inputNumberUi } =
+  useFTFormFieldUi();
 const { specialtyItems } = useFTTrainerFieldOptions();
 
 const {
@@ -115,12 +115,10 @@ async function handleHeroPhotoChange(event: Event) {
           :label="t('dashboard.info.fields.cref')"
           :error="fieldErrors.cref"
         >
-          <UInput
+          <FTCrefInput
             v-model="form.cref"
-            class="w-full"
             :placeholder="t('dashboard.edit.crefPlaceholder')"
-            :ui="fieldUi"
-            data-testid="trainer-info-cref"
+            test-id="trainer-info-cref"
           />
         </UFormField>
       </FTProfileSection>

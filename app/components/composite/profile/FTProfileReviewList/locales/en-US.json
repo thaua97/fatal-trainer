@@ -2,6 +2,7 @@
   "profile": {
     "reviews": "Reviews ({count})",
     "reviewsEmptyTitle": "No reviews yet",
-    "reviewsEmptyDescription": "Be the first to share your experience with this trainer."
+    "reviewsEmptyDescription": "Be the first to share your experience with this trainer.",
+    "editReview": "Edit review"
   }
 }

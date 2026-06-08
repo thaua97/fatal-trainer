@@ -1,13 +1,11 @@
 import type { AdminUserListItem } from '#shared/types/admin'
+import { formatBrazilianPhone, stripPhoneDigits } from './format-brazilian-phone'
 
 export function formatAdminPhone(phone?: string): string | null {
   if (!phone) return null
-  const digits = phone.replace(/\D/g, '')
-  if (digits.length === 11) {
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`
-  }
-  if (digits.length === 10) {
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`
+  const digits = stripPhoneDigits(phone)
+  if (digits.length === 10 || digits.length === 11) {
+    return formatBrazilianPhone(digits)
   }
   return phone
 }

@@ -5,12 +5,14 @@ export type FTIconButtonVariant = 'neutral' | 'whatsapp' | 'favorite' | 'report'
 
 const props = withDefaults(defineProps<{
   to?: string
-  ariaLabel: string
+  ariaLabel?: string
   size?: 'sm' | 'md'
   disabled?: boolean
   variant?: FTIconButtonVariant
   active?: boolean
 }>(), {
+  to: undefined,
+  ariaLabel: undefined,
   size: 'md',
   disabled: false,
   variant: 'neutral',

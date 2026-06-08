@@ -1,6 +1,12 @@
 {
   "profile": {
     "hireTrainer": "Contratar entrenador",
-    "comingSoon": "{label} — próximamente"
+    "comingSoon": "{label} — próximamente",
+    "hireUnavailable": {
+      "noPhoneTitle": "Contacto no disponible",
+      "noPhoneDescription": "Este entrenador aún no registró un teléfono de contacto.",
+      "inactiveTitle": "Entrenador desactivado",
+      "inactiveDescription": "Este entrenador no está disponible para contratación en este momento."
+    }
   }
 }
