@@ -56,6 +56,7 @@
       },
       "errors": {
         "submitFailed": "No se pudo guardar. Inténtalo de nuevo.",
+        "validationFailed": "Corrige los campos marcados antes de guardar.",
         "name": {
           "required": "Introduce tu nombre.",
           "tooShort": "Nombre demasiado corto."

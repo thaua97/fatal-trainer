@@ -3,12 +3,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountFT } from '@tests/helpers/mount-ft'
 import { FAVORITE_TRAINER_IDS_KEY, useTrainerBookmakers } from '~/composables/catalog/useTrainerBookmakers'
 
-const favoritesService = {
-  list: vi.fn(),
-  sync: vi.fn(),
-  add: vi.fn(),
-  remove: vi.fn(),
-}
+const { favoritesService } = vi.hoisted(() => ({
+  favoritesService: {
+    list: vi.fn(),
+    sync: vi.fn(),
+    add: vi.fn(),
+    remove: vi.fn(),
+  },
+}))
 
 const isAuthenticated = ref(false)
 const initialized = ref(true)

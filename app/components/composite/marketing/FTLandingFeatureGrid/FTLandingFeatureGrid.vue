@@ -72,7 +72,8 @@ const features = computed(() => [
         v-if="feature.cta && feature.variant === 'accent'"
         :to="feature.to"
         size="md"
-        class="mt-6 w-fit rounded-full bg-white px-6 font-semibold text-violet-700 ring-1 ring-violet-200 hover:bg-violet-50"
+        block
+        class="mt-6 rounded-full bg-white px-6 font-semibold text-violet-700 ring-1 ring-violet-200 hover:bg-violet-50 sm:!w-auto sm:justify-start"
       >
         {{ t(feature.cta) }}
         <UIcon :name="feature.ctaIcon!" class="size-4" />
@@ -83,7 +84,8 @@ const features = computed(() => [
         :to="feature.to"
         variant="outline"
         size="md"
-        class="mt-6 w-fit rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white hover:bg-white/15"
+        block
+        class="mt-6 rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white hover:bg-white/15 sm:!w-auto sm:justify-start"
       >
         {{ t(feature.cta) }}
         <UIcon :name="feature.ctaIcon!" class="size-4" />

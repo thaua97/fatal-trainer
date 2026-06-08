@@ -1,4 +1,4 @@
-import type { ReviewField, ReviewPayload, ReviewValidationErrors } from '#shared/domain/review/entities/trainer-review'
+import type { ReviewPayload, ReviewValidationErrors } from '#shared/domain/review/entities/trainer-review'
 import { validateReview } from '#shared/domain/review/services/validate-review'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { TrainerReviewItem, UpsertReviewRequest } from '#shared/types/api'

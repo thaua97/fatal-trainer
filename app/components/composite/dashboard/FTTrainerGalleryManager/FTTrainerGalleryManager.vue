@@ -13,7 +13,6 @@ const {
   gallery,
   displayGallery,
   photoUrl,
-  displayPhotoUrl,
   canUpload,
   uploadPending,
   deletePending,

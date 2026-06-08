@@ -32,11 +32,13 @@ export function useAdminReports() {
     }
   }
 
-  watch(
-    () => [query.page, query.status, query.type],
-    () => refresh(),
-    { immediate: true },
-  )
+  if (import.meta.client) {
+    watch(
+      () => [query.page, query.status, query.type],
+      () => refresh(),
+      { immediate: true },
+    )
+  }
 
   async function updateStatus(id: string, status: ReportStatus) {
     await adminService.updateAdminReportStatus(id, status)

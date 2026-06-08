@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AdminUserListItem } from '#shared/types/admin'
 import type { UserRole } from '#shared/domain/auth/entities/user'
 
 const form = defineModel<{

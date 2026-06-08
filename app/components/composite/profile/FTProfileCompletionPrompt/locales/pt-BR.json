@@ -1,0 +1,10 @@
+{
+  "profileCompletionPrompt": {
+    "tile": "Perfil incompleto",
+    "title": "Complete seu perfil",
+    "message": "Adicione seu telefone para que os alunos possam entrar em contato com você.",
+    "cta": "Completar perfil",
+    "minimize": "Minimizar",
+    "expand": "Abrir lembrete de perfil"
+  }
+}

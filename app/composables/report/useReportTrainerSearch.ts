@@ -44,9 +44,11 @@ export function useReportTrainerSearch() {
     }
   }
 
-  watch(debouncedSearch, () => {
-    fetchTrainers()
-  }, { immediate: true })
+  if (import.meta.client) {
+    watch(debouncedSearch, () => {
+      fetchTrainers()
+    }, { immediate: true })
+  }
 
   const trainerItems = computed<ReportTrainerOption[]>(() =>
     items.value.map((trainer) => ({

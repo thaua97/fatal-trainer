@@ -4,15 +4,17 @@ import type {
   AdminUsersSortBy,
   AdminUsersSortOrder,
   AdminUsersViewMode,
-} from '~/composables/admin/useFTAdminUsersPage'
+} from '~/composables/admin/useAdminUsersFilters'
+
+const { t } = useI18n()
 
 const viewMode = defineModel<AdminUsersViewMode>('viewMode', { required: true })
 const sortBy = defineModel<AdminUsersSortBy>('sortBy', { required: true })
 const sortOrder = defineModel<AdminUsersSortOrder>('sortOrder', { required: true })
 const filterOpen = defineModel<boolean>('filterOpen', { default: false })
+const query = defineModel<AdminUsersQuery>('query', { required: true })
 
-const props = defineProps<{
-  query: AdminUsersQuery
+defineProps<{
   activeFilterCount: number
 }>()
 
@@ -21,49 +23,46 @@ const emit = defineEmits<{
   openCreate: []
 }>()
 
-const sortItems = [
-  { label: 'Nome A–Z', sortBy: 'name' as const, sortOrder: 'asc' as const },
-  { label: 'Nome Z–A', sortBy: 'name' as const, sortOrder: 'desc' as const },
-  { label: 'Mais recentes', sortBy: 'createdAt' as const, sortOrder: 'desc' as const },
-  { label: 'Mais antigos', sortBy: 'createdAt' as const, sortOrder: 'asc' as const },
-  { label: 'Papel A–Z', sortBy: 'role' as const, sortOrder: 'asc' as const },
-]
+const sortItems = computed(() => [
+  { label: t('admin.users.toolbar.sortNameAsc'), sortBy: 'name' as const, sortOrder: 'asc' as const },
+  { label: t('admin.users.toolbar.sortNameDesc'), sortBy: 'name' as const, sortOrder: 'desc' as const },
+  { label: t('admin.users.toolbar.sortNewest'), sortBy: 'createdAt' as const, sortOrder: 'desc' as const },
+  { label: t('admin.users.toolbar.sortOldest'), sortBy: 'createdAt' as const, sortOrder: 'asc' as const },
+  { label: t('admin.users.toolbar.sortRoleAsc'), sortBy: 'role' as const, sortOrder: 'asc' as const },
+])
 
 const currentSortLabel = computed(() => {
-  const match = sortItems.find(
+  const match = sortItems.value.find(
     item => item.sortBy === sortBy.value && item.sortOrder === sortOrder.value,
   )
-  return match?.label ?? 'Ordenar'
+  return match?.label ?? t('admin.users.toolbar.sort')
 })
 
-function applySort(item: typeof sortItems[number]) {
+function applySort(item: typeof sortItems.value[number]) {
   sortBy.value = item.sortBy
   sortOrder.value = item.sortOrder
 }
 
-const activeFilterChips = computed(() => {
-  const chips: { key: string, label: string, clear: () => void }[] = []
-  if (props.query.role) {
-    const roleLabels: Record<string, string> = {
-      student: 'Alunos',
-      'personal-trainer': 'Personais',
-      admin: 'Admins',
-    }
-    chips.push({
-      key: 'role',
-      label: roleLabels[props.query.role] ?? props.query.role,
-      clear: () => { props.query.role = undefined },
-    })
-  }
-  if (props.query.isActive !== undefined) {
-    chips.push({
-      key: 'status',
-      label: props.query.isActive ? 'Ativos' : 'Inativos',
-      clear: () => { props.query.isActive = undefined },
-    })
-  }
-  return chips
-})
+const roleLabel = computed<Record<string, string>>(() => ({
+  student: t('admin.errors.roles.student'),
+  'personal-trainer': t('admin.errors.roles.personal-trainer'),
+  admin: t('admin.errors.roles.admin'),
+}))
+
+const { activeFilterChips } = useAdminFilterChips(query, [
+  {
+    key: 'role',
+    label: () => query.value.role ? roleLabel.value[query.value.role] ?? query.value.role : undefined,
+    when: q => Boolean(q.role),
+    field: 'role',
+  },
+  {
+    key: 'status',
+    label: () => query.value.isActive ? t('admin.users.toolbar.statusActive') : t('admin.users.toolbar.statusInactive'),
+    when: q => q.isActive !== undefined,
+    field: 'isActive',
+  },
+])
 
 const { fieldUi, inputSize } = useFTFormFieldUi()
 </script>
@@ -77,7 +76,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
       <UInput
         v-model="query.search"
         icon="i-lucide-search"
-        placeholder="Buscar por nome ou e-mail..."
+        :placeholder="t('admin.users.toolbar.searchPlaceholder')"
         class="min-w-[200px] flex-1"
         :ui="fieldUi"
         :size="inputSize"
@@ -91,7 +90,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
             size="xs"
             icon="i-lucide-layout-grid"
             class="rounded-full"
-            aria-label="Visualização em tabela"
+            :aria-label="t('admin.users.toolbar.viewTable')"
             @click="viewMode = 'table'"
           />
           <UButton
@@ -100,7 +99,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
             size="xs"
             icon="i-lucide-list"
             class="rounded-full"
-            aria-label="Visualização em lista"
+            :aria-label="t('admin.users.toolbar.viewList')"
             @click="viewMode = 'list'"
           />
         </div>
@@ -113,7 +112,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
             icon="i-lucide-sliders-horizontal"
             class="rounded-full"
           >
-            Filtros
+            {{ t('admin.users.toolbar.filters') }}
             <UBadge
               v-if="activeFilterCount"
               :label="String(activeFilterCount)"
@@ -125,28 +124,28 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           <template #content>
             <div class="w-64 space-y-4 p-4">
               <div>
-                <label class="mb-1.5 block text-xs font-semibold text-slate-500">Papel</label>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-500">{{ t('admin.users.toolbar.roleLabel') }}</label>
                 <USelect
                   v-model="query.role"
                   :items="[
-                    { label: 'Todos', value: undefined },
-                    { label: 'Alunos', value: 'student' },
-                    { label: 'Personais', value: 'personal-trainer' },
-                    { label: 'Admins', value: 'admin' },
+                    { label: t('admin.users.toolbar.roleAll'), value: undefined },
+                    { label: t('admin.errors.roles.student'), value: 'student' },
+                    { label: t('admin.errors.roles.personal-trainer'), value: 'personal-trainer' },
+                    { label: t('admin.errors.roles.admin'), value: 'admin' },
                   ]"
-                  placeholder="Papel"
+                  :placeholder="t('admin.users.toolbar.roleLabel')"
                 />
               </div>
               <div>
-                <label class="mb-1.5 block text-xs font-semibold text-slate-500">Status</label>
+                <label class="mb-1.5 block text-xs font-semibold text-slate-500">{{ t('admin.users.toolbar.statusLabel') }}</label>
                 <USelect
                   v-model="query.isActive"
                   :items="[
-                    { label: 'Todos', value: undefined },
-                    { label: 'Ativos', value: true },
-                    { label: 'Inativos', value: false },
+                    { label: t('admin.users.toolbar.statusAll'), value: undefined },
+                    { label: t('admin.users.toolbar.statusActive'), value: true },
+                    { label: t('admin.users.toolbar.statusInactive'), value: false },
                   ]"
-                  placeholder="Status"
+                  :placeholder="t('admin.users.toolbar.statusLabel')"
                 />
               </div>
               <UButton
@@ -157,7 +156,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
                 class="w-full"
                 @click="emit('clearFilters')"
               >
-                Limpar filtros
+                {{ t('admin.users.toolbar.clearFilters') }}
               </UButton>
             </div>
           </template>
@@ -187,7 +186,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           class="rounded-full"
           @click="emit('openCreate')"
         >
-          Novo usuário
+          {{ t('admin.users.toolbar.newUser') }}
         </UButton>
       </div>
     </div>
@@ -215,7 +214,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
         class="text-xs font-medium text-slate-500 hover:text-slate-700"
         @click="emit('clearFilters')"
       >
-        Limpar tudo
+        {{ t('admin.users.toolbar.clearAll') }}
       </button>
     </div>
   </div>

@@ -70,11 +70,30 @@ export function useFTTimePicker(model: Ref<TimeRangeValue | null | undefined>) {
 
   watch([startTime, endTime], syncRangeModel, { deep: true })
 
+  function isEndHourDisabled(hour: number): boolean {
+    if (!startTime.value) {
+      return false
+    }
+
+    return hour <= startTime.value.hour
+  }
+
+  function clearEndIfInvalid() {
+    if (endTime.value && startTime.value && endTime.value.hour <= startTime.value.hour) {
+      endTime.value = null
+    }
+  }
+
   function selectStart(hour: number) {
     startTime.value = timeFromHour(hour)
+    clearEndIfInvalid()
   }
 
   function selectEnd(hour: number) {
+    if (isEndHourDisabled(hour)) {
+      return
+    }
+
     endTime.value = timeFromHour(hour)
   }
 
@@ -93,5 +112,6 @@ export function useFTTimePicker(model: Ref<TimeRangeValue | null | undefined>) {
     selectEnd,
     isStartSelected,
     isEndSelected,
+    isEndHourDisabled,
   }
 }

@@ -19,7 +19,7 @@ const { editing, pending } = defineProps<{
 
 const emit = defineEmits<{ save: [] }>()
 
-const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
+const { fieldUi, inputSize } = useFTFormFieldUi()
 </script>
 
 <template>

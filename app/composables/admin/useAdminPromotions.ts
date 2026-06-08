@@ -48,11 +48,13 @@ export function useAdminPromotions() {
     },
   )
 
-  watch(
-    () => [query.page, query.pageSize, query.search, query.isActive, query.status] as const,
-    () => refresh(),
-    { immediate: true },
-  )
+  if (import.meta.client) {
+    watch(
+      () => [query.page, query.pageSize, query.search, query.isActive, query.status] as const,
+      () => refresh(),
+      { immediate: true },
+    )
+  }
 
   const { showError } = useAdminApiError()
 

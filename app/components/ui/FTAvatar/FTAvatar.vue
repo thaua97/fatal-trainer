@@ -73,7 +73,7 @@ const isBlock = computed(() => props.size === "hero" || props.size === "fill");
     class="shrink-0 object-cover"
     :class="imageClass"
     @error="onImageError"
-  />
+  >
   <span
     v-else
     class="shrink-0 items-center justify-center font-semibold"

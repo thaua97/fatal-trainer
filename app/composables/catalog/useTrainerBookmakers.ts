@@ -1,4 +1,3 @@
-import type { PaginatedTrainersResponse } from '#shared/types/api'
 import { useLocalStorage } from '~/composables/core/useLocalStorage'
 import { favoritesService } from '~/services/catalog/favorites.service'
 

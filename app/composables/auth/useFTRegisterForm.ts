@@ -1,8 +1,11 @@
 import type { RegisterPayload, RegisterValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
+import type { UserRole } from '#shared/domain/auth/entities/user'
 import { validateRegister } from '#shared/domain/auth/services/validate-register'
 import type { RegisterRequest } from '#shared/types/api'
 import { applyApiError } from '~/composables/core/applyApiError'
 import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
+
+const REGISTERABLE_ROLES: UserRole[] = ['student', 'personal-trainer']
 
 function emptyForm(): RegisterPayload {
   return {
@@ -15,13 +18,31 @@ function emptyForm(): RegisterPayload {
   }
 }
 
+function resolveInitialRole(roleParam: unknown): RegisterPayload['role'] {
+  if (typeof roleParam !== 'string') {
+    return 'student'
+  }
+
+  if (roleParam === 'personal') {
+    return 'personal-trainer'
+  }
+
+  return REGISTERABLE_ROLES.includes(roleParam as UserRole)
+    ? roleParam as RegisterPayload['role']
+    : 'student'
+}
+
 export function useFTRegisterForm() {
   const { t } = useI18n()
+  const route = useRoute()
   const toast = useFTToast()
   const { register, pending } = useAuth()
   const errorMessage = useFieldErrorTranslator('auth.errors')
 
-  const form = reactive<RegisterPayload>(emptyForm())
+  const form = reactive<RegisterPayload>({
+    ...emptyForm(),
+    role: resolveInitialRole(route.query.role),
+  })
   const errors = ref<RegisterValidationErrors>({})
   const showPassword = ref(false)
   const showConfirmPassword = ref(false)

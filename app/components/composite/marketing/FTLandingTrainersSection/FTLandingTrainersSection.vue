@@ -32,7 +32,8 @@ withDefaults(defineProps<{
         to="/personal-trainers"
         color="primary"
         variant="outline"
-        class="w-fit shrink-0 rounded-full px-6"
+        block
+        class="shrink-0 rounded-full px-6 sm:!w-auto sm:justify-start"
         data-testid="landing-trainers-view-all"
       >
         {{ $t('landing.trainers.viewAll') }}

@@ -2,6 +2,8 @@
 import type { AdminUserListItem } from '#shared/types/admin'
 import { adminService } from '~/services/admin/admin.service'
 
+const { startImpersonation } = useImpersonation()
+
 definePageMeta({
   layout: 'admin',
   middleware: 'admin-only',
@@ -77,13 +79,7 @@ async function handleImpersonate() {
   if (!user.value || isSelf.value) return
   actionPending.value = true
   try {
-    await adminService.impersonateAdminUser(user.value.id)
-    toast.info(t('toast.admin.impersonationStarted'))
-    const { fetchMe } = useAuth()
-    const { fetchAdminMe } = useAdminAuth()
-    await fetchMe()
-    await fetchAdminMe()
-    await navigateTo('/')
+    await startImpersonation(user.value.id)
   } catch {
     toast.error(t('toast.errors.generic'))
   } finally {

@@ -19,6 +19,55 @@
     "userProfile": {
       "backToList": "Back to list"
     },
+    "users": {
+      "toolbar": {
+        "searchPlaceholder": "Search by name or email...",
+        "filters": "Filters",
+        "sort": "Sort",
+        "newUser": "New user",
+        "clearFilters": "Clear filters",
+        "clearAll": "Clear all",
+        "roleLabel": "Role",
+        "statusLabel": "Status",
+        "roleAll": "All",
+        "statusAll": "All",
+        "statusActive": "Active",
+        "statusInactive": "Inactive",
+        "viewTable": "Table view",
+        "viewList": "List view",
+        "sortNameAsc": "Name A–Z",
+        "sortNameDesc": "Name Z–A",
+        "sortNewest": "Newest",
+        "sortOldest": "Oldest",
+        "sortRoleAsc": "Role A–Z"
+      }
+    },
+    "promotions": {
+      "toolbar": {
+        "searchPlaceholder": "Search by name or label...",
+        "filters": "Filters",
+        "sort": "Sort",
+        "newPromotion": "New promotion",
+        "clearFilters": "Clear filters",
+        "clearAll": "Clear all",
+        "enabledLabel": "Enabled",
+        "periodLabel": "Period",
+        "enabledAll": "All",
+        "enabledActive": "Enabled",
+        "enabledInactive": "Disabled",
+        "periodAll": "All",
+        "periodActive": "Active",
+        "periodUpcoming": "Upcoming",
+        "periodExpired": "Expired",
+        "chipEnabled": "Enabled",
+        "chipDisabled": "Disabled",
+        "sortNameAsc": "Name A–Z",
+        "sortNameDesc": "Name Z–A",
+        "sortNewest": "Newest",
+        "sortStartsAsc": "Earliest start",
+        "sortDiscountDesc": "Highest discount"
+      }
+    },
     "errors": {
       "submitFailed": "Could not complete the action.",
       "loadFailed": "Could not load data.",
