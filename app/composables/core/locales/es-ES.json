@@ -7,6 +7,7 @@
     "conflict": "Conflicto al guardar. Verifica los datos.",
     "internal": "Error interno. Inténtalo de nuevo.",
     "invalidCredentials": "Correo o contraseña incorrectos.",
+    "accountDeactivated": "Tu cuenta fue desactivada. Contacta con soporte para más información.",
     "network": "Fallo de conexión. Verifica tu internet."
   },
   "admin": {

@@ -12,10 +12,10 @@ function emptyForm(): LoginPayload {
 }
 
 export function useFTLoginForm() {
-  const route = useRoute()
   const { t } = useI18n()
   const toast = useFTToast()
   const { login, pending } = useAuth()
+  const { redirectTarget } = useAuthRedirect()
   const errorMessage = useFieldErrorTranslator('auth.errors')
 
   const form = reactive<LoginPayload>(emptyForm())
@@ -36,7 +36,7 @@ export function useFTLoginForm() {
       password: form.password,
     }
 
-    const result = await login(payload, typeof route.query.redirect === 'string' ? route.query.redirect : null)
+    const result = await login(payload, redirectTarget.value)
     if (!result.success) {
       applyApiError({
         parsed: {

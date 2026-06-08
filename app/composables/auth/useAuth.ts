@@ -1,6 +1,7 @@
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { LoginRequest, RegisterRequest } from '#shared/types/api'
 import type { LoginValidationErrors, RegisterValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
+import { resolvePostAuthDestination } from '#shared/domain/auth/services/resolve-auth-redirect'
 import { authService } from '~/services/auth/auth.service'
 import { parseApiError } from '~/services/api/extract-api-errors'
 
@@ -50,7 +51,7 @@ export function useAuth() {
       const { syncFromLocalStorage } = useTrainerBookmakers()
       await syncFromLocalStorage().catch(() => {})
 
-      const destination = redirectTo?.startsWith('/') ? redirectTo : '/?welcome=1'
+      const destination = resolvePostAuthDestination(redirectTo)
       await navigateTo(destination)
       return { success: true }
     } catch (err: unknown) {
@@ -65,7 +66,10 @@ export function useAuth() {
     }
   }
 
-  async function register(payload: RegisterRequest): Promise<{ success: boolean, errors?: RegisterValidationErrors, errorMessage?: string }> {
+  async function register(
+    payload: RegisterRequest,
+    redirectTo?: string | null,
+  ): Promise<{ success: boolean, errors?: RegisterValidationErrors, errorMessage?: string }> {
     pending.value = true
     try {
       const response = await authService.register(payload)
@@ -74,7 +78,7 @@ export function useAuth() {
       welcomePending.value = true
       const { syncFromLocalStorage } = useTrainerBookmakers()
       await syncFromLocalStorage().catch(() => {})
-      await navigateTo('/?welcome=1')
+      await navigateTo(resolvePostAuthDestination(redirectTo))
       return { success: true }
     } catch (err: unknown) {
       const parsed = parseApiError(err, 'auth.errors.submitFailed')

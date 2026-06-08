@@ -28,6 +28,13 @@ export const Small: Story = {
   },
 }
 
+export const IconOnly: Story = {
+  args: {
+    size: 'sm',
+    iconOnly: true,
+  },
+}
+
 export const Large: Story = {
   args: {
     size: 'lg',

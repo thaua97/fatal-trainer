@@ -40,7 +40,7 @@ describe('useAuth', () => {
   beforeEach(() => {
     authService.getMe.mockReset()
     authService.login.mockReset()
-    authService.logout.mockReset()
+    authService.register.mockReset()
     navigateTo.mockReset()
     navigateTo.mockResolvedValue(undefined)
 
@@ -70,5 +70,36 @@ describe('useAuth', () => {
     expect(result.success).toBe(true)
     expect(authService.login).toHaveBeenCalledWith({ email: 'a@b.com', password: '123456' })
     expect(navigateTo).toHaveBeenCalledWith('/?welcome=1')
+  })
+
+  it('login redirects to provided path after success', async () => {
+    authService.login.mockResolvedValue({ user: { id: '1', name: 'Ana', role: 'student' } })
+
+    const wrapper = mountFT(TestHarness)
+    await wrapper.vm.login(
+      { email: 'a@b.com', password: '123456' },
+      '/personal-trainers/abc',
+    )
+
+    expect(navigateTo).toHaveBeenCalledWith('/personal-trainers/abc')
+  })
+
+  it('register redirects to provided path after success', async () => {
+    authService.register.mockResolvedValue({ user: { id: '1', name: 'Ana', role: 'student' } })
+
+    const wrapper = mountFT(TestHarness)
+    await wrapper.vm.register(
+      {
+        name: 'Ana',
+        email: 'a@b.com',
+        password: '123456',
+        confirmPassword: '123456',
+        role: 'student',
+        termsAccepted: true,
+      },
+      '/personal-trainers/abc',
+    )
+
+    expect(navigateTo).toHaveBeenCalledWith('/personal-trainers/abc')
   })
 })

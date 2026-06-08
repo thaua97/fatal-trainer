@@ -2,12 +2,12 @@ import type { LoginRequest } from '#shared/types/api'
 import { validateLogin } from '#shared/domain/auth/services/validate-login'
 import {
   setSessionCookie,
-  verifyCredentials,
+  findUserByEmail,
   createSession,
 } from '../../mocks/mock-user-store'
 import { enrichAuthUser } from '../../utils/enrich-auth-user'
 import { appendActivity } from '../../mocks/mock-user-activity-store'
-import { throwInvalidCredentials, throwValidationError } from '../../utils/api-error'
+import { throwAccountDeactivated, throwInvalidCredentials, throwValidationError } from '../../utils/api-error'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<LoginRequest>(event)
@@ -21,10 +21,14 @@ export default defineEventHandler(async (event) => {
     throwValidationError(validation.errors)
   }
 
-  const user = verifyCredentials(body.email, body.password)
+  const user = findUserByEmail(body.email)
 
-  if (!user) {
+  if (!user || user.password !== body.password) {
     throwInvalidCredentials()
+  }
+
+  if (!user.isActive) {
+    throwAccountDeactivated()
   }
 
   const token = createSession(user.id)
@@ -39,5 +43,6 @@ export default defineEventHandler(async (event) => {
     actorRole: user.role,
   })
 
-  return { user: enrichAuthUser(user) }
+  const { password: _password, createdAt: _createdAt, ...authUser } = user
+  return { user: enrichAuthUser(authUser) }
 })

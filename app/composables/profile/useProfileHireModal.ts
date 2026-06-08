@@ -1,7 +1,6 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 
 export function useProfileHireModal(trainer: Ref<PersonalTrainer>) {
-  const route = useRoute()
   const { isAuthenticated, user, initialized } = useAuth()
 
   const modalOpen = useState('profile-hire-modal-open', () => false)
@@ -38,10 +37,7 @@ export function useProfileHireModal(trainer: Ref<PersonalTrainer>) {
     () => initialized.value && !isAuthenticated.value,
   )
 
-  const loginPath = computed(() => {
-    const redirect = encodeURIComponent(route.fullPath)
-    return `/login?redirect=${redirect}`
-  })
+  const { loginRoute } = useAuthRedirect()
 
   function openModal() {
     if (!canHire.value) {
@@ -68,7 +64,7 @@ export function useProfileHireModal(trainer: Ref<PersonalTrainer>) {
     modalOpen,
     showContactCta,
     showLoginCta,
-    loginPath,
+    loginRoute,
     canContact,
     canHire,
     hireUnavailableReason,

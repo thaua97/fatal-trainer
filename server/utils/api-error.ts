@@ -40,6 +40,13 @@ export function throwInvalidCredentials(): never {
   })
 }
 
+export function throwAccountDeactivated(): never {
+  throwApiError({
+    statusCode: 403,
+    message: ERROR_CODES.accountDeactivated,
+  })
+}
+
 export function throwForbidden(): never {
   throwApiError({
     statusCode: 403,

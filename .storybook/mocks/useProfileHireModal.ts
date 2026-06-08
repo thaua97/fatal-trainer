@@ -10,7 +10,7 @@ export function useProfileHireModal() {
     modalOpen: storyHireModalOpen,
     showContactCta: storyShowContactCta,
     showLoginCta: storyShowLoginCta,
-    loginPath: '/login?redirect=%2Fpersonal-trainers%2Ftrainer-001',
+    loginRoute: { path: '/login', query: { redirect: '/personal-trainers/trainer-001' } },
     canContact: storyCanContact,
     openModal: () => {
       storyHireModalOpen.value = true

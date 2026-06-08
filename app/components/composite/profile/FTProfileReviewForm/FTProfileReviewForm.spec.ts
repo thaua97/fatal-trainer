@@ -24,7 +24,7 @@ vi.mock('~/composables/components/useFTProfileReviewForm', () => ({
     showForm: ref(false),
     showFormFields: ref(false),
     showGuestCta: ref(true),
-    loginPath: '/login?redirect=%2Fpersonal-trainers%2Ftrainer-001',
+    loginRoute: { path: '/login', query: { redirect: '/personal-trainers/trainer-001' } },
     submitLabel: ref('Publicar avaliação'),
     handleSubmit: vi.fn(),
     startEditing: vi.fn(),

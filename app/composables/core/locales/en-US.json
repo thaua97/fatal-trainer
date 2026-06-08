@@ -7,6 +7,7 @@
     "conflict": "Conflict while saving. Please check your data.",
     "internal": "Internal error. Please try again.",
     "invalidCredentials": "Incorrect email or password.",
+    "accountDeactivated": "Your account has been deactivated. Contact support for more information.",
     "network": "Connection failed. Check your internet."
   },
   "admin": {
