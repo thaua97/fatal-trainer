@@ -20,10 +20,20 @@ function viewProfile() {
 }
 
 const dropdownItems = computed(() => {
-  const items = [
+  const items = []
+
+  if (!isSelf.value) {
+    items.push({
+      label: 'Acessar como',
+      icon: 'i-lucide-user-check',
+      onSelect: () => emit('impersonate', props.user),
+    })
+  }
+
+  items.push(
     {
-      label: 'Ver perfil',
-      icon: 'i-lucide-user',
+      label: 'Visualizar',
+      icon: 'i-lucide-eye',
       onSelect: viewProfile,
     },
     {
@@ -31,21 +41,14 @@ const dropdownItems = computed(() => {
       icon: 'i-lucide-pencil',
       onSelect: () => emit('edit', props.user),
     },
-  ]
+  )
 
   if (!isSelf.value) {
-    items.push(
-      {
-        label: 'Acessar como',
-        icon: 'i-lucide-user-check',
-        onSelect: () => emit('impersonate', props.user),
-      },
-      {
-        label: 'Excluir',
-        icon: 'i-lucide-trash-2',
-        onSelect: () => emit('delete', props.user),
-      },
-    )
+    items.push({
+      label: 'Excluir',
+      icon: 'i-lucide-trash-2',
+      onSelect: () => emit('delete', props.user),
+    })
   }
 
   return [items]
@@ -59,11 +62,23 @@ const dropdownItems = computed(() => {
   >
     <div class="hidden items-center justify-center gap-2 lg:flex">
       <UButton
+        v-if="!isSelf"
+        variant="outline"
+        color="neutral"
+        size="xs"
+        icon="i-lucide-user-check"
+        class="rounded-full whitespace-nowrap"
+        :disabled="actionPending"
+        @click="emit('impersonate', user)"
+      >
+        Acessar como
+      </UButton>
+      <UButton
         variant="ghost"
         color="neutral"
         size="xs"
-        icon="i-lucide-user"
-        aria-label="Ver perfil"
+        icon="i-lucide-eye"
+        aria-label="Visualizar"
         :disabled="actionPending"
         @click="viewProfile"
       />
@@ -76,28 +91,16 @@ const dropdownItems = computed(() => {
         :disabled="actionPending"
         @click="emit('edit', user)"
       />
-      <template v-if="!isSelf">
-        <UButton
-          variant="outline"
-          color="neutral"
-          size="xs"
-          icon="i-lucide-user-check"
-          class="rounded-full whitespace-nowrap"
-          :disabled="actionPending"
-          @click="emit('impersonate', user)"
-        >
-          Acessar como
-        </UButton>
-        <UButton
-          variant="ghost"
-          color="error"
-          size="xs"
-          icon="i-lucide-trash-2"
-          aria-label="Excluir usuário"
-          :disabled="actionPending"
-          @click="emit('delete', user)"
-        />
-      </template>
+      <UButton
+        v-if="!isSelf"
+        variant="ghost"
+        color="error"
+        size="xs"
+        icon="i-lucide-trash-2"
+        aria-label="Excluir usuário"
+        :disabled="actionPending"
+        @click="emit('delete', user)"
+      />
     </div>
 
     <div class="lg:hidden">
