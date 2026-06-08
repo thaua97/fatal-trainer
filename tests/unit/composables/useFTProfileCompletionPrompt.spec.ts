@@ -130,6 +130,15 @@ describe('useFTProfileCompletionPrompt', () => {
     expect(wrapper.vm.showFab).toBe(false)
   })
 
+  it('hides prompt on admin routes', async () => {
+    setTrainerUser()
+    routePath.value = '/admin'
+    const wrapper = await mountSuspended(TestHarness)
+
+    expect(wrapper.vm.shouldShow).toBe(false)
+    expect(wrapper.vm.showFab).toBe(false)
+  })
+
   it('shows fab when minimized', async () => {
     setTrainerUser()
     minimizedState.value = true
