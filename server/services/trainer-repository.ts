@@ -2,7 +2,12 @@ import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from '
 import { join } from 'node:path'
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
-import type { TrainerInfoPayload, TrainerPromotionPayload } from '#shared/domain/catalog/entities/trainer-profile-payloads'
+import type {
+  TrainerInfoPayload,
+  TrainerPromotionActivationPayload,
+} from '#shared/domain/catalog/entities/trainer-profile-payloads'
+import { hydratePromotionFromTemplate } from '#shared/domain/catalog/services/promotion-hydration'
+import { findPromotionTemplateById } from '../mocks/mock-promotion-templates'
 import type { ListQuery } from '#shared/domain/catalog/value-objects/list-query'
 import { computeDiscountPercent, computePromoPrice } from '#shared/domain/catalog/services/trainer-pricing'
 import { filterTrainers } from '#shared/domain/catalog/services/filter-trainers'
@@ -122,6 +127,14 @@ export function findTrainerByUserId(userId: string): PersonalTrainer | undefined
   return loadTrainers().find((trainer) => trainer.userId === userId)
 }
 
+export function deleteTrainerByUserId(userId: string): void {
+  const trainers = loadTrainers()
+  const next = trainers.filter((trainer) => trainer.userId !== userId)
+  if (next.length !== trainers.length) {
+    saveTrainers(next)
+  }
+}
+
 export function findFeaturedTrainers(limit = 6): PersonalTrainer[] {
   return loadTrainers()
     .filter((trainer) => trainer.featured === true)
@@ -168,24 +181,31 @@ export function getOrCreateTrainerForUser(user: AuthUser): { trainer: PersonalTr
   return { trainer: createTrainerForUser(user), created: true }
 }
 
-function buildPromotionFromPayload(
-  payload: TrainerPromotionPayload,
+function buildPromotionFromTemplateActivation(
+  payload: TrainerPromotionActivationPayload,
   servicePrice: number,
   existing?: PersonalTrainer['promotion'],
 ): PersonalTrainer['promotion'] | undefined {
-  if (!payload.active) {
+  if (!payload.templateId) {
     return undefined
   }
 
-  return {
-    discountPercent: payload.discountPercent,
-    promoPrice: computePromoPrice(servicePrice, payload.discountPercent),
-    label: payload.label.trim(),
-    startsAt: payload.startsAt,
-    endsAt: payload.endsAt,
-    maxRedemptions: payload.maxRedemptions ?? undefined,
-    redemptionCount: existing?.redemptionCount ?? 0,
+  const template = findPromotionTemplateById(payload.templateId)
+  if (!template || !template.isActive) {
+    return undefined
   }
+
+  return hydratePromotionFromTemplate(
+    {
+      templateId: payload.templateId,
+      redemptionCount:
+        existing?.templateId === payload.templateId
+          ? (existing?.redemptionCount ?? 0)
+          : 0,
+    },
+    template,
+    servicePrice,
+  )
 }
 
 export function updateTrainerInfo(trainerId: string, payload: TrainerInfoPayload): PersonalTrainer {
@@ -233,7 +253,7 @@ export function updateTrainerInfo(trainerId: string, payload: TrainerInfoPayload
 
 export function updateTrainerPromotion(
   trainerId: string,
-  payload: TrainerPromotionPayload,
+  payload: TrainerPromotionActivationPayload,
 ): PersonalTrainer {
   const trainers = loadTrainers()
   const index = trainers.findIndex((trainer) => trainer.id === trainerId)
@@ -245,7 +265,11 @@ export function updateTrainerPromotion(
   const current = trainers[index]!
   const updated: PersonalTrainer = {
     ...current,
-    promotion: buildPromotionFromPayload(payload, current.servicePrice, current.promotion),
+    promotion: buildPromotionFromTemplateActivation(
+      payload,
+      current.servicePrice,
+      current.promotion,
+    ),
   }
 
   const next = [...trainers]

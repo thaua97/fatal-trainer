@@ -7,6 +7,7 @@ import {
 } from '../../mocks/mock-user-store'
 import { enrichAuthUser } from '../../utils/enrich-auth-user'
 import { appendActivity } from '../../mocks/mock-user-activity-store'
+import { throwInvalidCredentials, throwValidationError } from '../../utils/api-error'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<LoginRequest>(event)
@@ -17,29 +18,13 @@ export default defineEventHandler(async (event) => {
   })
 
   if (!validation.valid) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: {
-        message: 'Validation failed',
-        errors: validation.errors,
-      },
-    })
+    throwValidationError(validation.errors)
   }
 
   const user = verifyCredentials(body.email, body.password)
 
   if (!user) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Invalid credentials',
-      data: {
-        message: 'Invalid credentials',
-        errors: {
-          email: 'invalidCredentials',
-        },
-      },
-    })
+    throwInvalidCredentials()
   }
 
   const token = createSession(user.id)

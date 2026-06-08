@@ -1,7 +1,7 @@
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { FTLocaleCode } from '#shared/types/locale'
 
-export function useFTAppHeaderUser() {
+export function useFTAppHeaderUser(options: { includeNavLinks?: boolean } = {}) {
   const { t } = useI18n()
   const { userName, userRole, user, logout, pending } = useAuth()
   const { localeItems, currentLocale, switchLocale } = useFTLocaleSwitcher()
@@ -19,14 +19,26 @@ export function useFTAppHeaderUser() {
     return t('locale.en-US')
   }
 
+  function navigateMenuItem(path: string) {
+    return () => navigateTo(path)
+  }
+
   const menuItems = computed<DropdownMenuItem[][]>(() => {
     const sections: DropdownMenuItem[][] = []
+
+    if (options.includeNavLinks) {
+      sections.push([
+        { label: t('header.trainers'), icon: 'i-lucide-users', onSelect: navigateMenuItem('/personal-trainers') },
+        { label: t('header.favorites'), icon: 'i-lucide-heart', onSelect: navigateMenuItem('/personal-trainers/favoritos') },
+        { label: t('header.report'), icon: 'i-lucide-flag', onSelect: navigateMenuItem('/denuncia') },
+      ])
+    }
 
     if (userRole.value === 'personal-trainer') {
       sections.push([{
         label: t('header.myProfile'),
         icon: 'i-lucide-layout-dashboard',
-        to: '/painel/perfil',
+        onSelect: navigateMenuItem('/painel/perfil'),
       }])
     }
 

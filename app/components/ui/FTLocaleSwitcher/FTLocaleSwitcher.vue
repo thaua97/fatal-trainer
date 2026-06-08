@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { FTLocaleCode } from '#shared/types/locale'
 
+withDefaults(defineProps<{
+  size?: 'sm' | 'md' | 'lg'
+}>(), {
+  size: 'sm',
+})
+
 const { t } = useI18n()
 const { localeItems, currentLocale, switchLocale } = useFTLocaleSwitcher()
 
@@ -21,14 +27,15 @@ const menuItems = computed(() =>
     <UButton
       variant="ghost"
       color="neutral"
-      size="sm"
+      :size="size"
       class="rounded-full"
+      :class="size === 'lg' ? 'text-lg' : size === 'md' ? 'text-base' : undefined"
       :aria-label="t('locale.label')"
       data-testid="locale-switcher"
     >
       <UIcon
         name="i-lucide-languages"
-        class="size-4"
+        :class="size === 'lg' ? 'size-6' : size === 'md' ? 'size-5' : 'size-4'"
       />
       <span class="hidden sm:inline">
         {{ t(`locale.${currentLocale}`) }}

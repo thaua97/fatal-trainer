@@ -1,15 +1,19 @@
 import type { AdminUserDetail } from '#shared/types/admin'
 import type { UserRole } from '#shared/domain/auth/entities/user'
 import { adminService } from '~/services/admin/admin.service'
+import { parseApiError } from '~/services/api/extract-api-errors'
 
 export function useAdminUserProfile(userId: MaybeRefOrGetter<string>) {
+  const { t } = useI18n()
+  const toast = useFTToast()
   const id = computed(() => toValue(userId))
 
   const detailPending = ref(false)
   const activityPending = ref(false)
   const notesPending = ref(false)
   const noteSubmitting = ref(false)
-  const error = ref<string | null>(null)
+  const error = ref(false)
+  const errorMessage = ref<string | null>(null)
 
   const user = ref<AdminUserDetail | null>(null)
   const activityPage = ref(1)
@@ -40,13 +44,17 @@ export function useAdminUserProfile(userId: MaybeRefOrGetter<string>) {
 
   async function fetchDetail() {
     detailPending.value = true
-    error.value = null
+    error.value = false
+    errorMessage.value = null
     try {
       const response = await adminService.getAdminUser(id.value)
       user.value = response.user
-    } catch {
-      error.value = 'Usuário não encontrado'
+    } catch (err) {
+      const parsed = parseApiError(err, 'admin.errors.loadFailed')
+      error.value = true
+      errorMessage.value = t(parsed.message)
       user.value = null
+      toast.error(t(parsed.message))
     } finally {
       detailPending.value = false
     }
@@ -64,17 +72,20 @@ export function useAdminUserProfile(userId: MaybeRefOrGetter<string>) {
     notesPending.value = value
   }, { immediate: true })
 
-  const roleLabel: Record<UserRole, string> = {
-    student: 'Aluno',
-    'personal-trainer': 'Personal',
-    admin: 'Admin',
-  }
+  const roleLabel = computed<Record<UserRole, string>>(() => ({
+    student: t('admin.errors.roles.student'),
+    'personal-trainer': t('admin.errors.roles.personal-trainer'),
+    admin: t('admin.errors.roles.admin'),
+  }))
 
   async function submitNote(content: string) {
     noteSubmitting.value = true
     try {
       await adminService.createAdminUserNote(id.value, { content })
       await Promise.all([refreshNotes(), fetchDetail()])
+    } catch (err) {
+      const parsed = parseApiError(err, 'admin.errors.submitFailed')
+      toast.error(t(parsed.message))
     } finally {
       noteSubmitting.value = false
     }
@@ -95,6 +106,7 @@ export function useAdminUserProfile(userId: MaybeRefOrGetter<string>) {
     notesPending,
     noteSubmitting,
     error,
+    errorMessage,
     roleLabel,
     submitNote,
     refreshAll,

@@ -7,31 +7,24 @@ const MAX_GALLERY_IMAGES = 12
 export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>) {
   const { setTrainer } = useMyTrainerProfile()
   const { t } = useI18n()
+  const toast = useFTToast()
   const { toMediaUrl } = useMediaUrl()
 
   const uploadPending = ref(false)
   const deletePending = ref(false)
   const coverPending = ref(false)
-  const error = ref<string | null>(null)
-  const success = ref(false)
 
   const gallery = computed(() => trainer.value?.gallery ?? [])
-  const displayGallery = computed(() => gallery.value.map((url) => toMediaUrl(url)))
+  const displayGallery = computed(() => gallery.value.map(url => toMediaUrl(url)))
   const photoUrl = computed(() => trainer.value?.photoUrl ?? '')
   const displayPhotoUrl = computed(() => toMediaUrl(photoUrl.value))
   const canUpload = computed(() => gallery.value.length < MAX_GALLERY_IMAGES)
-
-  function resetStatus() {
-    error.value = null
-    success.value = false
-  }
 
   async function uploadFile(file: File, options?: { setAsCover?: boolean }) {
     if (!trainer.value || !canUpload.value) {
       return null
     }
 
-    resetStatus()
     uploadPending.value = true
 
     try {
@@ -53,12 +46,15 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
         setTrainer(coverResponse.trainer)
       }
 
-      success.value = true
+      toast.success(t('dashboard.gallery.success'))
       return response.url
     } catch (err: unknown) {
       const data = extractApiErrors<Record<string, string>>(err)
       const code = data.file ?? data.gallery
-      error.value = code ? t(`dashboard.gallery.errors.${code}`) : t('dashboard.gallery.errors.uploadFailed')
+      const message = code
+        ? t(`dashboard.gallery.errors.${code}`)
+        : t('dashboard.gallery.errors.uploadFailed')
+      toast.error(message)
       return null
     } finally {
       uploadPending.value = false
@@ -74,15 +70,14 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
       return
     }
 
-    resetStatus()
     deletePending.value = true
 
     try {
       const response = await trainerProfileService.deleteGallery(index)
       setTrainer(response.trainer)
-      success.value = true
+      toast.success(t('dashboard.gallery.success'))
     } catch {
-      error.value = t('dashboard.gallery.errors.deleteFailed')
+      toast.error(t('dashboard.gallery.errors.deleteFailed'))
     } finally {
       deletePending.value = false
     }
@@ -93,15 +88,14 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
       return
     }
 
-    resetStatus()
     coverPending.value = true
 
     try {
       const response = await trainerProfileService.setCover(url)
       setTrainer(response.trainer)
-      success.value = true
+      toast.success(t('dashboard.gallery.success'))
     } catch {
-      error.value = t('dashboard.gallery.errors.coverFailed')
+      toast.error(t('dashboard.gallery.errors.coverFailed'))
     } finally {
       coverPending.value = false
     }
@@ -125,13 +119,10 @@ export function useFTTrainerGalleryManager(trainer: Ref<PersonalTrainer | null>)
     uploadPending,
     deletePending,
     coverPending,
-    error,
-    success,
     uploadFile,
     uploadCoverPhoto,
     removeImage,
     setCover,
     onFileInputChange,
-    resetStatus,
   }
 }

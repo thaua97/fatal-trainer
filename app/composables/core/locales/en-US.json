@@ -1,0 +1,58 @@
+{
+  "error": {
+    "validation": "Please check the highlighted fields.",
+    "unauthorized": "Session expired. Please sign in again.",
+    "forbidden": "You do not have permission for this action.",
+    "notFound": "Record not found.",
+    "conflict": "Conflict while saving. Please check your data.",
+    "internal": "Internal error. Please try again.",
+    "invalidCredentials": "Incorrect email or password.",
+    "network": "Connection failed. Check your internet."
+  },
+  "admin": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Sign in to admin"
+    },
+    "userProfile": {
+      "backToList": "Back to list"
+    },
+    "errors": {
+      "submitFailed": "Could not complete the action.",
+      "loadFailed": "Could not load data.",
+      "loginFailed": "Invalid credentials or access denied.",
+      "email": {
+        "invalid": "Invalid email.",
+        "required": "Email is required."
+      },
+      "password": {
+        "required": "Password is required."
+      },
+      "roles": {
+        "student": "Student",
+        "personal-trainer": "Trainer",
+        "admin": "Admin"
+      }
+    }
+  },
+  "toast": {
+    "errors": {
+      "generic": "Something went wrong. Please try again.",
+      "submitFailed": "Could not submit. Please check your data.",
+      "loadFailed": "Could not load data.",
+      "notFound": "Record not found."
+    },
+    "admin": {
+      "userUpdated": "User updated successfully.",
+      "userCreated": "User created successfully.",
+      "userDeleted": "User removed successfully.",
+      "userActivated": "User activated successfully.",
+      "userDeactivated": "User deactivated successfully.",
+      "userFeatured": "User featured successfully.",
+      "userUnfeatured": "Featured status removed successfully.",
+      "impersonationStarted": "Session started as user."
+    }
+  }
+}

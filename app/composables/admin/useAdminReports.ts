@@ -6,6 +6,9 @@ import type {
 import { adminService } from '~/services/admin/admin.service'
 
 export function useAdminReports() {
+  const { t } = useI18n()
+  const toast = useFTToast()
+
   const query = reactive<AdminReportsQuery>({
     page: 1,
     pageSize: 20,
@@ -23,6 +26,7 @@ export function useAdminReports() {
     } catch (err) {
       error.value = err instanceof Error ? err : new Error('Failed to load reports')
       data.value = null
+      toast.error(t('toast.errors.loadFailed'))
     } finally {
       pending.value = false
     }

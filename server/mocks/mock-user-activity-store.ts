@@ -101,6 +101,11 @@ export function countUserActivity(userId: string): number {
   return loadActivity().filter(item => item.userId === userId).length
 }
 
+export function deleteUserActivity(userId: string): void {
+  const items = loadActivity().filter(item => item.userId !== userId)
+  saveActivity(items)
+}
+
 export function resetActivityStore(): void {
   cachedActivity = []
   persistedToDisk = false

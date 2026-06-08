@@ -15,11 +15,10 @@ const { t } = useI18n()
 
 const {
   form,
-  fieldErrors,
+  errors,
+  errorMessage,
   pending,
   loadingMine,
-  submitted,
-  submitError,
   isEditing,
   mineReviewId,
   showForm,
@@ -89,34 +88,13 @@ defineExpose({
       v-else-if="showFormFields"
       data-testid="profile-review-form-fields"
     >
-      <UAlert
-        v-if="submitted"
-        color="success"
-        variant="subtle"
-        icon="i-lucide-circle-check"
-        :title="t('reviewForm.successTitle')"
-        :description="t('reviewForm.successDescription')"
-        class="mb-5 rounded-2xl"
-        data-testid="profile-review-success"
-      />
-
-      <UAlert
-        v-if="submitError"
-        color="error"
-        variant="subtle"
-        icon="i-lucide-circle-alert"
-        :title="submitError"
-        class="mb-5 rounded-2xl"
-        data-testid="profile-review-error"
-      />
-
       <form
         class="flex flex-col gap-5"
         @submit.prevent="onSubmit"
       >
         <UFormField
           :label="t('reviewForm.ratingLabel')"
-          :error="fieldErrors.rating"
+          :error="errorMessage('rating', errors.rating)"
           required
         >
           <FTRatingInput
@@ -128,7 +106,7 @@ defineExpose({
         <UFormField
           class="w-full"
           :label="t('reviewForm.commentLabel')"
-          :error="fieldErrors.comment"
+          :error="errorMessage('comment', errors.comment)"
           required
         >
           <UTextarea

@@ -1,3 +1,4 @@
+import { throwForbidden, throwNotFound, throwValidationError } from '../../../utils/api-error'
 import { validateReview } from '#shared/domain/review/services/validate-review'
 import type { UpsertReviewRequest } from '#shared/types/api'
 import { upsertTrainerReview } from '../../../mocks/mock-reviews-store'
@@ -7,32 +8,25 @@ import { requireUserSession } from '../../../utils/require-user-session'
 export default defineEventHandler(async (event) => {
   const trainerId = getRouterParam(event, 'id')
   if (!trainerId) {
-    throw createError({ statusCode: 400, statusMessage: 'Trainer id required' })
+    throwValidationError({ trainerId: 'required' })
   }
 
   const trainer = findTrainerById(trainerId)
   if (!trainer) {
-    throw createError({ statusCode: 404, statusMessage: 'Trainer not found' })
+    throwNotFound()
   }
 
   const user = requireUserSession(event)
 
   if (trainer.userId === user.id) {
-    throw createError({ statusCode: 403, statusMessage: 'You cannot review your own profile' })
+    throwForbidden()
   }
 
   const body = await readBody<UpsertReviewRequest>(event)
   const validation = validateReview(body)
 
   if (!validation.valid) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: {
-        message: 'Validation failed',
-        errors: validation.errors,
-      },
-    })
+    throwValidationError(validation.errors)
   }
 
   const result = upsertTrainerReview(trainerId, user.id, user.name, {

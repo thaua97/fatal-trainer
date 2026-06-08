@@ -1,6 +1,7 @@
 import type { AuthUser } from '#shared/domain/auth/entities/user'
 import type { LoginRequest } from '#shared/types/api'
 import { adminService } from '~/services/admin/admin.service'
+import { parseApiError } from '~/services/api/extract-api-errors'
 
 function syncAuthUser(user: AuthUser | null) {
   const authUser = useState<AuthUser | null>('auth-user')
@@ -32,7 +33,7 @@ export function useAdminAuth() {
     }
   }
 
-  async function login(payload: LoginRequest): Promise<{ success: boolean, error?: string }> {
+  async function login(payload: LoginRequest): Promise<{ success: boolean, error?: string, errors?: Record<string, string> }> {
     pending.value = true
     try {
       const response = await adminService.adminLogin(payload)
@@ -41,8 +42,13 @@ export function useAdminAuth() {
       initialized.value = true
       await navigateTo('/admin/usuarios')
       return { success: true }
-    } catch {
-      return { success: false, error: 'Credenciais inválidas ou acesso negado.' }
+    } catch (err: unknown) {
+      const parsed = parseApiError(err, 'admin.errors.loginFailed')
+      return {
+        success: false,
+        error: parsed.message,
+        errors: parsed.fieldErrors,
+      }
     } finally {
       pending.value = false
     }

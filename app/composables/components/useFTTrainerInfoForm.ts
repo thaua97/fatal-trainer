@@ -2,6 +2,8 @@ import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-t
 import type { TrainerInfoField, TrainerInfoPayload, TrainerInfoValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
 import { validateTrainerInfo } from '#shared/domain/catalog/services/validate-trainer-profile'
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): TrainerInfoPayload {
   return {
@@ -39,8 +41,10 @@ function trainerToForm(trainer: PersonalTrainer): TrainerInfoPayload {
 
 export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
   const { t } = useI18n()
-  const { update, pending, success, error: submitError, fieldErrors: submitFieldErrors, resetStatus } = useUpdateTrainerProfile()
+  const toast = useFTToast()
+  const { update, pending, error: apiError, fieldErrors: apiFieldErrors, resetStatus } = useUpdateTrainerProfile()
   const { setTrainer } = useMyTrainerProfile()
+  const errorMessage = useFieldErrorTranslator('dashboard.info.errors')
 
   const form = reactive<TrainerInfoPayload>(emptyForm())
   const errors = ref<TrainerInfoValidationErrors>({})
@@ -52,31 +56,6 @@ export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
   }, { immediate: true })
 
   const { specialtyItems, modalityItems } = useFTTrainerFieldOptions()
-
-  function errorMessage(field: TrainerInfoField, code?: string): string | undefined {
-    if (!code) {
-      return undefined
-    }
-
-    const key = `dashboard.info.errors.${field}.${code}`
-    const translated = t(key)
-    return translated === key ? code : translated
-  }
-
-  const fieldErrors = computed(() => ({
-    name: errorMessage('name', errors.value.name ?? submitFieldErrors.value.name),
-    contactPhone: errorMessage('contactPhone', errors.value.contactPhone ?? submitFieldErrors.value.contactPhone),
-    profession: errorMessage('profession', errors.value.profession ?? submitFieldErrors.value.profession),
-    description: errorMessage('description', errors.value.description ?? submitFieldErrors.value.description),
-    specialties: errorMessage('specialties', errors.value.specialties ?? submitFieldErrors.value.specialties),
-    modalities: errorMessage('modalities', errors.value.modalities ?? submitFieldErrors.value.modalities),
-    city: errorMessage('city', errors.value.city ?? submitFieldErrors.value.city),
-    state: errorMessage('state', errors.value.state ?? submitFieldErrors.value.state),
-    servicePrice: errorMessage('servicePrice', errors.value.servicePrice ?? submitFieldErrors.value.servicePrice),
-    cref: errorMessage('cref', errors.value.cref ?? submitFieldErrors.value.cref),
-    availability: errorMessage('availability', errors.value.availability ?? submitFieldErrors.value.availability),
-    experienceYears: errorMessage('experienceYears', errors.value.experienceYears ?? submitFieldErrors.value.experienceYears),
-  }))
 
   async function handleSubmit() {
     errors.value = {}
@@ -109,17 +88,30 @@ export function useFTTrainerInfoForm(trainer: Ref<PersonalTrainer | null>) {
     const updated = await update(payload)
     if (updated) {
       setTrainer(updated)
+      toast.success(t('dashboard.info.success'))
+      return
     }
+
+    applyApiError({
+      parsed: {
+        message: apiError.value ?? 'dashboard.info.errors.submitFailed',
+        fieldErrors: apiFieldErrors.value,
+      },
+      errors,
+      toast,
+      translate: t,
+      translator: (field, code) => errorMessage(field, code),
+      fallbackKey: 'dashboard.info.errors.submitFailed',
+    })
   }
 
   return {
     form,
+    errors,
+    errorMessage,
     specialtyItems,
     modalityItems,
-    fieldErrors,
     pending,
-    success,
-    submitError,
     handleSubmit,
   }
 }

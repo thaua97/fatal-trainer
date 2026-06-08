@@ -1,0 +1,36 @@
+{
+  "adminUserActionConfirm": {
+    "tile": "Admin",
+    "cancel": "Cancelar",
+    "deactivate": {
+      "title": "¿Desactivar a {name}?",
+      "subtitle": "El usuario no podrá acceder a la plataforma hasta ser reactivado.",
+      "confirm": "Desactivar usuario"
+    },
+    "activate": {
+      "title": "¿Reactivar a {name}?",
+      "subtitle": "El usuario volverá a tener acceso a la plataforma.",
+      "confirm": "Reactivar usuario"
+    },
+    "feature": {
+      "title": "¿Destacar a {name}?",
+      "subtitle": "Este entrenador aparecerá en el carrusel de destacados de la plataforma.",
+      "confirm": "Destacar entrenador"
+    },
+    "unfeature": {
+      "title": "¿Quitar destacado de {name}?",
+      "subtitle": "Este entrenador dejará de aparecer en el carrusel de destacados.",
+      "confirm": "Quitar destacado"
+    },
+    "impersonate": {
+      "title": "¿Acceder como {name}?",
+      "subtitle": "Verás la plataforma como este usuario. Usa el banner superior para volver a tu cuenta admin.",
+      "confirm": "Acceder como usuario"
+    },
+    "delete": {
+      "title": "¿Eliminar a {name} permanentemente?",
+      "subtitle": "Esta acción es irreversible. Todos los datos del usuario serán eliminados del sistema.",
+      "confirm": "Eliminar usuario"
+    }
+  }
+}

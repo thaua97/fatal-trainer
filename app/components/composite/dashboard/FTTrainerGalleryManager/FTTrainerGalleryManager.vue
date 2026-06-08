@@ -18,8 +18,6 @@ const {
   uploadPending,
   deletePending,
   coverPending,
-  error,
-  success,
   removeImage,
   setCover,
   onFileInputChange,
@@ -35,26 +33,6 @@ function openFilePicker() {
 
 <template>
   <div data-testid="trainer-gallery-manager">
-    <UAlert
-      v-if="success"
-      color="success"
-      variant="subtle"
-      icon="i-lucide-circle-check"
-      :title="t('dashboard.gallery.success')"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-gallery-success"
-    />
-
-    <UAlert
-      v-else-if="error"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="error"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-gallery-error"
-    />
-
     <div
       v-if="gallery.length === 0"
       class="flex flex-col items-center justify-center rounded-3xl border border-dashed border-violet-200 bg-violet-50/30 px-6 py-14 text-center"

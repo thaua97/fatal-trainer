@@ -73,6 +73,11 @@ export function countUserNotes(userId: string): number {
   return loadNotes().filter(note => note.userId === userId).length
 }
 
+export function deleteUserNotes(userId: string): void {
+  const notes = loadNotes().filter(note => note.userId !== userId)
+  saveNotes(notes)
+}
+
 export function resetNotesStore(): void {
   cachedNotes = []
   if (existsSync(NOTES_FILE)) {

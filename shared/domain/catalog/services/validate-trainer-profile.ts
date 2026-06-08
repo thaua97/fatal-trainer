@@ -5,6 +5,7 @@ import type {
   TrainerInfoPayload,
   TrainerInfoValidationErrors,
   TrainerProfileValidationResult,
+  TrainerPromotionActivationPayload,
   TrainerPromotionPayload,
   TrainerPromotionValidationErrors,
 } from '../entities/trainer-profile-payloads'
@@ -121,9 +122,15 @@ export function validateTrainerPromotion(
     return { valid: true, errors }
   }
 
-  if (!Number.isFinite(payload.discountPercent)
+  if (servicePrice <= 0) {
+    errors.active = 'noServicePrice'
+  }
+
+  if (
+    !Number.isFinite(payload.discountPercent)
     || payload.discountPercent < MIN_DISCOUNT_PERCENT
-    || payload.discountPercent > MAX_DISCOUNT_PERCENT) {
+    || payload.discountPercent > MAX_DISCOUNT_PERCENT
+  ) {
     errors.discountPercent = 'invalid'
   }
 
@@ -131,28 +138,44 @@ export function validateTrainerPromotion(
     errors.label = 'required'
   }
 
-  if (!payload.startsAt) {
-    errors.startsAt = 'required'
-  } else if (!isValidDateString(payload.startsAt)) {
+  if (!payload.startsAt || !isValidDateString(payload.startsAt)) {
     errors.startsAt = 'invalid'
   }
 
-  if (!payload.endsAt) {
-    errors.endsAt = 'required'
-  } else if (!isValidDateString(payload.endsAt)) {
+  if (!payload.endsAt || !isValidDateString(payload.endsAt)) {
     errors.endsAt = 'invalid'
   } else if (payload.startsAt && isValidDateString(payload.startsAt) && payload.endsAt < payload.startsAt) {
     errors.endsAt = 'beforeStart'
   }
 
   if (payload.maxRedemptions != null) {
-    if (!Number.isInteger(payload.maxRedemptions) || payload.maxRedemptions < 1) {
+    if (!Number.isFinite(payload.maxRedemptions) || payload.maxRedemptions < 1) {
       errors.maxRedemptions = 'invalid'
     }
   }
 
+  return {
+    valid: Object.keys(errors).length === 0,
+    errors,
+  }
+}
+
+export function validateTrainerPromotionActivation(
+  payload: TrainerPromotionActivationPayload,
+  servicePrice: number,
+): TrainerProfileValidationResult<TrainerPromotionValidationErrors> {
+  const errors: TrainerPromotionValidationErrors = {}
+
+  if (payload.templateId === null) {
+    return { valid: true, errors }
+  }
+
+  if (!payload.templateId?.trim()) {
+    errors.templateId = 'required'
+  }
+
   if (servicePrice <= 0) {
-    errors.active = 'noServicePrice'
+    errors.templateId = 'noServicePrice'
   }
 
   return {

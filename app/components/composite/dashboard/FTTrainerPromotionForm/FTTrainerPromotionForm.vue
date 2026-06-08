@@ -13,10 +13,7 @@ const {
   form,
   unlimitedRedemptions,
   labelItems,
-  fieldErrors,
   pending,
-  success,
-  submitError,
   previewServicePrice,
   previewPromoPrice,
   previewDiscountPercent,
@@ -30,26 +27,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
 
 <template>
   <div data-testid="trainer-promotion-form">
-    <UAlert
-      v-if="success"
-      color="success"
-      variant="subtle"
-      icon="i-lucide-circle-check"
-      :title="t('dashboard.promotion.success')"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-promotion-success"
-    />
-
-    <UAlert
-      v-else-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="t('dashboard.promotion.errors.submitFailed')"
-      class="mb-6 rounded-2xl"
-      data-testid="trainer-promotion-error"
-    />
-
     <form
       class="flex flex-col gap-5"
       data-testid="trainer-promotion-form-fields"
@@ -97,7 +74,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
       <template v-if="form.active">
         <UFormField
           :label="t('dashboard.promotion.fields.discountPercent')"
-          :error="fieldErrors.discountPercent"
           required
         >
           <div class="flex items-center gap-4">
@@ -118,7 +94,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
 
         <UFormField
           :label="t('dashboard.promotion.fields.label')"
-          :error="fieldErrors.label"
           required
         >
           <USelect
@@ -133,7 +108,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
         <div class="grid gap-5 sm:grid-cols-2">
           <UFormField
             :label="t('dashboard.promotion.fields.startsAt')"
-            :error="fieldErrors.startsAt"
             required
           >
             <FTDatePicker
@@ -146,7 +120,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
 
           <UFormField
             :label="t('dashboard.promotion.fields.endsAt')"
-            :error="fieldErrors.endsAt"
             required
           >
             <FTDatePicker
@@ -161,7 +134,6 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
 
         <UFormField
           :label="t('dashboard.promotion.fields.maxRedemptions')"
-          :error="fieldErrors.maxRedemptions"
         >
           <div class="flex flex-col gap-3">
             <UCheckbox

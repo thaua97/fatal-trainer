@@ -5,6 +5,7 @@ import {
   setSessionCookie,
 } from '../../../mocks/mock-admin-store'
 import { createSession } from '../../../mocks/mock-user-store'
+import { throwInvalidCredentials, throwValidationError } from '../../../utils/api-error'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody<LoginRequest>(event)
@@ -15,21 +16,13 @@ export default defineEventHandler(async (event) => {
   })
 
   if (!validation.valid) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: { message: 'Validation failed', errors: validation.errors },
-    })
+    throwValidationError(validation.errors)
   }
 
   const user = adminLogin(body.email, body.password)
 
   if (!user) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Invalid credentials',
-      data: { message: 'Invalid credentials' },
-    })
+    throwInvalidCredentials()
   }
 
   const token = createSession(user.id)

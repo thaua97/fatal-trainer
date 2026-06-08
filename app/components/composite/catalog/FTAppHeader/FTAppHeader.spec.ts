@@ -96,9 +96,26 @@ describe('FTAppHeader', () => {
     expect(wrapper.find('[data-testid="app-header-auth-login"]').exists()).toBe(false)
   })
 
-  it('renders mobile menu trigger', async () => {
+  it('renders mobile menu trigger for guests', async () => {
+    authState.initialized.value = true
+
     const wrapper = await mountHeader()
     expect(wrapper.find('[data-testid="app-header-menu"]').exists()).toBe(true)
+  })
+
+  it('hides mobile menu trigger when authenticated', async () => {
+    authState.initialized.value = true
+    authState.user.value = {
+      id: '1',
+      name: 'Thauã Borges',
+      email: 'test@example.com',
+      role: 'student',
+      isActive: true,
+    }
+
+    const wrapper = await mountHeader()
+    expect(wrapper.find('[data-testid="app-header-menu"]').exists()).toBe(false)
+    expect(wrapper.find('[data-testid="app-header-user-menu"]').exists()).toBe(true)
   })
 
   it('applies blur header styles without border', async () => {

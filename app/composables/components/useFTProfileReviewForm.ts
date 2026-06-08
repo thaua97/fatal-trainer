@@ -3,7 +3,9 @@ import { validateReview } from '#shared/domain/review/services/validate-review'
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { TrainerReviewItem, UpsertReviewRequest } from '#shared/types/api'
 import { reviewsService } from '~/services/reviews/reviews.service'
-import { extractApiErrors } from '~/services/api/extract-api-errors'
+import { parseApiError } from '~/services/api/extract-api-errors'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): ReviewPayload {
   return {
@@ -14,15 +16,16 @@ function emptyForm(): ReviewPayload {
 
 export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
   const { t } = useI18n()
+  const toast = useFTToast()
   const route = useRoute()
   const { isAuthenticated, user, initialized } = useAuth()
+  const errorMessage = useFieldErrorTranslator('reviewForm.errors')
 
   const form = reactive<ReviewPayload>(emptyForm())
   const errors = ref<ReviewValidationErrors>({})
   const pending = ref(false)
   const loadingMine = ref(false)
   const submitted = ref(false)
-  const submitError = ref<string | null>(null)
   const hasExistingReview = ref(false)
   const mineReview = ref<TrainerReviewItem | null>(null)
   const isEditing = ref(false)
@@ -42,21 +45,6 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     const redirect = encodeURIComponent(route.fullPath)
     return `/login?redirect=${redirect}`
   })
-
-  function errorMessage(field: ReviewField, code?: string): string | undefined {
-    if (!code) {
-      return undefined
-    }
-
-    const key = `reviewForm.errors.${field}.${code}`
-    const translated = t(key)
-    return translated === key ? code : translated
-  }
-
-  const fieldErrors = computed(() => ({
-    rating: errorMessage('rating', errors.value.rating),
-    comment: errorMessage('comment', errors.value.comment),
-  }))
 
   const submitLabel = computed(() =>
     hasExistingReview.value ? t('reviewForm.update') : t('reviewForm.submit'),
@@ -93,7 +81,6 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
       mineReview.value = null
       isEditing.value = false
       submitted.value = false
-      submitError.value = null
       errors.value = {}
 
       if (showForm.value) {
@@ -105,7 +92,6 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
 
   async function handleSubmit(): Promise<boolean> {
     errors.value = {}
-    submitError.value = null
 
     const validation = validateReview(form)
     if (!validation.valid) {
@@ -125,14 +111,17 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
       hasExistingReview.value = true
       isEditing.value = false
       submitted.value = true
+      toast.success(t('reviewForm.successTitle'), t('reviewForm.successDescription'))
       return true
     } catch (err: unknown) {
-      const apiErrors = extractApiErrors<ReviewValidationErrors>(err)
-      if (Object.keys(apiErrors).length > 0) {
-        errors.value = apiErrors
-      } else {
-        submitError.value = t('reviewForm.errors.submitFailed')
-      }
+      applyApiError({
+        parsed: parseApiError(err, 'reviewForm.errors.submitFailed'),
+        errors,
+        toast,
+        translate: t,
+        translator: (field, code) => errorMessage(field, code),
+        fallbackKey: 'reviewForm.errors.submitFailed',
+      })
       return false
     } finally {
       pending.value = false
@@ -152,7 +141,6 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     form.comment = mineReview.value.comment
     isEditing.value = true
     submitted.value = false
-    submitError.value = null
     errors.value = {}
   }
 
@@ -160,17 +148,16 @@ export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
     Object.assign(form, emptyForm())
     isEditing.value = false
     submitted.value = false
-    submitError.value = null
     errors.value = {}
   }
 
   return {
     form,
-    fieldErrors,
+    errors,
+    errorMessage,
     pending,
     loadingMine,
     submitted,
-    submitError,
     hasExistingReview,
     isEditing,
     mineReviewId,

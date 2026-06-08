@@ -5,15 +5,17 @@ const features = computed(() => [
   {
     key: 'verified',
     icon: 'i-lucide-shield-check',
-    cta: null,
-    ctaIcon: null,
-    variant: 'default' as const,
+    cta: 'landing.features.verified.cta',
+    ctaIcon: 'i-lucide-plus',
+    to: '/denuncia',
+    variant: 'accent' as const,
   },
   {
     key: 'modalities',
     icon: 'i-lucide-dumbbell',
     cta: 'landing.features.modalities.cta',
     ctaIcon: 'i-lucide-plus',
+    to: '/personal-trainers',
     variant: 'accent' as const,
   },
   {
@@ -21,6 +23,7 @@ const features = computed(() => [
     icon: 'i-lucide-users',
     cta: 'landing.features.offer.cta',
     ctaIcon: 'i-lucide-arrow-up-right',
+    to: '/personal-trainers',
     variant: 'card' as const,
   },
 ])
@@ -65,24 +68,9 @@ const features = computed(() => [
         {{ t(`landing.features.${feature.key}.description`) }}
       </p>
 
-      <div v-if="feature.key === 'verified'" class="mt-6">
-        <button
-          type="button"
-          class="inline-flex items-center gap-3 text-sm font-semibold text-slate-800 transition-opacity hover:opacity-80"
-        >
-          <span
-            class="inline-flex size-9 items-center justify-center rounded-full"
-            :style="{ backgroundColor: 'var(--ft-landing-accent-orange)' }"
-          >
-            <UIcon name="i-lucide-play" class="size-4 text-white" />
-          </span>
-          {{ t('landing.features.verified.cta') }}
-        </button>
-      </div>
-
       <UButton
-        v-else-if="feature.cta && feature.variant === 'accent'"
-        to="/personal-trainers"
+        v-if="feature.cta && feature.variant === 'accent'"
+        :to="feature.to"
         size="md"
         class="mt-6 w-fit rounded-full bg-white px-6 font-semibold text-violet-700 ring-1 ring-violet-200 hover:bg-violet-50"
       >
@@ -92,7 +80,7 @@ const features = computed(() => [
 
       <UButton
         v-else-if="feature.cta"
-        to="/personal-trainers"
+        :to="feature.to"
         variant="outline"
         size="md"
         class="mt-6 w-fit rounded-full border-white/40 bg-white/10 px-6 font-semibold text-white hover:bg-white/15"

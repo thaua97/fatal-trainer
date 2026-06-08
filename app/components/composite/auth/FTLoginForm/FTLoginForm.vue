@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const {
   form,
-  fieldErrors,
+  errors,
+  errorMessage,
   pending,
-  submitError,
   showPassword,
   handleSubmit,
   handleForgotPassword,
@@ -19,16 +19,6 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
     class="w-full"
     data-testid="login-form"
   >
-    <UAlert
-      v-if="submitError"
-      color="error"
-      variant="subtle"
-      icon="i-lucide-circle-alert"
-      :title="submitError"
-      class="mb-5 w-full rounded-2xl"
-      data-testid="login-error-alert"
-    />
-
     <form
       class="flex w-full flex-col gap-5"
       data-testid="login-form-fields"
@@ -37,7 +27,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.login.email')"
-        :error="fieldErrors.email"
+        :error="errorMessage('email', errors.email)"
         required
       >
         <UInput
@@ -55,7 +45,7 @@ const { authFieldUi, inputSize } = useFTFormFieldUi()
       <UFormField
         class="w-full"
         :label="t('auth.login.password')"
-        :error="fieldErrors.password"
+        :error="errorMessage('password', errors.password)"
         required
       >
         <UInput

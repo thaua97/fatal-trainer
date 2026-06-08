@@ -1,3 +1,4 @@
+import { throwForbidden, throwNotFound, throwValidationError } from '../../../utils/api-error'
 import type { UpdateAdminUserRequest } from '#shared/types/admin'
 import { computeFieldChanges } from '#shared/domain/admin/services/compute-field-changes'
 import { appendActivity } from '../../../mocks/mock-user-activity-store'
@@ -15,19 +16,19 @@ export default defineEventHandler(async (event) => {
   const user = getSessionUser(token)
 
   if (!user || user.role !== 'admin') {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
+    throwForbidden()
   }
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   const body = await readBody<UpdateAdminUserRequest>(event)
   const existing = findUserById(id)
 
   if (!existing) {
-    throw createError({ statusCode: 404, statusMessage: 'User not found' })
+    throwNotFound()
   }
 
   const beforeRecord: Record<string, unknown> = {
@@ -41,7 +42,7 @@ export default defineEventHandler(async (event) => {
   const updated = updateAdminUser(id, body)
 
   if (!updated) {
-    throw createError({ statusCode: 404, statusMessage: 'User not found' })
+    throwNotFound()
   }
 
   const afterRecord: Record<string, unknown> = {

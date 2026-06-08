@@ -1,6 +1,6 @@
 <script setup lang="ts">
 withDefaults(defineProps<{
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }>(), {
   size: 'md',
 })
@@ -9,6 +9,7 @@ const sizeClasses = {
   sm: 'text-base gap-1',
   md: 'text-lg gap-1.5',
   lg: 'text-xl gap-2',
+  xl: 'text-2xl gap-2.5',
 } as const
 </script>
 
@@ -20,7 +21,7 @@ const sizeClasses = {
   >
     <svg
       class="shrink-0 text-violet-600 transition-transform duration-300 ease-out group-hover:-rotate-[18deg] -rotate-[42deg]"
-      :class="size === 'sm' ? 'size-4' : size === 'lg' ? 'size-6' : 'size-5'"
+      :class="size === 'sm' ? 'size-4' : size === 'lg' ? 'size-6' : size === 'xl' ? 'size-8' : 'size-5'"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

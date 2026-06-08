@@ -1,3 +1,4 @@
+import { throwNotFound, throwValidationError } from '../../../../utils/api-error'
 import type { AdminUserActivityQuery } from '#shared/types/admin'
 import { listUserActivity } from '../../../../mocks/mock-user-activity-store'
 import { findUserById } from '../../../../mocks/mock-user-store'
@@ -8,11 +9,11 @@ export default defineEventHandler((event) => {
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   if (!findUserById(id)) {
-    throw createError({ statusCode: 404, statusMessage: 'User not found' })
+    throwNotFound()
   }
 
   const query = getQuery(event) as AdminUserActivityQuery

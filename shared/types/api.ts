@@ -80,13 +80,21 @@ export interface UpdateTrainerProfileRequest {
     experienceYears: number
   }
   promotion?: {
-    active: boolean
-    discountPercent: number
+    templateId: string | null
+  }
+}
+
+export interface PromotionTemplatesResponse {
+  items: Array<{
+    id: string
+    name: string
     label: string
+    discountPercent: number
     startsAt: string
     endsAt: string
-    maxRedemptions: number | null
-  }
+    maxRedemptions?: number
+    isActive: boolean
+  }>
 }
 
 export interface UploadGalleryResponse {

@@ -1,3 +1,4 @@
+import { throwNotFound, throwValidationError } from '../../../utils/api-error'
 import { getAdminUserById } from '../../../mocks/mock-admin-store'
 import { requireAdminSession } from '../../../utils/require-admin-session'
 
@@ -6,12 +7,12 @@ export default defineEventHandler((event) => {
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   const user = getAdminUserById(id)
   if (!user) {
-    throw createError({ statusCode: 404, statusMessage: 'User not found' })
+    throwNotFound()
   }
 
   return { user }

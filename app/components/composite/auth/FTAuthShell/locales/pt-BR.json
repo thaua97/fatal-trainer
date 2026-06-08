@@ -54,7 +54,8 @@
         "required": "Informe seu e-mail.",
         "invalid": "Informe um e-mail válido.",
         "invalidCredentials": "E-mail ou senha incorretos.",
-        "alreadyRegistered": "Este e-mail já está cadastrado."
+        "alreadyRegistered": "Este e-mail já está cadastrado.",
+        "alreadyExists": "Este e-mail já está cadastrado."
       },
       "password": {
         "required": "Informe sua senha.",

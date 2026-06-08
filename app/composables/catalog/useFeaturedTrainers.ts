@@ -5,6 +5,8 @@ import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-t
 import { useCatalogCityGate } from '~/composables/catalog/useCatalogCityGate'
 import { useTrainerFilters } from '~/composables/catalog/useTrainerFilters'
 import { personalTrainersService } from '~/services/catalog/personal-trainers.service'
+import { parseApiError } from '~/services/api/extract-api-errors'
+import { resolveToastMessage } from '~/composables/core/useFTToast'
 
 const CAROUSEL_MAX_SLIDES = 6
 const RATED_CANDIDATES_PAGE_SIZE = 12
@@ -15,6 +17,8 @@ const RATING_SORT = {
 }
 
 export function useFeaturedTrainers() {
+  const { t } = useI18n()
+  const toast = useFTToast()
   const { filters } = useTrainerFilters()
   const { fetchEnabled } = useCatalogCityGate()
 
@@ -80,6 +84,8 @@ export function useFeaturedTrainers() {
       }
 
       error.value = err instanceof Error ? err : new Error('fetchFailed')
+      const parsed = parseApiError(err, 'error.network')
+      toast.error(resolveToastMessage(t, parsed.message))
       items.value = []
       mode.value = 'hidden'
       loaded.value = true
@@ -121,6 +127,7 @@ export function useFeaturedTrainers() {
   }
 
   const trainers = computed(() => items.value)
+  const errorMessage = computed(() => error.value ? t('error.network') : null)
   const status = computed(() => {
     if (pending.value) {
       return 'pending'
@@ -139,6 +146,7 @@ export function useFeaturedTrainers() {
     fetchEnabled,
     status,
     error,
+    errorMessage,
     refresh: () => requestFetch(true),
   }
 }

@@ -172,3 +172,65 @@ export interface AdminUserActivityQuery {
   page?: number
   pageSize?: number
 }
+
+export type PromotionTemplateStatus = 'active' | 'upcoming' | 'expired'
+
+export interface AdminPromotionTemplateListItem {
+  id: string
+  name: string
+  label: string
+  discountPercent: number
+  startsAt: string
+  endsAt: string
+  maxRedemptions?: number
+  isActive: boolean
+  activationCount: number
+  createdAt: string
+}
+
+export interface AdminPromotionListResponse {
+  items: AdminPromotionTemplateListItem[]
+  total: number
+  page: number
+  pageSize: number
+  hasMore: boolean
+}
+
+export interface AdminPromotionsQuery {
+  page?: number
+  pageSize?: number
+  search?: string
+  isActive?: boolean
+  status?: PromotionTemplateStatus
+}
+
+export interface CreateAdminPromotionRequest {
+  name: string
+  label: string
+  discountPercent: number
+  startsAt: string
+  endsAt: string
+  maxRedemptions?: number | null
+  isActive?: boolean
+}
+
+export interface UpdateAdminPromotionRequest {
+  name?: string
+  label?: string
+  discountPercent?: number
+  startsAt?: string
+  endsAt?: string
+  maxRedemptions?: number | null
+  isActive?: boolean
+}
+
+export interface PromotionTemplateListItem {
+  id: string
+  name: string
+  label: string
+  discountPercent: number
+  startsAt: string
+  endsAt: string
+  maxRedemptions?: number
+  isActive: boolean
+}

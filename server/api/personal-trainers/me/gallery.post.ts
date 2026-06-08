@@ -1,3 +1,4 @@
+import { throwNotFound, throwValidationError } from '../../../utils/api-error'
 import { randomUUID } from 'node:crypto'
 import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -24,46 +25,27 @@ export default defineEventHandler(async (event) => {
   const trainer = findTrainerByUserId(user.id)
 
   if (!trainer) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Trainer profile not found',
-    })
+    throwNotFound()
   }
 
   const gallery = trainer.gallery ?? []
   if (gallery.length >= MAX_GALLERY_IMAGES) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Gallery limit reached',
-      data: { message: 'Gallery limit reached', errors: { gallery: 'limit' } },
-    })
+    throwValidationError({ gallery: 'limit' })
   }
 
   const formData = await readMultipartFormData(event)
   const filePart = formData?.find((part) => part.name === 'file' && part.data)
 
   if (!filePart?.data || !filePart.type) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: { message: 'Validation failed', errors: { file: 'required' } },
-    })
+    throwValidationError({ file: 'required' })
   }
 
   if (!ALLOWED_TYPES.has(filePart.type)) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: { message: 'Validation failed', errors: { file: 'invalidType' } },
-    })
+    throwValidationError({ file: 'invalidType' })
   }
 
   if (filePart.data.length > MAX_FILE_SIZE) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Validation failed',
-      data: { message: 'Validation failed', errors: { file: 'tooLarge' } },
-    })
+    throwValidationError({ file: 'tooLarge' })
   }
 
   const uploadDir = ensureTrainerUploadDir(trainer.id)

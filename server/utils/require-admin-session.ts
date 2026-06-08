@@ -4,16 +4,14 @@ import {
   getSessionTokenFromEvent,
   getSessionUser,
 } from '../mocks/mock-admin-store'
+import { throwForbidden } from './api-error'
 
 export function requireAdminSession(event: H3Event): AuthUser {
   const token = getSessionTokenFromEvent(event)
   const user = getSessionUser(token)
 
   if (!user || user.role !== 'admin') {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Forbidden',
-    })
+    throwForbidden()
   }
 
   return user

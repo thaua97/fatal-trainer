@@ -1,26 +1,24 @@
 import type { LoginPayload, LoginValidationErrors } from '#shared/domain/auth/entities/auth-payloads'
 import { validateLogin } from '#shared/domain/auth/services/validate-login'
 import type { LoginRequest } from '#shared/types/api'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): LoginPayload {
   return { email: '', password: '' }
 }
 
 export function useFTAdminLoginForm() {
+  const { t } = useI18n()
+  const toast = useFTToast()
   const form = reactive<LoginPayload>(emptyForm())
   const errors = ref<LoginValidationErrors>({})
-  const submitError = ref<string | null>(null)
   const showPassword = ref(false)
   const { login, pending } = useAdminAuth()
-
-  const fieldErrors = computed(() => ({
-    email: errors.value.email ? 'E-mail inválido' : undefined,
-    password: errors.value.password ? 'Senha obrigatória' : undefined,
-  }))
+  const errorMessage = useFieldErrorTranslator('admin.errors')
 
   async function handleSubmit() {
     errors.value = {}
-    submitError.value = null
 
     const validation = validateLogin(form)
     if (!validation.valid) {
@@ -35,15 +33,25 @@ export function useFTAdminLoginForm() {
 
     const result = await login(payload)
     if (!result.success) {
-      submitError.value = result.error ?? 'Falha ao entrar.'
+      applyApiError({
+        parsed: {
+          message: result.error ?? 'admin.errors.loginFailed',
+          fieldErrors: result.errors ?? {},
+        },
+        errors,
+        toast,
+        translate: t,
+        translator: (field, code) => errorMessage(field, code),
+        fallbackKey: 'admin.errors.loginFailed',
+      })
     }
   }
 
   return {
     form,
-    fieldErrors,
+    errors,
+    errorMessage,
     pending,
-    submitError,
     showPassword,
     handleSubmit,
   }

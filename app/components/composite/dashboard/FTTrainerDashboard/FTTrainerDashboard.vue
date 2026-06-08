@@ -79,7 +79,7 @@ const tabItems = computed(() => [
           :key="item.value"
           class="mt-6 transition-opacity duration-200"
         >
-          <FTTrainerPromotionForm :trainer="trainer" />
+          <FTTrainerPromotionPicker :trainer="trainer" />
         </div>
       </template>
     </UTabs>

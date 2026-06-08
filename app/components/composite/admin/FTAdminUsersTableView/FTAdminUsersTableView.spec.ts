@@ -31,6 +31,31 @@ describe('FTAdminUsersTableView', () => {
     expect(wrapper.text()).toContain('Carlos Personal')
     expect(wrapper.text()).toContain('Pelotas, RS')
     expect(wrapper.text()).toContain('personal@fataltrainer.com')
+    expect(wrapper.text()).toContain('Destaque')
     expect(wrapper.text()).not.toContain('por sessão')
+  })
+
+  it('shows featured toggle only for personal trainers', () => {
+    const wrapper = mountFT(FTAdminUsersTableView, {
+      props: {
+        items: [
+          ...items,
+          {
+            id: '2',
+            name: 'Ana Aluno',
+            email: 'ana@test.com',
+            role: 'student' as const,
+            isActive: true,
+            featured: false,
+            createdAt: '2026-06-06T00:00:00.000Z',
+          },
+        ],
+        roleLabel,
+      },
+    })
+
+    const switches = wrapper.findAllComponents({ name: 'USwitch' })
+    expect(switches).toHaveLength(3)
+    expect(wrapper.emitted('toggleFeatured')).toBeUndefined()
   })
 })

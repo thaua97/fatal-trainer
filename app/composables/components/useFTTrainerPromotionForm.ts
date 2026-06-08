@@ -4,6 +4,8 @@ import { PROMOTION_LABELS } from '#shared/domain/catalog/constants/catalog-optio
 import { computePromoPrice, getDiscountPercent } from '#shared/domain/catalog/services/trainer-pricing'
 import { validateTrainerPromotion } from '#shared/domain/catalog/services/validate-trainer-profile'
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
+import { applyApiError } from '~/composables/core/applyApiError'
+import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
 
 function emptyForm(): TrainerPromotionPayload {
   return {
@@ -34,8 +36,10 @@ function trainerToPromotionForm(trainer: PersonalTrainer): TrainerPromotionPaylo
 
 export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) {
   const { t } = useI18n()
-  const { update, pending, success, error: submitError, fieldErrors: submitFieldErrors, resetStatus } = useUpdateTrainerProfile()
+  const toast = useFTToast()
+  const { update, pending, error: apiError, fieldErrors: apiFieldErrors, resetStatus } = useUpdateTrainerProfile()
   const { setTrainer } = useMyTrainerProfile()
+  const errorMessage = useFieldErrorTranslator('dashboard.promotion.errors')
 
   const form = reactive<TrainerPromotionPayload>(emptyForm())
   const errors = ref<TrainerPromotionValidationErrors>({})
@@ -85,25 +89,6 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
     return t('dashboard.promotion.redemptionsLimited', { count, max })
   })
 
-  function errorMessage(field: TrainerPromotionField, code?: string): string | undefined {
-    if (!code) {
-      return undefined
-    }
-
-    const key = `dashboard.promotion.errors.${field}.${code}`
-    const translated = t(key)
-    return translated === key ? code : translated
-  }
-
-  const fieldErrors = computed(() => ({
-    discountPercent: errorMessage('discountPercent', errors.value.discountPercent ?? submitFieldErrors.value.discountPercent),
-    label: errorMessage('label', errors.value.label ?? submitFieldErrors.value.label),
-    startsAt: errorMessage('startsAt', errors.value.startsAt ?? submitFieldErrors.value.startsAt),
-    endsAt: errorMessage('endsAt', errors.value.endsAt ?? submitFieldErrors.value.endsAt),
-    maxRedemptions: errorMessage('maxRedemptions', errors.value.maxRedemptions ?? submitFieldErrors.value.maxRedemptions),
-    active: errorMessage('active', errors.value.active ?? submitFieldErrors.value.active),
-  }))
-
   async function handleSubmit() {
     errors.value = {}
     resetStatus()
@@ -130,17 +115,30 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
     const updated = await update(payload)
     if (updated) {
       setTrainer(updated)
+      toast.success(t('dashboard.promotion.success'))
+      return
     }
+
+    applyApiError({
+      parsed: {
+        message: apiError.value ?? 'dashboard.promotion.errors.submitFailed',
+        fieldErrors: apiFieldErrors.value,
+      },
+      errors,
+      toast,
+      translate: t,
+      translator: (field, code) => errorMessage(field, code),
+      fallbackKey: 'dashboard.promotion.errors.submitFailed',
+    })
   }
 
   return {
     form,
+    errors,
+    errorMessage,
     unlimitedRedemptions,
     labelItems,
-    fieldErrors,
     pending,
-    success,
-    submitError,
     previewServicePrice,
     previewPromoPrice,
     previewDiscountPercent,

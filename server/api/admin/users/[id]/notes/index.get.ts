@@ -1,3 +1,4 @@
+import { throwNotFound, throwValidationError } from '../../../../../utils/api-error'
 import { listUserNotes } from '../../../../../mocks/mock-user-notes-store'
 import { findUserById } from '../../../../../mocks/mock-user-store'
 import { requireAdminSession } from '../../../../../utils/require-admin-session'
@@ -7,11 +8,11 @@ export default defineEventHandler((event) => {
 
   const id = getRouterParam(event, 'id')
   if (!id) {
-    throw createError({ statusCode: 400, statusMessage: 'Missing id' })
+    throwValidationError({ id: 'required' })
   }
 
   if (!findUserById(id)) {
-    throw createError({ statusCode: 404, statusMessage: 'User not found' })
+    throwNotFound()
   }
 
   return listUserNotes(id)

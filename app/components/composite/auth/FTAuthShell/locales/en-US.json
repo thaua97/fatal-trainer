@@ -54,7 +54,8 @@
         "required": "Enter your email.",
         "invalid": "Enter a valid email.",
         "invalidCredentials": "Incorrect email or password.",
-        "alreadyRegistered": "This email is already registered."
+        "alreadyRegistered": "This email is already registered.",
+        "alreadyExists": "This email is already registered."
       },
       "password": {
         "required": "Enter your password.",

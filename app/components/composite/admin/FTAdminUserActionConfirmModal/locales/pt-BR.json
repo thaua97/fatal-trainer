@@ -1,0 +1,36 @@
+{
+  "adminUserActionConfirm": {
+    "tile": "Admin",
+    "cancel": "Cancelar",
+    "deactivate": {
+      "title": "Desativar {name}?",
+      "subtitle": "O usuário não poderá mais acessar a plataforma até ser reativado.",
+      "confirm": "Desativar usuário"
+    },
+    "activate": {
+      "title": "Reativar {name}?",
+      "subtitle": "O usuário voltará a ter acesso à plataforma.",
+      "confirm": "Reativar usuário"
+    },
+    "feature": {
+      "title": "Destacar {name}?",
+      "subtitle": "Este personal aparecerá no carrossel de destaques da plataforma.",
+      "confirm": "Destacar personal"
+    },
+    "unfeature": {
+      "title": "Remover destaque de {name}?",
+      "subtitle": "Este personal deixará de aparecer no carrossel de destaques.",
+      "confirm": "Remover destaque"
+    },
+    "impersonate": {
+      "title": "Acessar como {name}?",
+      "subtitle": "Você verá a plataforma como este usuário. Use o banner no topo para voltar à sua conta admin.",
+      "confirm": "Acessar como usuário"
+    },
+    "delete": {
+      "title": "Excluir {name} permanentemente?",
+      "subtitle": "Esta ação é irreversível. Todos os dados do usuário serão removidos do sistema.",
+      "confirm": "Excluir usuário"
+    }
+  }
+}

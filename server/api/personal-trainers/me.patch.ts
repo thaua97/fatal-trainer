@@ -1,6 +1,9 @@
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
-import type { TrainerInfoPayload, TrainerPromotionPayload } from '#shared/domain/catalog/entities/trainer-profile-payloads'
-import { validateTrainerInfo, validateTrainerPromotion } from '#shared/domain/catalog/services/validate-trainer-profile'
+import type { TrainerInfoPayload, TrainerPromotionActivationPayload } from '#shared/domain/catalog/entities/trainer-profile-payloads'
+import {
+  validateTrainerInfo,
+  validateTrainerPromotionActivation,
+} from '#shared/domain/catalog/services/validate-trainer-profile'
 import {
   findTrainerByUserId,
   updateTrainerInfo,
@@ -10,6 +13,7 @@ import { updateUserInStore } from '../../mocks/mock-user-store'
 import { computeFieldChanges } from '#shared/domain/admin/services/compute-field-changes'
 import { appendActivity } from '../../mocks/mock-user-activity-store'
 import { requireTrainerSession } from '../../utils/require-trainer-session'
+import { findPromotionTemplateById } from '../../mocks/mock-promotion-templates'
 
 const TRAINER_INFO_FIELDS = [
   'name', 'contactPhone', 'profession', 'description', 'specialties',
@@ -17,7 +21,7 @@ const TRAINER_INFO_FIELDS = [
 ]
 
 const PROMOTION_FIELDS = [
-  'active', 'discountPercent', 'label', 'startsAt', 'endsAt', 'maxRedemptions', 'promoPrice',
+  'templateId', 'discountPercent', 'label', 'startsAt', 'endsAt', 'maxRedemptions', 'promoPrice',
 ]
 
 export default defineEventHandler(async (event) => {
@@ -25,21 +29,14 @@ export default defineEventHandler(async (event) => {
   const trainer = findTrainerByUserId(user.id)
 
   if (!trainer) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'Trainer profile not found',
-    })
+    throwNotFound()
   }
 
   const body = await readBody<UpdateTrainerProfileRequest>(event)
 
   if (body.section === 'info') {
     if (!body.info) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Validation failed',
-        data: { message: 'Validation failed', errors: { info: 'required' } },
-      })
+      throwValidationError({ info: 'required' })
     }
 
     const payload: TrainerInfoPayload = {
@@ -59,11 +56,7 @@ export default defineEventHandler(async (event) => {
 
     const validation = validateTrainerInfo(payload)
     if (!validation.valid) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Validation failed',
-        data: { message: 'Validation failed', errors: validation.errors },
-      })
+      throwValidationError(validation.errors)
     }
 
     const beforeRecord: Record<string, unknown> = {
@@ -123,34 +116,33 @@ export default defineEventHandler(async (event) => {
 
   if (body.section === 'promotion') {
     if (!body.promotion) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Validation failed',
-        data: { message: 'Validation failed', errors: { promotion: 'required' } },
-      })
+      throwValidationError({ promotion: 'required' })
     }
 
-    const payload: TrainerPromotionPayload = {
-      active: Boolean(body.promotion.active),
-      discountPercent: Number(body.promotion.discountPercent),
-      label: body.promotion.label ?? '',
-      startsAt: body.promotion.startsAt ?? '',
-      endsAt: body.promotion.endsAt ?? '',
-      maxRedemptions: body.promotion.maxRedemptions ?? null,
+    const payload: TrainerPromotionActivationPayload = {
+      templateId: body.promotion.templateId ?? null,
     }
 
-    const validation = validateTrainerPromotion(payload, trainer.servicePrice)
+    const validation = validateTrainerPromotionActivation(payload, trainer.servicePrice)
     if (!validation.valid) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Validation failed',
-        data: { message: 'Validation failed', errors: validation.errors },
-      })
+      throwValidationError(validation.errors)
+    }
+
+    if (payload.templateId) {
+      const template = findPromotionTemplateById(payload.templateId)
+      if (!template || !template.isActive) {
+        throwNotFound()
+      }
+
+      const today = new Date().toISOString().slice(0, 10)
+      if (template.endsAt < today) {
+        throwValidationError({ templateId: 'expired' })
+      }
     }
 
     const promotion = trainer.promotion
     const beforeRecord: Record<string, unknown> = {
-      active: Boolean(promotion),
+      templateId: promotion?.templateId ?? null,
       discountPercent: promotion?.discountPercent ?? 0,
       label: promotion?.label ?? '',
       startsAt: promotion?.startsAt ?? '',
@@ -162,12 +154,12 @@ export default defineEventHandler(async (event) => {
     const updated = updateTrainerPromotion(trainer.id, payload)
 
     const afterRecord: Record<string, unknown> = {
-      active: payload.active,
-      discountPercent: payload.discountPercent,
-      label: payload.label.trim(),
-      startsAt: payload.startsAt,
-      endsAt: payload.endsAt,
-      maxRedemptions: payload.maxRedemptions,
+      templateId: updated.promotion?.templateId ?? null,
+      discountPercent: updated.promotion?.discountPercent ?? 0,
+      label: updated.promotion?.label ?? '',
+      startsAt: updated.promotion?.startsAt ?? '',
+      endsAt: updated.promotion?.endsAt ?? '',
+      maxRedemptions: updated.promotion?.maxRedemptions ?? null,
       promoPrice: updated.promotion?.promoPrice ?? trainer.servicePrice,
     }
 
@@ -187,9 +179,5 @@ export default defineEventHandler(async (event) => {
     return { trainer: updated }
   }
 
-  throw createError({
-    statusCode: 400,
-    statusMessage: 'Validation failed',
-    data: { message: 'Validation failed', errors: { section: 'invalid' } },
-  })
+  throwValidationError({ section: 'invalid' })
 })

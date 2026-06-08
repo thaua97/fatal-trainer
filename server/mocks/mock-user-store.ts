@@ -111,6 +111,22 @@ export function createUserInStore(data: {
   return user
 }
 
+export function deleteUserFromStore(id: string): boolean {
+  if (!users.has(id)) {
+    return false
+  }
+
+  users.delete(id)
+
+  for (const [token, session] of sessions.entries()) {
+    if (session.userId === id) {
+      sessions.delete(token)
+    }
+  }
+
+  return true
+}
+
 export function updateUserInStore(
   id: string,
   data: Partial<Pick<StoredUser, 'name' | 'email' | 'role' | 'isActive' | 'phoneNumber' | 'avatarUrl' | 'city' | 'state'>>,
