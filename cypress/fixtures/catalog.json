@@ -3,5 +3,17 @@
   "expectedTrainerName": "Ana Silva",
   "specialtyFilter": "Musculação",
   "specialtyTestId": "specialty-filter-Musculação",
-  "noResultsSearchTerm": "zzzznonexistenttrainer9999"
+  "modalityFilter": "Presencial",
+  "modalityTestId": "modality-filter-presencial",
+  "noResultsSearchTerm": "zzzznonexistenttrainer9999",
+  "deepLinkTrainerId": "trainer-001",
+  "deepLinkTrainerName": "Ana Silva",
+  "deepLinkProfession": "Personal Trainer — Musculação",
+  "deepLinkDescriptionSnippet": "resultados sustentáveis",
+  "deepLinkCity": "São Paulo",
+  "sortPriceAsc": "Menor preço",
+  "sortRating": "Melhor avaliação",
+  "minDatasetTotal": 500,
+  "pageSize": 20,
+  "invalidTrainerId": "trainer-nonexistent-99999"
 }

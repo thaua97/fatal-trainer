@@ -23,4 +23,36 @@ describe('Catalog filters', () => {
       cy.get('[data-testid="active-filter-chips"]').should('not.exist')
     })
   })
+
+  it('applies modality filter', () => {
+    cy.fixture('catalog').then(({ modalityTestId, modalityFilter }) => {
+      cy.get(`[data-testid="${modalityTestId}"]`)
+        .scrollIntoView()
+        .click({ force: true })
+
+      cy.get('[data-testid="active-filter-chips"]')
+        .should('be.visible')
+        .and('contain.text', modalityFilter)
+
+      cy.get('[data-testid="trainer-card"]').should('have.length.at.least', 1)
+    })
+  })
+
+  it('shows empty state when filters and search have no matches', () => {
+    cy.fixture('catalog').then(({ specialtyTestId, noResultsSearchTerm }) => {
+      cy.get(`[data-testid="${specialtyTestId}"]`)
+        .scrollIntoView()
+        .click({ force: true })
+
+      cy.get('[data-testid="trainer-search"]:visible')
+        .first()
+        .clear()
+        .type(noResultsSearchTerm)
+
+      cy.wait(300)
+
+      cy.get('[data-testid="trainer-list-empty"]').should('be.visible')
+      cy.get('[data-testid="trainer-card"]').should('not.exist')
+    })
+  })
 })

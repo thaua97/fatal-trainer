@@ -127,14 +127,20 @@ Detalhes da integração: [`docs/specs/api-integration-frontend.md`](docs/specs/
 
 ### Testes E2E (Cypress)
 
-Os testes E2E cobrem os cenários mínimos do [RNF-010](docs/requisitos-nao-funcionais.md) contra a **API real** (PostgreSQL + backend na porta 3333).
+Os testes E2E cobrem o catálogo e o perfil do [RNF-010](docs/requisitos-nao-funcionais.md) e os RFs do desafio (RF-001–RF-013) contra a **API real** (PostgreSQL + backend na porta 3333).
 
-| Spec | Cenário | UC |
-|------|---------|-----|
-| `catalog-listing.cy.ts` | E2E-01 — listagem com cards | UC-01 |
-| `catalog-search.cy.ts` | E2E-02 — busca por nome | UC-02 |
-| `catalog-filters.cy.ts` | E2E-03 — filtro de especialidade | UC-03 |
-| `profile-navigation.cy.ts` | E2E-04/05 — perfil e voltar | UC-06, UC-07 |
+| Spec | Cenário | UC / RF |
+|------|---------|---------|
+| `catalog-listing.cy.ts` | E2E-01 — listagem com cards | UC-01 / RF-001, RF-002 |
+| `catalog-search.cy.ts` | E2E-02 — busca por nome + empty state | UC-02 / RF-003, RF-012 |
+| `catalog-filters.cy.ts` | E2E-03 — filtros (especialidade, modalidade, empty) | UC-03 / RF-004, RF-012 |
+| `catalog-sort.cy.ts` | E2E-06 — ordenação por preço e avaliação | UC-04 / RF-005 |
+| `catalog-load-more.cy.ts` | E2E-07 — carregar mais sem duplicar | UC-05 / RF-006, RF-011 |
+| `catalog-dataset.cy.ts` | E2E-08 — dataset ≥ 500 trainers | RF-010, RF-011 |
+| `profile-navigation.cy.ts` | E2E-04/05 — perfil via card e voltar | UC-06, UC-07 / RF-007, RF-009 |
+| `profile-detail.cy.ts` | E2E-09 — campos obrigatórios e complementares | UC-06 / RF-007, RF-008 |
+| `profile-deep-link.cy.ts` | E2E-10 — deep link e botão voltar | UC-06 / RF-013, RF-009 |
+| `profile-not-found.cy.ts` | E2E-11 — perfil inexistente (404) | UC-06 E1 |
 
 **Opção A — orquestrado (recomendado):**
 
