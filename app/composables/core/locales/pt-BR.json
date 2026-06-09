@@ -41,6 +41,9 @@
         "sortNewest": "Mais recentes",
         "sortOldest": "Mais antigos",
         "sortRoleAsc": "Papel A–Z"
+      },
+      "pagination": {
+        "perPage": "Por página"
       }
     },
     "promotions": {

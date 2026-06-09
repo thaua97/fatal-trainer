@@ -1,5 +1,17 @@
 import type { UserRole } from '#shared/domain/auth/entities/user'
 
+function adminUserRoleSortPriority(role: UserRole): number {
+  if (role === 'personal-trainer') {
+    return 0
+  }
+
+  if (role === 'student') {
+    return 1
+  }
+
+  return 2
+}
+
 export function useFTAdminUsersPage() {
   const { t } = useI18n()
   const {
@@ -60,6 +72,11 @@ export function useFTAdminUsersPage() {
     const direction = sortOrder.value === 'asc' ? 1 : -1
 
     items.sort((a, b) => {
+      const roleDiff = adminUserRoleSortPriority(a.role) - adminUserRoleSortPriority(b.role)
+      if (roleDiff !== 0) {
+        return roleDiff
+      }
+
       if (sortBy.value === 'name') {
         return a.name.localeCompare(b.name, 'pt-BR') * direction
       }
@@ -74,7 +91,7 @@ export function useFTAdminUsersPage() {
 
   const pagination = computed(() => ({
     page: data.value?.page ?? query.page ?? 1,
-    pageSize: data.value?.pageSize ?? query.pageSize ?? 10,
+    pageSize: data.value?.pageSize ?? query.pageSize ?? 20,
     total: data.value?.total ?? 0,
     hasMore: data.value?.hasMore ?? false,
   }))

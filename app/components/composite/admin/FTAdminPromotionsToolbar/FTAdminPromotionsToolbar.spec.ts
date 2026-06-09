@@ -1,12 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { mountFT } from '@tests/helpers/mount-ft'
-import FTAdminUsersToolbar from './FTAdminUsersToolbar.vue'
+import FTAdminPromotionsToolbar from './FTAdminPromotionsToolbar.vue'
 
-describe('FTAdminUsersToolbar', () => {
+describe('FTAdminPromotionsToolbar', () => {
   it('renders toolbar with bounded search wrapper', () => {
-    const wrapper = mountFT(FTAdminUsersToolbar, {
+    const wrapper = mountFT(FTAdminPromotionsToolbar, {
       props: {
-        viewMode: 'table',
         sortBy: 'createdAt',
         sortOrder: 'desc',
         query: { search: '', page: 1, pageSize: 20 },
@@ -14,18 +13,17 @@ describe('FTAdminUsersToolbar', () => {
       },
     })
 
-    expect(wrapper.find('[data-testid="admin-users-toolbar"]').exists()).toBe(true)
-    expect(wrapper.find('[data-testid="admin-users-toolbar-search"]').exists()).toBe(true)
-    expect(wrapper.find('[data-testid="admin-users-toolbar-search"]').classes()).toEqual(
+    expect(wrapper.find('[data-testid="admin-promotions-toolbar"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="admin-promotions-toolbar-search"]').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="admin-promotions-toolbar-search"]').classes()).toEqual(
       expect.arrayContaining(['lg:max-w-sm', 'xl:max-w-md']),
     )
     expect(wrapper.find('input').exists()).toBe(true)
   })
 
   it('renders harmonized action button classes', () => {
-    const wrapper = mountFT(FTAdminUsersToolbar, {
+    const wrapper = mountFT(FTAdminPromotionsToolbar, {
       props: {
-        viewMode: 'table',
         sortBy: 'createdAt',
         sortOrder: 'desc',
         query: { search: '', page: 1, pageSize: 20 },
@@ -34,11 +32,9 @@ describe('FTAdminUsersToolbar', () => {
     })
 
     const filterButton = wrapper.findAll('button').find(button => button.text().includes('Filtros'))
-    const sortButton = wrapper.findAll('button').find(button => button.text().includes('Mais recentes'))
-    const createButton = wrapper.findAll('button').find(button => button.text().includes('Novo usuário'))
+    const createButton = wrapper.findAll('button').find(button => button.text().includes('Nova promoção'))
 
     expect(filterButton?.classes()).toEqual(expect.arrayContaining(['h-10', 'rounded-full']))
-    expect(sortButton?.classes()).toEqual(expect.arrayContaining(['h-10', 'rounded-full']))
     expect(createButton?.classes()).toEqual(expect.arrayContaining(['h-10', 'rounded-full']))
   })
 })

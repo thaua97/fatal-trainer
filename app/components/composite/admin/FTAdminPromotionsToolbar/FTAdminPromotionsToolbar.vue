@@ -64,7 +64,16 @@ const { activeFilterChips } = useAdminFilterChips(query, [
   },
 ])
 
-const { fieldUi, inputSize } = useFTFormFieldUi()
+const {
+  searchUi,
+  controlSize,
+  toolbarRowClass,
+  searchWrapperClass,
+  actionsGroupClass,
+  actionButtonClass,
+  sortButtonClass,
+  ctaButtonClass,
+} = useFTAdminToolbarUi()
 </script>
 
 <template>
@@ -72,24 +81,29 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
     class="mb-4 space-y-3"
     data-testid="admin-promotions-toolbar"
   >
-    <div class="flex flex-wrap items-center gap-2">
-      <UInput
-        v-model="query.search"
-        icon="i-lucide-search"
-        :placeholder="t('admin.promotions.toolbar.searchPlaceholder')"
-        class="min-w-[200px] flex-1"
-        :ui="fieldUi"
-        :size="inputSize"
-      />
+    <div :class="toolbarRowClass">
+      <div
+        :class="searchWrapperClass"
+        data-testid="admin-promotions-toolbar-search"
+      >
+        <UInput
+          v-model="query.search"
+          icon="i-lucide-search"
+          :placeholder="t('admin.promotions.toolbar.searchPlaceholder')"
+          class="w-full"
+          :ui="searchUi"
+          :size="controlSize"
+        />
+      </div>
 
-      <div class="flex flex-wrap items-center gap-2">
+      <div :class="actionsGroupClass">
         <UPopover v-model:open="filterOpen">
           <UButton
             variant="outline"
             color="neutral"
-            size="sm"
+            :size="controlSize"
             icon="i-lucide-sliders-horizontal"
-            class="rounded-full"
+            :class="actionButtonClass"
           >
             {{ t('admin.promotions.toolbar.filters') }}
             <UBadge
@@ -150,10 +164,10 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           <UButton
             variant="outline"
             color="neutral"
-            size="sm"
+            :size="controlSize"
             icon="i-lucide-arrow-up-down"
             trailing-icon="i-lucide-chevron-down"
-            class="rounded-full"
+            :class="sortButtonClass"
           >
             {{ currentSortLabel }}
           </UButton>
@@ -161,8 +175,9 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
 
         <UButton
           color="primary"
+          :size="controlSize"
           icon="i-lucide-plus"
-          class="rounded-full"
+          :class="ctaButtonClass"
           @click="emit('openCreate')"
         >
           {{ t('admin.promotions.toolbar.newPromotion') }}

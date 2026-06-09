@@ -28,8 +28,9 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
     class="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-sm"
     data-testid="admin-users-table-view"
   >
-    <table class="w-full text-left text-sm">
-      <thead class="border-b border-slate-100 bg-slate-50/80">
+    <div class="max-h-[calc(100vh-18rem)] overflow-y-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="sticky top-0 z-10 border-b border-slate-100 bg-slate-50/95 backdrop-blur-sm">
         <tr>
           <th class="px-4 py-3 font-semibold text-slate-600">
             Usuário
@@ -49,7 +50,7 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
           <th class="px-4 py-3 font-semibold text-slate-600">
             Destaque
           </th>
-          <th class="px-4 py-3 font-semibold text-slate-600">
+          <th class="px-4 py-3 text-center font-semibold text-slate-600">
             Ações
           </th>
         </tr>
@@ -121,7 +122,7 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
               class="text-slate-300"
             >—</span>
           </td>
-          <td class="px-4 py-3">
+          <td class="px-4 py-3 align-middle text-center">
             <FTAdminUserRowActions
               :user="user"
               :action-pending="actionPending"
@@ -133,5 +134,6 @@ function onUserCellMove(user: AdminUserListItem, event: MouseEvent) {
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
 </template>
