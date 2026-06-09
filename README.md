@@ -125,6 +125,53 @@ pnpm dev
 
 Detalhes da integração: [`docs/specs/api-integration-frontend.md`](docs/specs/api-integration-frontend.md).
 
+### Testes E2E (Cypress)
+
+Os testes E2E cobrem os cenários mínimos do [RNF-010](docs/requisitos-nao-funcionais.md) contra a **API real** (PostgreSQL + backend na porta 3333).
+
+| Spec | Cenário | UC |
+|------|---------|-----|
+| `catalog-listing.cy.ts` | E2E-01 — listagem com cards | UC-01 |
+| `catalog-search.cy.ts` | E2E-02 — busca por nome | UC-02 |
+| `catalog-filters.cy.ts` | E2E-03 — filtro de especialidade | UC-03 |
+| `profile-navigation.cy.ts` | E2E-04/05 — perfil e voltar | UC-06, UC-07 |
+
+**Opção A — orquestrado (recomendado):**
+
+```bash
+cd fatal-trainer
+pnpm test:e2e
+```
+
+O script [`scripts/e2e.sh`](scripts/e2e.sh) sobe PostgreSQL via Docker, executa `db:push` + `db:seed`, inicia API e Nuxt, e roda o Cypress.
+
+**Opção B — servidores manuais:**
+
+```bash
+# Terminal 1 — backend
+cd fatal-trainer-backend
+docker compose up -d
+pnpm db:push && pnpm db:seed && pnpm dev
+
+# Terminal 2 — front
+cd fatal-trainer
+pnpm dev
+
+# Terminal 3 — Cypress
+pnpm test:e2e:run        # headless
+pnpm test:e2e:open       # interativo
+```
+
+**Pré-requisitos:** Docker (PostgreSQL), Node.js. O script `test:e2e` define `NUXT_E2E=true` e proxy `/api` → backend (`127.0.0.1:3333`) para evitar CORS no browser.
+
+Para rodar manualmente com backend real:
+
+```env
+NUXT_E2E=true
+NUXT_PUBLIC_USE_MOCK_API=false
+NUXT_PUBLIC_API_BASE_URL=/api
+```
+
 ### Scripts disponíveis
 
 | Script | Descrição |
@@ -135,7 +182,9 @@ Detalhes da integração: [`docs/specs/api-integration-frontend.md`](docs/specs/
 | `pnpm lint` | ESLint |
 | `pnpm typecheck` | Verificação TypeScript |
 | `pnpm test` | Testes unitários (Vitest) |
-| `pnpm test:e2e` | Testes E2E (Cypress) |
+| `pnpm test:e2e` | Testes E2E (Cypress) — sobe PostgreSQL, API, Nuxt e executa specs |
+| `pnpm test:e2e:run` | Cypress headless (requer API + Nuxt já rodando) |
+| `pnpm test:e2e:open` | Cypress interativo (requer API + Nuxt já rodando) |
 | `pnpm storybook` | Storybook (porta 6006) |
 
 Os mesmos scripts funcionam com `npm run <script>`.
@@ -242,6 +291,7 @@ docs/                   # PRD, RFs, RNFs, arquitetura, challenge
 
 ## Documentação adicional
 
+- [RFCs — decisões arquiteturais](docs/rfc.md)
 - [Desafio técnico (challenge)](docs/challenge.md)
 - [PRD](docs/PRD.md)
 - [Requisitos funcionais](docs/requisitos-funcionais.md)

@@ -18,7 +18,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "cypress run",
+    "test:e2e": "bash scripts/e2e.sh",
+    "test:e2e:run": "cypress run",
     "test:e2e:open": "cypress open",
     "generate:city-coords": "node scripts/generate-city-coords.mjs",
     "storybook": "storybook dev -p 6006",
@@ -43,9 +44,11 @@
     "eslint": "^9.28.0",
     "happy-dom": "^17.6.3",
     "oxc-parser": "^0.133.0",
+    "start-server-and-test": "^2.1.5",
     "storybook": "^8.6.14",
     "typescript": "^5.8.3",
     "vitest": "^3.2.3",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^2.2.10",
+    "wait-on": "^8.0.5"
   }
 }

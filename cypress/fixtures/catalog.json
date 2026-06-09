@@ -1,0 +1,7 @@
+{
+  "searchTerm": "Ana",
+  "expectedTrainerName": "Ana Silva",
+  "specialtyFilter": "Musculação",
+  "specialtyTestId": "specialty-filter-Musculação",
+  "noResultsSearchTerm": "zzzznonexistenttrainer9999"
+}
