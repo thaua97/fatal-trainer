@@ -1,11 +1,21 @@
 import type { PersonalTrainer } from '#shared/domain/catalog/entities/personal-trainer'
 import type { TrainerPromotionPayload, TrainerPromotionValidationErrors } from '#shared/domain/catalog/entities/trainer-profile-payloads'
-import { PROMOTION_LABELS } from '#shared/domain/catalog/constants/catalog-options'
+import { PROMOTION_LABELS, type PromotionLabel } from '#shared/domain/catalog/constants/catalog-options'
 import { computePromoPrice, getDiscountPercent } from '#shared/domain/catalog/services/trainer-pricing'
 import { validateTrainerPromotion } from '#shared/domain/catalog/services/validate-trainer-profile'
 import type { UpdateTrainerProfileRequest } from '#shared/types/api'
 import { applyApiError } from '~/composables/core/applyApiError'
 import { useFieldErrorTranslator } from '~/composables/core/useFieldErrorTranslator'
+
+function parsePromotionLabel(value: string | undefined): PromotionLabel | '' {
+  if (!value) {
+    return ''
+  }
+
+  return (PROMOTION_LABELS as readonly string[]).includes(value)
+    ? value as PromotionLabel
+    : ''
+}
 
 function emptyForm(): TrainerPromotionPayload {
   return {
@@ -27,7 +37,7 @@ function trainerToPromotionForm(trainer: PersonalTrainer): TrainerPromotionPaylo
   return {
     active: true,
     discountPercent: promotion.discountPercent ?? getDiscountPercent(trainer) ?? 15,
-    label: promotion.label ?? '',
+    label: parsePromotionLabel(promotion.label),
     startsAt: promotion.startsAt ?? '',
     endsAt: promotion.endsAt ?? '',
     maxRedemptions: promotion.maxRedemptions ?? null,
@@ -73,6 +83,11 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
   const labelItems = computed(() =>
     PROMOTION_LABELS.map(value => ({ label: value, value })),
   )
+
+  const selectedLabel = computed<PromotionLabel | undefined>({
+    get: () => form.label || undefined,
+    set: value => { form.label = value ?? '' },
+  })
 
   const previewServicePrice = computed(() => trainer.value?.servicePrice ?? 0)
 
@@ -150,6 +165,7 @@ export function useFTTrainerPromotionForm(trainer: Ref<PersonalTrainer | null>) 
     errorMessage,
     unlimitedRedemptions,
     labelItems,
+    selectedLabel,
     pending,
     previewServicePrice,
     previewPromoPrice,

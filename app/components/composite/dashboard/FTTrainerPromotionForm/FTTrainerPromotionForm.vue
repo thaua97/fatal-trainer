@@ -13,6 +13,7 @@ const {
   form,
   unlimitedRedemptions,
   labelItems,
+  selectedLabel,
   pending,
   previewServicePrice,
   previewPromoPrice,
@@ -38,7 +39,7 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
       >
         <div class="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-[var(--ft-promo-strong)]">
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-(--ft-promo-strong)">
               {{ t('dashboard.promotion.previewLabel') }}
             </p>
             <div class="mt-2 flex items-center gap-3">
@@ -97,7 +98,7 @@ const { fieldUi, selectUi, inputSize } = useFTFormFieldUi()
           required
         >
           <USelect
-            v-model="form.label"
+            v-model="selectedLabel"
             class="w-full"
             :items="labelItems"
             :ui="selectUi"
