@@ -2,21 +2,28 @@ name: Test
 
 on:
   workflow_call:
-
-env:
-  PNPM_VERSION: '9'
+    inputs:
+      runs-on:
+        required: true
+        type: string
+      node-image:
+        required: true
+        type: string
+      pnpm-version:
+        required: true
+        type: string
 
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runs-on }}
     container:
-      image: bitnami/node:24
+      image: ${{ inputs.node-image }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Enable pnpm
-        run: corepack enable && corepack prepare pnpm@${{ env.PNPM_VERSION }} --activate
+        run: corepack enable && corepack prepare pnpm@${{ inputs.pnpm-version }} --activate
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

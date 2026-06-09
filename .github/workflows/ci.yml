@@ -10,12 +10,29 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  RUNS_ON: ubuntu-latest
+  NODE_IMAGE: bitnamilegacy/node:24.7.0
+  PNPM_VERSION: '9'
+
 jobs:
   lint:
     uses: ./.github/workflows/lint.yml
+    with:
+      runs-on: ${{ env.RUNS_ON }}
+      node-image: ${{ env.NODE_IMAGE }}
+      pnpm-version: ${{ env.PNPM_VERSION }}
 
   test:
     uses: ./.github/workflows/test.yml
+    with:
+      runs-on: ${{ env.RUNS_ON }}
+      node-image: ${{ env.NODE_IMAGE }}
+      pnpm-version: ${{ env.PNPM_VERSION }}
 
   build:
     uses: ./.github/workflows/build.yml
+    with:
+      runs-on: ${{ env.RUNS_ON }}
+      node-image: ${{ env.NODE_IMAGE }}
+      pnpm-version: ${{ env.PNPM_VERSION }}
