@@ -17,7 +17,6 @@ function emptyForm(): ReviewPayload {
 export function useFTProfileReviewForm(trainer: Ref<PersonalTrainer>) {
   const { t } = useI18n()
   const toast = useFTToast()
-  const route = useRoute()
   const { isAuthenticated, user, initialized } = useAuth()
   const errorMessage = useFieldErrorTranslator('reviewForm.errors')
 
