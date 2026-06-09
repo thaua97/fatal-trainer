@@ -57,6 +57,7 @@ const promotionValidity = computed(() => {
           to="/personal-trainers"
           class="absolute left-4 top-4"
           :aria-label="$t('profile.backToCatalog')"
+          data-testid="profile-back-button"
         >
           <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
         </FTIconButton>
@@ -153,6 +154,7 @@ const promotionValidity = computed(() => {
           <FTIconButton
             to="/personal-trainers"
             :aria-label="$t('profile.backToCatalog')"
+            data-testid="profile-back-button"
           >
             <UIcon name="i-lucide-arrow-left" class="size-5 text-slate-900" />
           </FTIconButton>

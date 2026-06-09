@@ -76,6 +76,21 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-06-04',
   devtools: { enabled: true },
 
+  nitro: {
+    devProxy: process.env.NUXT_E2E === 'true'
+      ? {
+          '/api': {
+            target: 'http://127.0.0.1:3333/api',
+            changeOrigin: true,
+          },
+          '/uploads': {
+            target: 'http://127.0.0.1:3333/uploads',
+            changeOrigin: true,
+          },
+        }
+      : undefined,
+  },
+
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '',
