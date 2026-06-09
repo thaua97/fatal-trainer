@@ -1,3 +1,4 @@
+import type { PromotionLabel } from '../constants/catalog-options'
 import type { TrainerModality } from './personal-trainer'
 
 export type TrainerInfoField =
@@ -40,7 +41,7 @@ export interface TrainerInfoPayload {
 export interface TrainerPromotionPayload {
   active: boolean
   discountPercent: number
-  label: string
+  label: PromotionLabel | ''
   startsAt: string
   endsAt: string
   maxRedemptions: number | null

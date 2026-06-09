@@ -75,7 +75,7 @@ describe('validateTrainerPromotion', () => {
     const result = validateTrainerPromotion({
       active: true,
       discountPercent: 20,
-      label: 'Black Friday',
+      label: 'Primeira sessão',
       startsAt: '2026-01-01',
       endsAt: '2026-12-31',
       maxRedemptions: null,

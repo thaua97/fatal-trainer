@@ -26,3 +26,5 @@ export const PROMOTION_LABELS = [
   'Pacote mensal',
   'Oferta de lançamento',
 ] as const
+
+export type PromotionLabel = (typeof PROMOTION_LABELS)[number]
