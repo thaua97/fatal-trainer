@@ -19,7 +19,10 @@ const label = computed(() => {
 </script>
 
 <template>
-  <p class="text-sm text-slate-600">
+  <p
+    class="text-sm text-slate-600"
+    data-testid="catalog-results-count"
+  >
     {{ label }}
   </p>
 </template>
