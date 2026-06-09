@@ -22,7 +22,7 @@ const sizeClasses = {
     aria-label="FatalTrainer"
   >
     <svg
-      class="shrink-0 text-violet-600 transition-transform duration-300 ease-out group-hover:-rotate-[18deg] -rotate-[42deg]"
+      class="shrink-0 text-violet-600 transition-transform duration-300 ease-out group-hover:rotate-[-18deg] rotate-[-42deg]"
       :class="size === 'sm' ? 'size-4' : size === 'lg' ? 'size-6' : size === 'xl' ? 'size-8' : 'size-5'"
       viewBox="0 0 24 24"
       fill="none"

@@ -114,10 +114,10 @@ const mergedUi = computed(() => ({
               ? 'border-white/20! bg-white/10! text-white! shadow-none! backdrop-blur-sm hover:bg-white/20!'
               : 'bg-white/80 backdrop-blur-sm hover:bg-white',
             isMedia
-              ? 'top-[max(1rem,env(safe-area-inset-top))] end-[max(1rem,env(safe-area-inset-right))]'
+              ? 'top-[max(1rem,env(safe-area-inset-top))] inset-e-[max(1rem,env(safe-area-inset-right))]'
               : compactOnMobile
-                ? 'top-3 end-3 lg:top-4 lg:end-4'
-                : 'top-4 end-4',
+                ? 'top-3 inset-e-3 lg:top-4 lg:inset-e-4'
+                : 'top-4 inset-e-4',
           ]"
           aria-label="Fechar"
           data-testid="ft-modal-close"
