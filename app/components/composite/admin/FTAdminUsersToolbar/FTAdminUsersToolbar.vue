@@ -64,7 +64,17 @@ const { activeFilterChips } = useAdminFilterChips(query, [
   },
 ])
 
-const { fieldUi, inputSize } = useFTFormFieldUi()
+const {
+  searchUi,
+  controlSize,
+  toolbarRowClass,
+  searchWrapperClass,
+  actionsGroupClass,
+  viewToggleClass,
+  actionButtonClass,
+  sortButtonClass,
+  ctaButtonClass,
+} = useFTAdminToolbarUi()
 </script>
 
 <template>
@@ -72,22 +82,27 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
     class="mb-4 space-y-3"
     data-testid="admin-users-toolbar"
   >
-    <div class="flex flex-wrap items-center gap-2">
-      <UInput
-        v-model="query.search"
-        icon="i-lucide-search"
-        :placeholder="t('admin.users.toolbar.searchPlaceholder')"
-        class="min-w-[200px] flex-1"
-        :ui="fieldUi"
-        :size="inputSize"
-      />
+    <div :class="toolbarRowClass">
+      <div
+        :class="searchWrapperClass"
+        data-testid="admin-users-toolbar-search"
+      >
+        <UInput
+          v-model="query.search"
+          icon="i-lucide-search"
+          :placeholder="t('admin.users.toolbar.searchPlaceholder')"
+          class="w-full"
+          :ui="searchUi"
+          :size="controlSize"
+        />
+      </div>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <div class="inline-flex rounded-full border border-slate-200 bg-white p-0.5 shadow-sm">
+      <div :class="actionsGroupClass">
+        <div :class="viewToggleClass">
           <UButton
             :variant="viewMode === 'table' ? 'soft' : 'ghost'"
             :color="viewMode === 'table' ? 'primary' : 'neutral'"
-            size="xs"
+            size="sm"
             icon="i-lucide-layout-grid"
             class="rounded-full"
             :aria-label="t('admin.users.toolbar.viewTable')"
@@ -96,7 +111,7 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           <UButton
             :variant="viewMode === 'list' ? 'soft' : 'ghost'"
             :color="viewMode === 'list' ? 'primary' : 'neutral'"
-            size="xs"
+            size="sm"
             icon="i-lucide-list"
             class="rounded-full"
             :aria-label="t('admin.users.toolbar.viewList')"
@@ -108,9 +123,9 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           <UButton
             variant="outline"
             color="neutral"
-            size="sm"
+            :size="controlSize"
             icon="i-lucide-sliders-horizontal"
-            class="rounded-full"
+            :class="actionButtonClass"
           >
             {{ t('admin.users.toolbar.filters') }}
             <UBadge
@@ -171,10 +186,10 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
           <UButton
             variant="outline"
             color="neutral"
-            size="sm"
+            :size="controlSize"
             icon="i-lucide-arrow-up-down"
             trailing-icon="i-lucide-chevron-down"
-            class="rounded-full"
+            :class="sortButtonClass"
           >
             {{ currentSortLabel }}
           </UButton>
@@ -182,8 +197,9 @@ const { fieldUi, inputSize } = useFTFormFieldUi()
 
         <UButton
           color="primary"
+          :size="controlSize"
           icon="i-lucide-plus"
-          class="rounded-full"
+          :class="ctaButtonClass"
           @click="emit('openCreate')"
         >
           {{ t('admin.users.toolbar.newUser') }}

@@ -99,8 +99,8 @@ function onHoverUser(user: AdminUserListItem | null, event?: MouseEvent) {
       <FTAdminUsersPagination
         v-if="pagination.total > 0"
         v-model:page="query.page"
+        v-model:page-size="query.pageSize"
         :total="pagination.total"
-        :page-size="pagination.pageSize"
         :disabled="pending"
         class="mt-4"
       />

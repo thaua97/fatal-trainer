@@ -35,6 +35,16 @@ describe('FTAdminUsersTableView', () => {
     expect(wrapper.text()).not.toContain('por sessão')
   })
 
+  it('wraps table in a scrollable container', () => {
+    const wrapper = mountFT(FTAdminUsersTableView, {
+      props: { items, roleLabel },
+    })
+
+    const scrollContainer = wrapper.find('.overflow-y-auto')
+    expect(scrollContainer.exists()).toBe(true)
+    expect(scrollContainer.classes()).toContain('max-h-[calc(100vh-18rem)]')
+  })
+
   it('shows featured toggle only for personal trainers', () => {
     const wrapper = mountFT(FTAdminUsersTableView, {
       props: {
