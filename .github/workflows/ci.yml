@@ -10,29 +10,54 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  RUNS_ON: ubuntu-latest
-  NODE_IMAGE: bitnamilegacy/node:24.7.0
-  PNPM_VERSION: '9'
-
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yml
-    with:
-      runs-on: ${{ env.RUNS_ON }}
-      node-image: ${{ env.NODE_IMAGE }}
-      pnpm-version: ${{ env.PNPM_VERSION }}
+    name: Lint
+    runs-on: ubuntu-latest
+    container:
+      image: bitnamilegacy/node:24.7.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: corepack enable && corepack prepare pnpm@9 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
 
   test:
-    uses: ./.github/workflows/test.yml
-    with:
-      runs-on: ${{ env.RUNS_ON }}
-      node-image: ${{ env.NODE_IMAGE }}
-      pnpm-version: ${{ env.PNPM_VERSION }}
+    name: Test
+    runs-on: ubuntu-latest
+    container:
+      image: bitnamilegacy/node:24.7.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: corepack enable && corepack prepare pnpm@9 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm test
 
   build:
-    uses: ./.github/workflows/build.yml
-    with:
-      runs-on: ${{ env.RUNS_ON }}
-      node-image: ${{ env.NODE_IMAGE }}
-      pnpm-version: ${{ env.PNPM_VERSION }}
+    name: Build
+    runs-on: ubuntu-latest
+    container:
+      image: bitnamilegacy/node:24.7.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: corepack enable && corepack prepare pnpm@9 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
